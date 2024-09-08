@@ -1,17 +1,17 @@
 import React from "react";
-import "'@/global.css'";
-import { GluestackUIProvider } from "./src/app/components/ui/gluestack-ui-provider";
+import "./global.css";
 import { registerRootComponent } from "expo";
 import { NavigationContainer } from "@react-navigation/native";
-import AppRouter from "./src/app/navigators/AppRouter";
+import { PaperProvider } from "react-native-paper";
+import AppRouter from "./app/navigators/AppRouter";
 
 export default function App() {
   return (
-    <GluestackUIProvider mode="light">
+    <PaperProvider>
       <NavigationContainer>
         <AppRouter />
       </NavigationContainer>
-    </GluestackUIProvider>
+    </PaperProvider>
   );
 }
 

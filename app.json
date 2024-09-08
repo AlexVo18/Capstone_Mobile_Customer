@@ -3,7 +3,7 @@
     "name": "capstone-mobile-customer",
     "slug": "capstone-mobile-customer",
     "version": "1.0.0",
-    "entryPoint": "./App.tsx",
+    "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
