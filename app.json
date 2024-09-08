@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "capstone-mobile",
-    "slug": "capstone-mobile",
+    "name": "capstone-mobile-customer",
+    "slug": "capstone-mobile-customer",
     "version": "1.0.0",
+    "entryPoint": "./App.tsx",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -19,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.trivo18.customermobile"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +33,20 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a469ecf6-fedc-4bae-a1cf-a1381e380636"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a469ecf6-fedc-4bae-a1cf-a1381e380636"
     }
   }
 }
