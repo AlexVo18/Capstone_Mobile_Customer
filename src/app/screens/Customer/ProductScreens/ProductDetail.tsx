@@ -6,7 +6,7 @@ const ProductDetail = ({ route }: ProductDetailScreenProps) => {
   const { productId } = route.params;
   return (
     <View>
-      <Text>ProductDetail</Text>
+      <Text>ProductDetail: {productId}</Text>
     </View>
   );
 };
