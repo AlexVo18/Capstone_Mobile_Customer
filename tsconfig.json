@@ -4,9 +4,13 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["*"]
+      "~/*": [
+        "*"
+      ]
     },
-    "types": ["nativewind/types"]
+    "types": [
+      "nativewind/types"
+    ]
   },
   "include": [
     "**/*.ts",
@@ -19,6 +23,7 @@
     "/App/**/*.ts",
     "src/App.tsx",
     "my-app.d.ts",
-    "App/**/*.tsx"
+    "App/**/*.tsx",
+    "nativewind-env.d.ts"
   ]
 }

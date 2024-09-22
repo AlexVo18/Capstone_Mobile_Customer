@@ -11,6 +11,7 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import {
   Bell,
   House,
+  Newspaper,
   Package,
   Search,
   Settings,
@@ -19,9 +20,11 @@ import {
 import { mainBlue, mutedForground } from "../../constants/cssConstants";
 import HomeUserOpts from "../../components/homeHeader/HomeUserOpts";
 import HomeSearchBar from "../../components/homeHeader/HomeSearchBar";
+import News from "../../screens/Customer/NewsScreens/News";
 
 export type CustomerTabParamList = {
   Home: undefined;
+  News: undefined;
   Order: undefined;
   SettingOption: undefined;
 };
@@ -29,6 +32,10 @@ export type CustomerTabParamList = {
 export type HomeScreenProps = BottomTabScreenProps<
   CustomerTabParamList,
   "Home"
+>;
+export type NewsScreenProps = BottomTabScreenProps<
+  CustomerTabParamList,
+  "News"
 >;
 export type OrderScreenProps = BottomTabScreenProps<
   CustomerTabParamList,
@@ -48,6 +55,10 @@ const CustomerTabs = () => {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === "Home") {
             return <House size={size} color={focused ? mainBlue : "#808080"} />;
+          } else if (route.name === "News") {
+            return (
+              <Newspaper size={size} color={focused ? mainBlue : "#808080"} />
+            );
           } else if (route.name === "Order") {
             return (
               <Package size={size} color={focused ? mainBlue : "#808080"} />
@@ -70,9 +81,20 @@ const CustomerTabs = () => {
         }}
       />
       <Tab.Screen
+        name="News"
+        component={News}
+        options={{
+          tabBarLabel: "Tin tức",
+          headerRight: () => <HomeUserOpts />,
+        }}
+      />
+      <Tab.Screen
         name="Order"
         component={Order}
-        options={{ tabBarLabel: "Đơn hàng",headerRight: () => <HomeUserOpts />, }}
+        options={{
+          tabBarLabel: "Đơn hàng",
+          headerRight: () => <HomeUserOpts />,
+        }}
       />
       <Tab.Screen
         name="SettingOption"
@@ -80,7 +102,7 @@ const CustomerTabs = () => {
         options={{
           tabBarLabel: "Cài đặt",
           headerRight: () => <HomeUserOpts />,
-          headerTitle: "Cài đặt"
+          headerTitle: "Cài đặt",
         }}
       />
     </Tab.Navigator>

@@ -8,11 +8,12 @@ import CustomerTabs from "./CustomerTabs";
 import ProductDetail from "../../screens/Customer/ProductScreens/ProductDetail";
 import Cart from "../../screens/Customer/CartScreens/Cart";
 import UserTiers from "../../screens/Customer/PromotionScreens/UserTiers";
-import Address from "../../screens/Customer/ProfileScreens/Address";
+import Address from "../../screens/Customer/ProfileScreens/AddressScreens/Address";
 import Profile from "../../screens/Customer/ProfileScreens/Profile";
 import UserReview from "../../screens/Customer/ProfileScreens/UserReview";
 import TransactionHistory from "../../screens/Customer/TransactionScreens/TransactionHistory";
 import VouchersWallet from "../../screens/Customer/PromotionScreens/VouchersWallet";
+import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
@@ -24,6 +25,7 @@ export type CustomerStackParamList = {
   UserReview: undefined;
   TransactionHistory: undefined;
   VouchersWallet: undefined;
+  NewAddress: undefined;
 };
 
 export type CustomerTabsScreenProps = NativeStackScreenProps<
@@ -49,6 +51,10 @@ export type VouchersWalletScreenProps = NativeStackScreenProps<
 export type AddressScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "Address"
+>;
+export type NewAddressScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "NewAddress"
 >;
 export type ProfileScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -78,8 +84,10 @@ const CustomerNavigator = () => {
       {/* Voucher và khuyến mãi */}
       <Stack.Screen name="UserTiers" component={UserTiers} />
       <Stack.Screen name="VouchersWallet" component={VouchersWallet} />
-      {/* Hồ sơ */}
+      {/* Địa chỉ */}
       <Stack.Screen name="Address" component={Address} />
+      <Stack.Screen name="NewAddress" component={NewAddress} />
+      {/* Hồ sơ */}
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="UserReview" component={UserReview} />
       {/* Giao dịch */}
