@@ -7,6 +7,7 @@ import { PaperProvider } from "react-native-paper";
 import AppNavigator from "./app/navigators/AppNavigator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <NavigationContainer>
           <SafeAreaProvider>
             <AppNavigator />
+            <Toast />
           </SafeAreaProvider>
         </NavigationContainer>
       </PaperProvider>

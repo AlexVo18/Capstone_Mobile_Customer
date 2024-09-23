@@ -1,35 +1,20 @@
-import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-// import { TouchableOpacity } from "react-native-gesture-handler";
+import { RegisterAccountScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 import { Button } from "react-native-paper";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
-import useAuth from "~/src/app/hooks/useAuth";
-import { UserData } from "~/src/app/models/auth_models";
-import { LoginScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
+import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
 import { cn } from "~/src/app/utils/cn";
 
-const Login = ({ route, navigation }: LoginScreenProps) => {
-  const { userInfo, token, userLoading, login, logout } = useAuth();
+const RegisterAccount = ({ route, navigation }: RegisterAccountScreenProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [viewPwd, setViewPwd] = useState(false);
+  const [viewRePwd, setViewRePwd] = useState(false);
   const [focusInput, setFocusInput] = useState("");
-
-  const handleLogin = () => {
-    // Add your login validation and logic here
-    if (email === "abc@gmail.com" && password === "123") {
-      const token = "token";
-      const userData: UserData = {
-        email,
-        password,
-      };
-      if (userData) {
-        login(userData, token);
-      }
-    }
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <View className="flex justify-center items-center h-full text-base w-full p-10 bg-white">
@@ -50,7 +35,7 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
           className="text-lg text-center"
           style={{ color: `hsl(${mutedForground})` }}
         >
-          Hãy đăng nhập để bắt đàu sử dụng ứng dụng
+          Nhập thông tin tài khoản của bạn vào
         </Text>
       </View>
       <View className="w-full">
@@ -120,20 +105,21 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
           buttonColor={mainBlue}
           textColor="white"
           style={[styles.buttonStyle]}
-          disabled={userLoading}
-          onPress={() => handleLogin()}
+          // disabled={userLoading}
+          // onPress={() => handleLogin()}
         >
-          {userLoading ? (
+          {/* {userLoading ? (
             <Text className="text-lg">Đang tải</Text>
           ) : (
             <Text className="text-lg">Đăng nhập</Text>
-          )}
+          )} */}
+          asdasd
         </Button>
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
         <Text style={{ fontSize: 16 }}>Không có tài khoản? </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate("RegisterEmail")}
+          onPress={() => navigation.navigate("RegisterAccount")}
           className="flex items-center justify-center"
         >
           <Text style={{ color: mainBlue, fontSize: 16 }}>Đăng ký</Text>
@@ -143,7 +129,7 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
   );
 };
 
-export default Login;
+export default RegisterAccount;
 
 const styles = StyleSheet.create({
   textStyle: {
