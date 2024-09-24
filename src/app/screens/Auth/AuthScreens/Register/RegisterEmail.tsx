@@ -25,33 +25,6 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
     email: Yup.string()
       .required(validate.email.required)
       .matches(/\.com$/, validate.email.invalidFormat),
-    // password: Yup.string()
-    //   .required(validate.password.required)
-    //   .min(6, validate.password.length)
-    //   .matches(/^(?=.*[A-Z])(?=.*\s)/, validate.password.invalidFormat),
-    // rePassword: Yup.string()
-    //   .required(validate.rePassword.required)
-    //   .oneOf([Yup.ref("password")], validate.rePassword.invalid),
-    // name: Yup.string().required(validate.name.required),
-    // phone: Yup.string()
-    //   .required(validate.phone.required)
-    //   .length(9, validate.phone.length),
-    // citizenCard: Yup.string()
-    //   .required(validate.citizenCard.required)
-    //   .min(12, validate.citizenCard.length)
-    //   .max(12, validate.citizenCard.length),
-    // gender: Yup.string().required(validate.gender.required),
-    // // dateBirth: Yup.string()
-    // //   .required(validate.dateBirth.required)
-    // //   .min(18, validate.dateBirth.tooYoung)
-    // //   .max(new Date(), validate.dateBirth.invalid)
-    // company: Yup.string().required(validate.company.required),
-    // position: Yup.string().required(validate.position.required),
-    // businessType: Yup.string().required(validate.businessType.required),
-    // taxNumber: Yup.string()
-    //   .required(validate.taxNumber.required)
-    //   .min(10, validate.taxNumber.invalid)
-    //   .max(13, validate.taxNumber.invalid),
   });
 
   const formik = useFormik({
@@ -62,10 +35,10 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
     onSubmit: async (values) => {
       setIsLoading(true);
       try {
-        // navigation.navigate("AuthenOTP", {
-        //   RegisterParams: params,
-        // });
-        console.log(formik.values.email);
+        console.log(params);
+        navigation.navigate("AuthenOTP", {
+          RegisterParams: params,
+        });
       } catch (error) {
         console.log(error);
       } finally {
@@ -75,12 +48,12 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
   });
 
   useEffect(() => {
-    console.log(formik.errors);
-  }, [formik]);
+    setParams((prev) => ({ ...prev, email: formik.values.email }));
+  }, [formik.values.email]);
 
   const [params, setParams] = useState<RegisterParams>({
     name: "",
-    email: formik.values.email,
+    email: "",
     address: "",
     phone: "",
     citizenCard: "",
@@ -123,7 +96,9 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
           )}
         >
           Email
+          <Text className="text-red-600"> *</Text>
         </Text>
+
         <TextInput
           value={formik.values.email}
           onChangeText={formik.handleChange("email")}
@@ -132,7 +107,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
           onFocus={() => setFocusInput("email")}
           onBlur={() => {
             setFocusInput("");
-            formik.setFieldTouched('email')
+            formik.setFieldTouched("email");
           }}
         />
         {formik.touched.email && formik.errors.email ? (

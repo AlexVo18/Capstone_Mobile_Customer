@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, BackHandler, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { mainBlue } from "~/src/app/constants/cssConstants";
 import { Mail } from "lucide-react-native";
@@ -9,11 +9,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 
 const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
+  const { RegisterParams } = route.params;
   const { secondsLeft, start } = useCountdown();
   const [isLoading, setIsLoading] = useState(false);
-  const [otpValue, setOtpValue] = useState(""); // State to store OTP value
+  const [otpValue, setOtpValue] = useState("");
   const otpInputRef = useRef<OtpInputRef>(null);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isVerified, setIsverified] = useState(false);
 
   useEffect(() => {
     sendOTP();
@@ -21,12 +23,31 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
 
   const sendOTP = async () => {
     try {
-      start(5);
+      start(60);
     } catch (error) {
       console.log(error);
     } finally {
     }
   };
+
+    // Xóa data màn email khi quay về
+    useEffect(() => {
+      const backAction = () => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "RegisterEmail" }],
+        });
+        return true;
+      };
+  
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+  
+      // Xóa handler sau khi navigate
+      return () => backHandler.remove();
+    }, [navigation]);
 
   const checkedOTP = async (text: string) => {
     setIsLoading(true);
@@ -35,13 +56,14 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
       // OTP đúng, tắt input, chuyển trang
       if (text === "123456") {
         setIsDisabled(true);
+        setIsverified(true);
         Toast.show({
           type: "success",
           text1: "Xác thực thành công",
           text2: "Vui lòng nhập các thông tin tiếp theo để tạo tài khoản",
           visibilityTime: 2000,
         });
-        navigation.navigate("RegisterAccount");
+        navigation.navigate("RegisterAccount", { RegisterParams });
       } else {
         // OTP ko hợp lý, xóa input
         Toast.show({
@@ -65,7 +87,7 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
         <Text className="text-center">Mã OTP đã được gửi thông qua email:</Text>
         <View className="flex flex-row items-center justify-center gap-2 my-4">
           <Mail color={mainBlue} size={28} />
-          <Text className="text-xl">abc@gmail.com</Text>
+          <Text className="text-xl">{RegisterParams.email}</Text>
         </View>
         <View className="mb-4">
           <OtpInput
@@ -74,12 +96,16 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
             onTextChange={(text) => setOtpValue(text)}
             onFilled={(text) => checkedOTP(text)}
             focusColor={mainBlue}
-            disabled={isDisabled}
+            disabled={isVerified}
             blurOnFilled={otpValue.length === 5}
           />
         </View>
         <View>
-          {secondsLeft === 0 ? (
+          {isVerified ? (
+            <View>
+              <Text>Email đã được xác thực</Text>
+            </View>
+          ) : secondsLeft === 0 ? (
             <View className=" ">
               <Text className="text-center">
                 Bạn đã nhận được mã OTP chưa? Nếu chưa, vui lòng bấm{" "}

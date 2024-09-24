@@ -16,7 +16,7 @@ export default function App() {
         <NavigationContainer>
           <SafeAreaProvider>
             <AppNavigator />
-            <Toast />
+            <Toast topOffset={100}/>
           </SafeAreaProvider>
         </NavigationContainer>
       </PaperProvider>

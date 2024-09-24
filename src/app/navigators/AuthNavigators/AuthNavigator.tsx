@@ -17,8 +17,8 @@ export type AuthStackParamList = {
   AuthMenu: undefined;
   Login: undefined;
   RegisterEmail: undefined;
-  RegisterAccount: undefined;
-  RegisterProfile: undefined;
+  RegisterAccount: { RegisterParams: RegisterParams };
+  RegisterProfile: { RegisterParams: RegisterParams };
   AuthenOTP: { RegisterParams: RegisterParams };
   Forgot: undefined;
 };
@@ -71,6 +71,43 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="AuthenOTP"
         component={AuthenOTP}
+        options={({ navigation }) => ({
+          headerTitle: "Nhập mã xác thực",
+          headerStyle: {
+            backgroundColor: "white",
+          },
+          headerLeft: () => (
+            <CustomBack
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "RegisterEmail" }],
+                })
+              }
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="RegisterAccount"
+        component={RegisterAccount}
+        options={({ navigation }) => ({
+          headerTitle: "Thông tin tài khoản",
+          headerLeft: () => (
+            <CustomBack
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "RegisterEmail" }],
+                })
+              }
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="RegisterProfile"
+        component={RegisterProfile}
         options={{
           headerTitle: "Nhập mã xác thực",
           headerStyle: {
@@ -78,16 +115,6 @@ const AuthNavigator = () => {
           },
         }}
       />
-      <Stack.Screen
-        name="RegisterAccount"
-        component={RegisterAccount}
-        options={({ navigation }) => ({
-          headerLeft: () => (
-            <CustomBack onPress={() => navigation.navigate("RegisterEmail")} />
-          ),
-        })}
-      />
-      <Stack.Screen name="RegisterProfile" component={RegisterProfile} />
       <Stack.Screen name="Forgot" component={ForgotPassword} />
     </Stack.Navigator>
   );
