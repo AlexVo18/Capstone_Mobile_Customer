@@ -5,19 +5,25 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import useAuth from "../hooks/useAuth";
+import SplashLoading from "../screens/Auth/SplashLoadingScreens/SplashLoading";
 
 const AppNavigator = () => {
   const { userInfo, token, userLoading, login, logout } = useAuth();
 
   const RootStack = createNativeStackNavigator();
-  return (
+  return userLoading ? (
+    // Loading để lấy user data
+    <SplashLoading />
+  ) : (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-
       {userInfo ? (
-        // Main App Flow
-        <RootStack.Screen name="CustomerNavigator" component={CustomerNavigator} />
+        // Route khách hàng
+        <RootStack.Screen
+          name="CustomerNavigator"
+          component={CustomerNavigator}
+        />
       ) : (
-        // Authentication Flow
+        // Route đăng nhập
         <RootStack.Screen name="AuthNavigator" component={AuthNavigator} />
       )}
     </RootStack.Navigator>
@@ -25,5 +31,3 @@ const AppNavigator = () => {
 };
 
 export default AppNavigator;
-
-

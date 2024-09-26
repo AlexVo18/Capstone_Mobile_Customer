@@ -6,7 +6,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import useAuth from "~/src/app/hooks/useAuth";
-import { UserData } from "~/src/app/models/auth_models";
+import { UserDataEx } from "~/src/app/models/auth_models";
 import { LoginScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 import { cn } from "~/src/app/utils/cn";
 
@@ -21,7 +21,7 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
     // Add your login validation and logic here
     if (email === "abc@gmail.com" && password === "123") {
       const token = "token";
-      const userData: UserData = {
+      const userData: UserDataEx = {
         email,
         password,
       };

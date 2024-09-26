@@ -13,7 +13,20 @@ export interface RegisterParams {
   businessType: number;
 }
 
-export interface UserData{
-  email: string
-  password: string
+export interface UserDataEx {
+  email: string;
+  password: string;
+}
+
+export interface UserData {
+  accountId: number;
+  name: string;
+  email: string;
+  phone: string;
+  dateCreate: string;
+  address: string;
+  citizenCard: string;
+  status: string;
+  roleId: number;
+  gender: number;
 }

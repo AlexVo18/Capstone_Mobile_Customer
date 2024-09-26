@@ -9,10 +9,11 @@ const Home = ({ route, navigation }: HomeScreenProps) => {
   return (
     <ScrollView style={styles.container} className="bg-white ">
       <Banner />
-      <AllMachineries navigation={navigation} route={route} />
       <View>
-        <Text>Home</Text>
+        <Text>Slider</Text>
       </View>
+      <AllMachineries navigation={navigation} route={route} />
+
     </ScrollView>
   );
 };

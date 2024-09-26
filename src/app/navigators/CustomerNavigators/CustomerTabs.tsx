@@ -6,18 +6,8 @@ import {
 import Home from "../../screens/Customer/HomeScreens/Home";
 import Order from "../../screens/Customer/OrderScreens/Order";
 import SettingOption from "../../screens/Customer/ProfileScreens/SettingOption";
-import { View } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import {
-  Bell,
-  House,
-  Newspaper,
-  Package,
-  Search,
-  Settings,
-  ShoppingCart,
-} from "lucide-react-native";
-import { mainBlue, mutedForground } from "../../constants/cssConstants";
+import { House, Newspaper, Package, Settings } from "lucide-react-native";
+import { mainBlue } from "../../constants/cssConstants";
 import HomeUserOpts from "../../components/homeHeader/HomeUserOpts";
 import HomeSearchBar from "../../components/homeHeader/HomeSearchBar";
 import News from "../../screens/Customer/NewsScreens/News";
@@ -86,6 +76,7 @@ const CustomerTabs = () => {
         options={{
           tabBarLabel: "Tin tức",
           headerRight: () => <HomeUserOpts />,
+          headerTitle: "Tin tức",
         }}
       />
       <Tab.Screen
