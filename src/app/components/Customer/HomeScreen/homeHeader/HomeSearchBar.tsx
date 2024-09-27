@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { Search } from "lucide-react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { mainBlue, mutedForground } from "../../constants/cssConstants";
-import { cn } from "../../utils/cn";
+import { mainBlue, mutedForground } from "../../../../constants/cssConstants";
+import { cn } from "../../../../utils/cn";
 
 const HomeSearchBar = () => {
   const [isFocused, setIsFocused] = useState(false);

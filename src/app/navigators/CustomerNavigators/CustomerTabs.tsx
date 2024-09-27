@@ -8,8 +8,8 @@ import Order from "../../screens/Customer/OrderScreens/Order";
 import SettingOption from "../../screens/Customer/ProfileScreens/SettingOption";
 import { House, Newspaper, Package, Settings } from "lucide-react-native";
 import { mainBlue } from "../../constants/cssConstants";
-import HomeUserOpts from "../../components/homeHeader/HomeUserOpts";
-import HomeSearchBar from "../../components/homeHeader/HomeSearchBar";
+import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";
+import HomeSearchBar from "../../components/Customer/HomeScreen/homeHeader/HomeSearchBar";
 import News from "../../screens/Customer/NewsScreens/News";
 
 export type CustomerTabParamList = {
@@ -76,7 +76,7 @@ const CustomerTabs = () => {
         options={{
           tabBarLabel: "Tin tức",
           headerRight: () => <HomeUserOpts />,
-          headerTitle: "Tin tức",
+          // headerTitle: "Tin tức",
         }}
       />
       <Tab.Screen

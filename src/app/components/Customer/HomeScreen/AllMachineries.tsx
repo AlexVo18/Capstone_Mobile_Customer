@@ -9,9 +9,7 @@ const AllMachineries = ({ navigation }: HomeScreenProps) => {
   return (
     <View className="px-5">
       <View className="w-full flex justify-between">
-        <Text className="text-xl font-bold" style={{ color: mainBlue }}>
-          Các sản phẩm của shop
-        </Text>
+        <Text className="text-xl font-bold">Các sản phẩm của shop</Text>
       </View>
       <TouchableOpacity
         onPress={() =>
@@ -60,9 +58,11 @@ const AllMachineries = ({ navigation }: HomeScreenProps) => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() =>
+      <TouchableOpacity
+        onPress={() =>
           navigation.getParent()?.navigate("ProductDetail", { productId: 2 })
-        }>
+        }
+      >
         <View
           style={[styles.card, styles.elevation]}
           className="p-[10px] flex flex-row gap-2"

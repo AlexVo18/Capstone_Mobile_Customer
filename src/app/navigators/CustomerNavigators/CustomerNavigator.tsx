@@ -14,9 +14,11 @@ import UserReview from "../../screens/Customer/ProfileScreens/UserReview";
 import TransactionHistory from "../../screens/Customer/TransactionScreens/TransactionHistory";
 import VouchersWallet from "../../screens/Customer/PromotionScreens/VouchersWallet";
 import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
+import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
+  NewsDetail: { contentId: number };
   ProductDetail: { productId: number };
   Cart: undefined;
   UserTiers: undefined;
@@ -31,6 +33,10 @@ export type CustomerStackParamList = {
 export type CustomerTabsScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "CustomerTabs"
+>;
+export type NewsDetailScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "NewsDetail"
 >;
 export type ProductDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -78,7 +84,14 @@ const CustomerNavigator = () => {
         component={CustomerTabs}
         options={{ headerShown: false }}
       />
+      {/* Máy móc */}
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
+      {/* Tin tức */}
+      <Stack.Screen
+        name="NewsDetail"
+        component={NewsDetail}
+        options={{ headerTitle: "", headerTransparent: true }}
+      />
       {/* Giỏ hàng */}
       <Stack.Screen name="Cart" component={Cart} />
       {/* Voucher và khuyến mãi */}
