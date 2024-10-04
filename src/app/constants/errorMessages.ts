@@ -1,6 +1,6 @@
 export const ErrorMessageLogin = {
-  username: {
-    required: "Tên đăng nhập đang trống",
+  email: {
+    required: "Email đang trống",
   },
   password: {
     required: "Mật khẩu đang trống",
@@ -29,10 +29,6 @@ export const ErrorMessageRegister = {
     required: "Số điện thoại đang trống",
     length: "Số điện thoại không hợp lệ",
   },
-  citizenCard: {
-    required: "Số CCCD đang trống",
-    length: "Số CCCD không hợp lệ",
-  },
   gender: {
     required: "Giới tính đang trống",
   },
@@ -48,5 +44,4 @@ export const ErrorMessageRegister = {
     required: "Mã số thuế đang trống ",
     invalid: "Mã số thuế không hợp lệ",
   },
-  businessType: { required: "Loại doanh nghiệp đang trống" },
 };

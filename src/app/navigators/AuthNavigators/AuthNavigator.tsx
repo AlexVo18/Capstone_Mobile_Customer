@@ -19,7 +19,7 @@ export type AuthStackParamList = {
   RegisterEmail: undefined;
   RegisterAccount: { RegisterParams: RegisterParams };
   RegisterProfile: { RegisterParams: RegisterParams };
-  AuthenOTP: { RegisterParams: RegisterParams };
+  AuthenOTP: { email: string };
   Forgot: undefined;
 };
 
@@ -109,7 +109,7 @@ const AuthNavigator = () => {
         name="RegisterProfile"
         component={RegisterProfile}
         options={{
-          headerTitle: "Nhập mã xác thực",
+          headerTitle: "Nhập thông tin cá nhân",
           headerStyle: {
             backgroundColor: "white",
           },

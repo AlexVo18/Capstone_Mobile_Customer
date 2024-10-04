@@ -9,7 +9,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 
 const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
-  const { RegisterParams } = route.params;
+  const { email } = route.params;
   const { secondsLeft, start } = useCountdown();
   const [isLoading, setIsLoading] = useState(false);
   const [otpValue, setOtpValue] = useState("");
@@ -30,24 +30,24 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
     }
   };
 
-    // Xóa data màn email khi quay về
-    useEffect(() => {
-      const backAction = () => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "RegisterEmail" }],
-        });
-        return true;
-      };
-  
-      const backHandler = BackHandler.addEventListener(
-        "hardwareBackPress",
-        backAction
-      );
-  
-      // Xóa handler sau khi navigate
-      return () => backHandler.remove();
-    }, [navigation]);
+  // Xóa data màn email khi quay về
+  useEffect(() => {
+    const backAction = () => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "RegisterEmail" }],
+      });
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    // Xóa handler sau khi navigate
+    return () => backHandler.remove();
+  }, [navigation]);
 
   const checkedOTP = async (text: string) => {
     setIsLoading(true);
@@ -63,7 +63,7 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
           text2: "Vui lòng nhập các thông tin tiếp theo để tạo tài khoản",
           visibilityTime: 2000,
         });
-        navigation.navigate("RegisterAccount", { RegisterParams });
+        // navigation.navigate("RegisterAccount", { RegisterParams });
       } else {
         // OTP ko hợp lý, xóa input
         Toast.show({
@@ -87,7 +87,7 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
         <Text className="text-center">Mã OTP đã được gửi thông qua email:</Text>
         <View className="flex flex-row items-center justify-center gap-2 my-4">
           <Mail color={mainBlue} size={28} />
-          <Text className="text-xl">{RegisterParams.email}</Text>
+          <Text className="text-xl">{email}</Text>
         </View>
         <View className="mb-4">
           <OtpInput

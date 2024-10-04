@@ -1,12 +1,17 @@
 import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 // import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
-import useAuth from "~/src/app/hooks/useAuth";
-import { RegisterParams, UserData } from "~/src/app/models/auth_models";
+import { RegisterParams } from "~/src/app/models/auth_models";
 import {
   LoginScreenProps,
   RegisterEmailScreenProps,
@@ -19,26 +24,39 @@ import { ErrorMessageRegister } from "~/src/app/constants/errorMessages";
 const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
   const [focusInput, setFocusInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [viewPwd, setViewPwd] = useState(false);
+  const [viewRePwd, setViewRePwd] = useState(false);
 
   const validate = ErrorMessageRegister;
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .required(validate.email.required)
       .matches(/\.com$/, validate.email.invalidFormat),
+    password: Yup.string()
+      .required(validate.password.required)
+      .min(8, validate.password.length)
+      .matches(/^[A-Z](?=.*[ \W])/, validate.password.invalidFormat),
+    rePassword: Yup.string()
+      .required(validate.rePassword.required)
+      .oneOf([Yup.ref("password")], validate.rePassword.invalid),
   });
 
   const formik = useFormik({
     initialValues: {
       email: "",
+      password: "",
+      rePassword: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async () => {
       setIsLoading(true);
       try {
         console.log(params);
-        navigation.navigate("AuthenOTP", {
-          RegisterParams: params,
-        });
+        if (!isFormEmpty()) {
+          navigation.navigate("RegisterProfile", {
+            RegisterParams: params,
+          });
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -47,23 +65,33 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
     },
   });
 
+  const isFormEmpty = () => {
+    return (
+      !formik.values.email ||
+      !formik.values.password ||
+      !formik.values.rePassword
+    );
+  };
+
   useEffect(() => {
-    setParams((prev) => ({ ...prev, email: formik.values.email }));
-  }, [formik.values.email]);
+    setParams((prev) => ({
+      ...prev,
+      email: formik.values.email,
+      password: formik.values.password,
+    }));
+  }, [formik.values.email, formik.values.password]);
 
   const [params, setParams] = useState<RegisterParams>({
     name: "",
     email: "",
     address: "",
     phone: "",
-    citizenCard: "",
     gender: 0,
     dateBirth: "",
     password: "",
     company: "",
     position: "",
     taxNumber: "",
-    businessType: 0,
   });
 
   return (
@@ -85,7 +113,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
           className="text-lg text-center"
           style={{ color: `hsl(${mutedForground})` }}
         >
-          Nhập email để bắt đầu xác thực tài khoản
+          Nhập email và mật khẩu để đăng ký tài khoản
         </Text>
       </View>
       <View className="w-full mb-4">
@@ -101,7 +129,9 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
 
         <TextInput
           value={formik.values.email}
-          onChangeText={formik.handleChange("email")}
+          onChangeText={(value) => {
+            formik.setFieldValue("email", value);
+          }}
           placeholder="Nhập email"
           className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
           onFocus={() => setFocusInput("email")}
@@ -116,6 +146,94 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
           </View>
         ) : null}
       </View>
+      <View className="w-full ">
+        <Text
+          className={cn(
+            "text-lg font-semibold mb-2",
+            focusInput === "password" ? "text-blue-700" : ""
+          )}
+        >
+          Mật khẩu
+          <Text className="text-red-600"> *</Text>
+        </Text>
+        <View className="relative flex flex-row justify-end items-center">
+          <TextInput
+            value={formik.values.password}
+            secureTextEntry={viewPwd ? false : true}
+            onChangeText={formik.handleChange("password")}
+            placeholder="Nhập mật khẩu"
+            className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
+            onFocus={() => setFocusInput("password")}
+            onBlur={() => {
+              setFocusInput("");
+              formik.setFieldTouched("password");
+            }}
+          />
+          <Pressable
+            onPress={() => {
+              setViewPwd(!viewPwd);
+            }}
+            style={styles.eyeIcon}
+          >
+            {viewPwd ? (
+              <EyeOff color={`hsl(${mutedForground})`} />
+            ) : (
+              <Eye color={`hsl(${mutedForground})`} />
+            )}
+          </Pressable>
+        </View>
+        {formik.touched.password && formik.errors.password ? (
+          <View>
+            <Text className="text-red-600 text-sm">
+              {formik.errors.password}
+            </Text>
+          </View>
+        ) : null}
+      </View>
+      <View className="w-full my-4 ">
+        <Text
+          className={cn(
+            "text-lg font-semibold mb-2",
+            focusInput === "rePassword" ? "text-blue-700" : ""
+          )}
+        >
+          Nhập lại mật khẩu
+          <Text className="text-red-600"> *</Text>
+        </Text>
+        <View className="relative flex flex-row justify-end items-center">
+          <TextInput
+            value={formik.values.rePassword}
+            secureTextEntry={!viewRePwd}
+            onChangeText={formik.handleChange("rePassword")}
+            placeholder="Nhập lại mật khẩu"
+            className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
+            onFocus={() => setFocusInput("rePassword")}
+            onBlur={() => {
+              setFocusInput("");
+              formik.setFieldTouched("rePassword");
+            }}
+          />
+          <Pressable
+            onPress={() => {
+              setViewRePwd(!viewRePwd);
+            }}
+            style={styles.eyeIcon}
+          >
+            {viewRePwd ? (
+              <EyeOff color={`hsl(${mutedForground})`} />
+            ) : (
+              <Eye color={`hsl(${mutedForground})`} />
+            )}
+          </Pressable>
+        </View>
+        {formik.touched.rePassword && formik.errors.rePassword ? (
+          <View>
+            <Text className="text-red-600 text-sm">
+              {formik.errors.rePassword}
+            </Text>
+          </View>
+        ) : null}
+      </View>
       <View className="w-full">
         <Button
           mode="contained"
@@ -123,7 +241,9 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
           buttonColor={mainBlue}
           textColor="white"
           style={[styles.buttonStyle]}
-          disabled={isLoading}
+          disabled={
+            isLoading || isFormEmpty() || !!Object.keys(formik.errors).length
+          }
           onPress={() => formik.handleSubmit()}
         >
           {isLoading ? (

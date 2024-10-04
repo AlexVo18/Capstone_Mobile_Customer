@@ -1,11 +1,20 @@
 import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import Banner from "~/src/app/components/Customer/HomeScreen/Banner";
 import AllMachineries from "~/src/app/components/Customer/HomeScreen/AllMachineries";
 import { ScrollView } from "react-native-gesture-handler";
 import { HomeScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
+import { NewsData } from "~/src/app/models/news_models";
 
 const Home = ({ route, navigation }: HomeScreenProps) => {
+  const [allList, setAllList] = useState<NewsData[]>([]);
+  const [filteredList, setFilteredList] = useState<NewsData[]>([]);
+  const [displayList, setDisplayList] = useState<NewsData[]>([]);
+  const [keyword, setKeyword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const pageRef = useRef(1);
+
   return (
     <ScrollView style={styles.container} className="bg-white ">
       <Banner />

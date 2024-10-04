@@ -1,24 +1,22 @@
 import useAuthStore from "../store/useAuthStore";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
+import * as SecureStore from "expo-secure-store";
 
 const useAuth = () => {
-  const { userInfo, token, userLoading, login, logout, checkTokenExp } =
-    useAuthStore();
+  const { userInfo, token, userLoading, login, logout } = useAuthStore();
 
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const storageUser = await AsyncStorage.getItem("user");
-        const storageToken = await AsyncStorage.getItem("access_token");
+        const storageUser = await SecureStore.getItemAsync("user");
+        const storageToken = await SecureStore.getItemAsync("token");
 
         if (storageToken) {
           const user = JSON.parse(storageUser || "{}");
-          login(user, storageToken);
-          console.log("Log in!");
+          const token = JSON.parse(storageToken || "{}");
+          login(user, token);
         } else {
           logout();
-          console.log("Log out!");
         }
       } catch (error) {
         console.log(error);
@@ -27,7 +25,7 @@ const useAuth = () => {
       }
     };
     loadUser();
-  }, [login, logout, checkTokenExp]);
+  }, [login]);
 
   return {
     userInfo,
