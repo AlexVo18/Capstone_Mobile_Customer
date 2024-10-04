@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomerNavigator from "./CustomerNavigators/CustomerNavigator";
 import AuthNavigator from "./AuthNavigators/AuthNavigator";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,13 +8,24 @@ import useAuth from "../hooks/useAuth";
 import SplashLoading from "../screens/Auth/SplashLoadingScreens/SplashLoading";
 
 const AppNavigator = () => {
-  const { userInfo, token, userLoading, login, logout } = useAuth();
+  const { userInfo, userLoading } = useAuth();
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const splashTimeout = setTimeout(() => {
+      setIsReady(true);
+    }, 1000);
+
+    // Cleanup timeout
+    return () => clearTimeout(splashTimeout);
+  }, []);
 
   const RootStack = createNativeStackNavigator();
-  return userLoading ? (
-    // Loading để lấy user data
-    <SplashLoading />
-  ) : (
+  if (userLoading || !isReady) {
+    return <SplashLoading />;
+  }
+
+  return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {userInfo ? (
         // Route khách hàng

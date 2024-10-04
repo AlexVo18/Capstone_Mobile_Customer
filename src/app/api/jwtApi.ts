@@ -3,6 +3,7 @@ import Auth from "./auth/Auth";
 import { TokenData } from "../models/auth_models";
 import { VITE_SERVER } from "@env";
 import { isTokenExpired } from "../utils/isTokenExpired";
+import * as SecureStore from "expo-secure-store";
 
 const baseURL = VITE_SERVER;
 
@@ -12,8 +13,8 @@ const jwtApi = axios.create({
 });
 
 // Lấy token từ storage
-const getToken = () => {
-  const token = localStorage.getItem("token");
+const getToken = async () => {
+  const token = await SecureStore.getItemAsync("token");
   if (token) {
     return JSON.parse(token);
   }
@@ -22,7 +23,7 @@ const getToken = () => {
 // Lấy accessToken mới
 export const getNewAccessToken = async () => {
   try {
-    const token = getToken();
+    const token = await getToken();
     if (!token.refreshToken) {
       throw new Error("No refresh token");
     }
@@ -51,7 +52,7 @@ export const getNewAccessToken = async () => {
 // Gắn accessToken vào API
 jwtApi.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    let token = getToken();
+    let token = await getToken();
     if (config.headers) {
       if (token && !isTokenExpired(token.token)) {
         config.headers.Authorization = `Bearer ${token.token}`;
