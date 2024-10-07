@@ -11,7 +11,7 @@ import RegisterProfile from "../../screens/Auth/AuthScreens/Register/RegisterPro
 import AuthenOTP from "../../screens/Auth/AuthScreens/Register/AuthenOTP";
 import RegisterEmail from "../../screens/Auth/AuthScreens/Register/RegisterEmail";
 import CustomBack from "../../components/header/CustomBack";
-import { RegisterParams } from "../../models/auth_models";
+import { LoginParams, RegisterParams } from "../../models/auth_models";
 
 export type AuthStackParamList = {
   AuthMenu: undefined;
@@ -19,7 +19,7 @@ export type AuthStackParamList = {
   RegisterEmail: undefined;
   RegisterAccount: { RegisterParams: RegisterParams };
   RegisterProfile: { RegisterParams: RegisterParams };
-  AuthenOTP: { email: string };
+  AuthenOTP: { email?: string; loginParams?: LoginParams; send: boolean };
   Forgot: undefined;
 };
 
@@ -71,21 +71,21 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="AuthenOTP"
         component={AuthenOTP}
-        options={({ navigation }) => ({
+        options={() => ({
           headerTitle: "Nhập mã xác thực",
           headerStyle: {
             backgroundColor: "white",
           },
-          headerLeft: () => (
-            <CustomBack
-              onPress={() =>
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: "RegisterEmail" }],
-                })
-              }
-            />
-          ),
+          // headerLeft: () => (
+          //   <CustomBack
+          //     onPress={() =>
+          //       navigation.reset({
+          //         index: 0,
+          //         routes: [{ name: "RegisterEmail" }],
+          //       })
+          //     }
+          //   />
+          // ),
         })}
       />
       <Stack.Screen

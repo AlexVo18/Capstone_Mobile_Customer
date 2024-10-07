@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomerNavigator from "./CustomerNavigators/CustomerNavigator";
 import AuthNavigator from "./AuthNavigators/AuthNavigator";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import useAuth from "../hooks/useAuth";
 import SplashLoading from "../screens/Auth/SplashLoadingScreens/SplashLoading";
@@ -16,7 +14,6 @@ const AppNavigator = () => {
       setIsReady(true);
     }, 1000);
 
-    // Cleanup timeout
     return () => clearTimeout(splashTimeout);
   }, []);
 

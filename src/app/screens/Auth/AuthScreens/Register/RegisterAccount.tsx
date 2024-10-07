@@ -19,33 +19,21 @@ const RegisterAccount = ({ route, navigation }: RegisterAccountScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const validate = ErrorMessageRegister;
   const validationSchema = Yup.object().shape({
-    password: Yup.string()
-      .required(validate.password.required)
-      .min(6, validate.password.length)
-      .matches(/^(?=.*[A-Z])(?=.*\s)/, validate.password.invalidFormat),
-    rePassword: Yup.string()
-      .required(validate.rePassword.required)
-      .oneOf([Yup.ref("password")], validate.rePassword.invalid),
-    // name: Yup.string().required(validate.name.required),
-    // phone: Yup.string()
-    //   .required(validate.phone.required)
-    //   .length(9, validate.phone.length),
-    // citizenCard: Yup.string()
-    //   .required(validate.citizenCard.required)
-    //   .min(12, validate.citizenCard.length)
-    //   .max(12, validate.citizenCard.length),
-    // gender: Yup.string().required(validate.gender.required),
-    // // dateBirth: Yup.string()
-    // //   .required(validate.dateBirth.required)
-    // //   .min(18, validate.dateBirth.tooYoung)
-    // //   .max(new Date(), validate.dateBirth.invalid)
-    // company: Yup.string().required(validate.company.required),
-    // position: Yup.string().required(validate.position.required),
-    // businessType: Yup.string().required(validate.businessType.required),
-    // taxNumber: Yup.string()
-    //   .required(validate.taxNumber.required)
-    //   .min(10, validate.taxNumber.invalid)
-    //   .max(13, validate.taxNumber.invalid),
+    name: Yup.string().required(validate.name.required),
+    phone: Yup.string()
+      .required(validate.phone.required)
+      .length(9, validate.phone.length),
+    gender: Yup.string().required(validate.gender.required),
+    // dateBirth: Yup.string()
+    //   .required(validate.dateBirth.required)
+    //   .min(18, validate.dateBirth.tooYoung)
+    //   .max(new Date(), validate.dateBirth.invalid)
+    company: Yup.string().required(validate.company.required),
+    position: Yup.string().required(validate.position.required),
+    taxNumber: Yup.string()
+      .required(validate.taxNumber.required)
+      .min(10, validate.taxNumber.invalid)
+      .max(13, validate.taxNumber.invalid),
   });
 
   const formik = useFormik({
@@ -70,45 +58,39 @@ const RegisterAccount = ({ route, navigation }: RegisterAccountScreenProps) => {
   });
 
   // Dùng để quay về màn hình input mail thay vì màn hình OTP
-  useEffect(() => {
-    const backAction = () => {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "RegisterEmail" }],
-      });
-      return true;
-    };
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{ name: "RegisterEmail" }],
+  //     });
+  //     return true;
+  //   };
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
 
-    // Xóa handler sau khi navigate
-    return () => backHandler.remove();
-  }, [navigation]);
-
-  useEffect(() => {
-    setParams((prev) => ({ ...prev, password: formik.values.password }));
-  }, [formik.values.password]);
+  //   // Xóa handler sau khi navigate
+  //   return () => backHandler.remove();
+  // }, [navigation]);
 
   useEffect(() => {
-    console.log(viewRePwd);
-  }, [viewRePwd]);
+    console.log(formik.values);
+  }, [formik.values]);
 
   const [params, setParams] = useState<RegisterParams>({
     name: "",
     email: RegisterParams.email,
     address: "",
     phone: "",
-    citizenCard: "",
     gender: 0,
     dateBirth: "",
-    password: "",
+    password: RegisterParams.password,
     company: "",
     position: "",
     taxNumber: "",
-    businessType: 0,
   });
 
   return (

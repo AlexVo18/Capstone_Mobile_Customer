@@ -15,6 +15,7 @@ import { NewsScreenProps } from "~/src/app/navigators/CustomerNavigators/Custome
 import NewsSearchBar from "~/src/app/components/Customer/NewsScreen/newsHeader/NewsSearchBar";
 import { Newspaper } from "lucide-react-native";
 import NewsList from "~/src/app/components/Customer/NewsScreen/NewsList";
+import { useDebounce } from "~/src/app/hooks/useDebounce";
 
 const News = ({ navigation, route }: NewsScreenProps) => {
   const [allList, setAllList] = useState<NewsData[]>([]);
@@ -24,6 +25,7 @@ const News = ({ navigation, route }: NewsScreenProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const pageRef = useRef(1);
+  // const debouncedKeyword = useDebounce(keyword);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -44,7 +46,6 @@ const News = ({ navigation, route }: NewsScreenProps) => {
   const getNews = async () => {
     try {
       const response = await Content.getContent();
-      // const response = newsList;
       if (response) {
         setAllList(response);
       }

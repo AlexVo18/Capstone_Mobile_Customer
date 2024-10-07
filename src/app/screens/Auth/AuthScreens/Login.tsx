@@ -2,8 +2,6 @@ import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-// import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import useAuth from "~/src/app/hooks/useAuth";
 import { LoginScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
@@ -16,9 +14,10 @@ import { LoginParams, TokenData, UserData } from "~/src/app/models/auth_models";
 import axios from "axios";
 import { getToken } from "~/src/app/config/firebaseConfig";
 import Auth from "~/src/app/api/auth/Auth";
+import { ActivityIndicator, Button } from "react-native-paper";
 
-const Login = ({ route, navigation }: LoginScreenProps) => {
-  const { userInfo, token, userLoading, login, logout } = useAuth();
+const Login = ({ navigation }: LoginScreenProps) => {
+  const { login } = useAuth();
   const [viewPwd, setViewPwd] = useState(false);
   const [focusInput, setFocusInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -62,14 +61,12 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
               refreshTokenExpiryTime: response.refreshTokenExpiryTime,
               token: response.token,
             };
-            console.log(response)
+            console.log(response);
             login(userData, token);
             Toast.show({
               type: "success",
               text1: "Đăng nhập thành công",
-              // text2: "Mã OTP bạn nhập không hợp lệ",
             });
-            // navigate("/");
           }
         }
       } catch (error) {
@@ -80,6 +77,14 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
                 type: "info",
                 text1: "Tài khoản chưa xác thực",
                 text2: "Vui lòng nhập mã OTP gửi qua mail để xác thực",
+              });
+              navigation.navigate("AuthenOTP", {
+                loginParams: {
+                  email: formik.values.email,
+                  password: formik.values.password,
+                  firebaseMessageToken: formik.values.firebaseMessageToken,
+                },
+                send: true,
               });
             } else {
               Toast.show({
@@ -96,20 +101,6 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
     },
   });
 
-  // const handleLogin = () => {
-  //   // Add your login validation and logic here
-  //   if (email === "abc@gmail.com" && password === "123") {
-  //     const token = "token";
-  //     const userData = {
-  //       email,
-  //       password,
-  //     };
-  //     if (userData) {
-  //       login(userData, token);
-  //     }
-  //   }
-  // };
-
   useEffect(() => {
     getMsgToken();
   }, []);
@@ -122,10 +113,6 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
 
   const isFormEmpty = () => {
     return !formik.values.email || !formik.values.password;
-  };
-
-  const handleOnSubmit = async () => {
-    formik.handleSubmit();
   };
 
   return (
@@ -215,21 +202,23 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
         </TouchableOpacity>
       </View>
       <View className="w-full">
-        <Button
-          mode="contained"
-          className=""
-          buttonColor={mainBlue}
-          textColor="white"
-          style={[styles.buttonStyle]}
-          disabled={userLoading}
-          onPress={() => handleOnSubmit()}
-        >
-          {userLoading ? (
-            <Text className="text-lg">Đang tải</Text>
-          ) : (
-            <Text className="text-lg">Đăng nhập</Text>
-          )}
-        </Button>
+        <View className="w-full">
+          <Button
+            mode="contained"
+            className=""
+            buttonColor={mainBlue}
+            textColor="white"
+            style={[styles.buttonStyle]}
+            disabled={isLoading}
+            onPress={() => formik.handleSubmit()}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+              <Text className="text-lg">Đăng nhập</Text>
+            )}
+          </Button>
+        </View>
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
         <Text style={{ fontSize: 16 }}>Không có tài khoản? </Text>
@@ -262,5 +251,11 @@ const styles = StyleSheet.create({
   eyeIcon: {
     position: "absolute",
     right: 10,
+  },
+  centerContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    display: "flex",
   },
 });

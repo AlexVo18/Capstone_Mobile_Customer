@@ -15,6 +15,7 @@ import TransactionHistory from "../../screens/Customer/TransactionScreens/Transa
 import VouchersWallet from "../../screens/Customer/PromotionScreens/VouchersWallet";
 import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
+import { mutedForground } from "../../constants/cssConstants";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
@@ -90,7 +91,15 @@ const CustomerNavigator = () => {
       <Stack.Screen
         name="NewsDetail"
         component={NewsDetail}
-        options={{ headerTitle: "", headerTransparent: true }}
+        options={{
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: `hsl(${mutedForground})`,
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: "rgba(128, 128, 128, 0.3)",
+          },
+        }}
       />
       {/* Giỏ hàng */}
       <Stack.Screen name="Cart" component={Cart} />

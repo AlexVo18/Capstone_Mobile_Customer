@@ -8,7 +8,6 @@ import {
   Pressable,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-// import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { RegisterParams } from "~/src/app/models/auth_models";

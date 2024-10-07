@@ -1,4 +1,4 @@
-import { Alert, BackHandler, StyleSheet, Text, View } from "react-native";
+import { BackHandler, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { mainBlue } from "~/src/app/constants/cssConstants";
 import { Mail } from "lucide-react-native";
@@ -7,10 +7,17 @@ import { AuthenOTPScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNa
 import useCountdown from "~/src/app/hooks/useCountdown";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
+import Auth from "~/src/app/api/auth/Auth";
+import { TokenData, UserData } from "~/src/app/models/auth_models";
+import useAuth from "~/src/app/hooks/useAuth";
+import axios from "axios";
+import { ActivityIndicator } from "react-native-paper";
 
 const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
-  const { email } = route.params;
+  const { email, send, loginParams } = route.params;
   const { secondsLeft, start } = useCountdown();
+  const { login } = useAuth();
+
   const [isLoading, setIsLoading] = useState(false);
   const [otpValue, setOtpValue] = useState("");
   const otpInputRef = useRef<OtpInputRef>(null);
@@ -18,64 +25,121 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
   const [isVerified, setIsverified] = useState(false);
 
   useEffect(() => {
-    sendOTP();
+    if (send) {
+      sendOTP();
+    } else {
+      start(60);
+    }
   }, []);
 
   const sendOTP = async () => {
+    setIsLoading(true);
     try {
-      start(60);
+      let response;
+      if (loginParams) {
+        response = await Auth.sendOpt(loginParams.email);
+      } else if (email) {
+        response = await Auth.sendOpt(email);
+      }
+      if (response && (response.status = 204)) {
+        Toast.show({
+          type: "success",
+          text1: "Gửi OTP thành công",
+          text2: "Vui lòng check email",
+        });
+        start(60);
+      }
     } catch (error) {
       console.log(error);
     } finally {
+      setIsLoading(false);
     }
   };
 
   // Xóa data màn email khi quay về
-  useEffect(() => {
-    const backAction = () => {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "RegisterEmail" }],
-      });
-      return true;
-    };
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{ name: "RegisterEmail" }],
+  //     });
+  //     return true;
+  //   };
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
 
-    // Xóa handler sau khi navigate
-    return () => backHandler.remove();
-  }, [navigation]);
+  //   // Xóa handler sau khi navigate
+  //   return () => backHandler.remove();
+  // }, [navigation]);
 
-  const checkedOTP = async (text: string) => {
+  const checkedOTP = async (otp: string) => {
     setIsLoading(true);
-    console.log("otp:", text);
+    console.log(otp);
+    console.log(route.params);
     try {
-      // OTP đúng, tắt input, chuyển trang
-      if (text === "123456") {
-        setIsDisabled(true);
-        setIsverified(true);
-        Toast.show({
-          type: "success",
-          text1: "Xác thực thành công",
-          text2: "Vui lòng nhập các thông tin tiếp theo để tạo tài khoản",
-          visibilityTime: 2000,
-        });
-        // navigation.navigate("RegisterAccount", { RegisterParams });
-      } else {
-        // OTP ko hợp lý, xóa input
-        Toast.show({
-          type: "error",
-          text1: "Sai mã OTP",
-          text2: "Mã OTP bạn nhập không hợp lệ",
-        });
-        otpInputRef.current?.clear();
-        setOtpValue("");
+      if (otp.length === 6 && otp) {
+        let response;
+        if (loginParams) {
+          response = await Auth.activateAccount({
+            email: loginParams.email,
+            otp: otp,
+          });
+        } else if (email) {
+          response = await Auth.activateAccount({
+            email: email,
+            otp: otp,
+          });
+        }
+        if (response && response.status === 204) {
+          Toast.show({
+            type: "success",
+            text1: "Tài khoản của bạn đã được kích hoạt thành công!",
+          });
+          if (loginParams) {
+            const loginResponse = await Auth.login({
+              email: loginParams.email,
+              password: loginParams.password,
+              firebaseMessageToken: loginParams.firebaseMessageToken,
+            });
+            if (loginResponse) {
+              const userData: UserData = {
+                accountId: loginResponse.accountId,
+                address: loginResponse.address,
+                dateCreate: loginResponse.dateCreate,
+                email: loginResponse.email,
+                name: loginResponse.name,
+                phone: loginResponse.phone,
+                roleId: loginResponse.roleId,
+                status: loginResponse.status,
+                username: loginResponse.username,
+              };
+              const token: TokenData = {
+                refreshToken: loginResponse.refreshToken,
+                refreshTokenExpiryTime: loginResponse.refreshTokenExpiryTime,
+                token: loginResponse.token,
+              };
+              login(userData, token);
+            }
+          } else if (email) {
+            navigation.navigate("Login");
+          }
+        }
       }
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 401) {
+          Toast.show({
+            type: "error",
+            text1: "OTP không hợp lệ",
+            text2: "Vui lòng check lại OTP trong mail",
+          });
+        }
+      }
+      setOtpValue("");
+      otpInputRef.current?.clear();
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +151,9 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
         <Text className="text-center">Mã OTP đã được gửi thông qua email:</Text>
         <View className="flex flex-row items-center justify-center gap-2 my-4">
           <Mail color={mainBlue} size={28} />
-          <Text className="text-xl">{email}</Text>
+          <Text className="text-xl">
+            {email ? email : loginParams ? loginParams.email : ""}
+          </Text>
         </View>
         <View className="mb-4">
           <OtpInput
@@ -106,13 +172,21 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
               <Text>Email đã được xác thực</Text>
             </View>
           ) : secondsLeft === 0 ? (
-            <View className=" ">
+            <View>
               <Text className="text-center">
                 Bạn đã nhận được mã OTP chưa? Nếu chưa, vui lòng bấm{" "}
-                <Text className="text-blue-700 " onPress={sendOTP}>
-                  Gửi lại
-                </Text>
-                <Text className=""> để được gửi lại mã OTP mới</Text>
+                {!isLoading ? (
+                  <Text
+                    className="text-blue-700"
+                    onPress={sendOTP}
+                    aria-disabled={isLoading}
+                  >
+                    Gửi lại
+                  </Text>
+                ) : (
+                  <ActivityIndicator size={8} color="rgb(29 78 216)" />
+                )}
+                <Text> để được gửi lại mã OTP mới</Text>
               </Text>
             </View>
           ) : (
