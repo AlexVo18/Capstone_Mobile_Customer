@@ -4,6 +4,7 @@ import { TokenData } from "../models/auth_models";
 import { VITE_SERVER } from "@env";
 import { isTokenExpired } from "../utils/isTokenExpired";
 import * as SecureStore from "expo-secure-store";
+import Toast from "react-native-toast-message";
 
 const baseURL = VITE_SERVER;
 
@@ -67,9 +68,11 @@ jwtApi.interceptors.request.use(
           throw new Error("Failed to refresh token");
         }
       } catch (error) {
-        console.log(error);
         localStorage.clear();
-        // router.navigate("/login");
+        Toast.show({
+          type: "error",
+          text1: "Phiên đăng nhập đã hết hạn",
+        });
         return Promise.reject(error);
       }
     }
@@ -104,16 +107,21 @@ jwtApi.interceptors.response.use(
         }
       } catch (error) {
         localStorage.clear();
-        // router.navigate("/login");
+        Toast.show({
+          type: "error",
+          text1: "Phiên đăng nhập đã hết hạn",
+        });
         return Promise.reject(error);
       }
     }
 
     // Lỗi 403
     if (error.response?.status === 403) {
-      // router.navigate("/error");
+      Toast.show({
+        type: "error",
+        text1: "Tài khoản không có quyền đăng nhập",
+      });
     }
-
     return Promise.reject(error);
   }
 );

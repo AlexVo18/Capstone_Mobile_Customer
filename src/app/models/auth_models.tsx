@@ -11,21 +11,13 @@ export interface RegisterParams {
   position: string;
   taxNumber: string;
 }
-export interface RegisterInput {
-  name: string;
+
+export interface RegisterAccountParams {
   email: string;
-  address: string;
-  phone: string;
-  citizenCard: string;
-  gender: number;
-  dateBirth: string;
   password: string;
-  rePassword: string;
-  company: string;
-  position: string;
-  taxNumber: string;
-  businessType: number;
+  rePassword?: string;
 }
+
 export interface ActivateParams {
   email: string;
   otp: string;

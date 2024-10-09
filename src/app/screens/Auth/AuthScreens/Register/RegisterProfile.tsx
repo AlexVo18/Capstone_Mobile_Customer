@@ -23,7 +23,7 @@ import { formatDate } from "~/src/app/utils/dateformat";
 import RNPickerSelect from "react-native-picker-select";
 
 const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
-  const { RegisterParams } = route.params;
+  const { RegisterAccountParams } = route.params;
   const [focusInput, setFocusInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,8 +51,8 @@ const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
 
   const formik = useFormik({
     initialValues: {
-      email: RegisterParams.email,
-      password: RegisterParams.password,
+      email: RegisterAccountParams.email,
+      password: RegisterAccountParams.password,
       name: "",
       phone: "",
       address: "",
@@ -146,10 +146,6 @@ const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
       setShowPicker(false);
     }
   }, [date]);
-
-  // useEffect(() => {
-  //   console.log(formik.values);
-  // }, [formik.values]);
 
   const isFormEmpty = () => {
     return (

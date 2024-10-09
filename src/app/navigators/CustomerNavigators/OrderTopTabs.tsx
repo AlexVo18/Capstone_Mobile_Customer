@@ -1,6 +1,9 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabScreenProps,
+} from "@react-navigation/material-top-tabs";
 import NoPaymentOrder from "../../screens/Customer/OrderScreens/NoPaymentOrder";
 import DeliveringOrder from "../../screens/Customer/OrderScreens/DeliveringOrder";
 import CurrentOrder from "../../screens/Customer/OrderScreens/CurrentOrder";
@@ -8,8 +11,37 @@ import OrderHistory from "../../screens/Customer/OrderScreens/OrderHistory";
 import CancelOrder from "../../screens/Customer/OrderScreens/CancelOrder";
 import { mainBlue } from "../../constants/cssConstants";
 
+export type OrderTopTabParamList = {
+  NoPaymentOrder: undefined;
+  DeliveringOrder: undefined;
+  CurrentOrder: undefined;
+  OrderHistory: undefined;
+  CancelOrder: undefined;
+};
+
+export type NoPaymentOrderProps = MaterialTopTabScreenProps<
+  OrderTopTabParamList,
+  "NoPaymentOrder"
+>;
+export type DeliveringOrderProps = MaterialTopTabScreenProps<
+  OrderTopTabParamList,
+  "DeliveringOrder"
+>;
+export type CurrentOrderProps = MaterialTopTabScreenProps<
+  OrderTopTabParamList,
+  "CurrentOrder"
+>;
+export type OrderHistoryProps = MaterialTopTabScreenProps<
+  OrderTopTabParamList,
+  "OrderHistory"
+>;
+export type CancelOrderProps = MaterialTopTabScreenProps<
+  OrderTopTabParamList,
+  "CancelOrder"
+>;
+
 const OrderTopTabs = () => {
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialTopTabNavigator<OrderTopTabParamList>();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -20,7 +52,7 @@ const OrderTopTabs = () => {
         tabBarLabelStyle: {
           textTransform: "none",
         },
-        tabBarItemStyle: { width: 130},
+        tabBarItemStyle: { width: 130 },
       }}
     >
       <Tab.Screen

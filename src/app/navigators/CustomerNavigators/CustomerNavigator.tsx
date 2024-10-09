@@ -107,7 +107,11 @@ const CustomerNavigator = () => {
       <Stack.Screen name="UserTiers" component={UserTiers} />
       <Stack.Screen name="VouchersWallet" component={VouchersWallet} />
       {/* Địa chỉ */}
-      <Stack.Screen name="Address" component={Address} />
+      <Stack.Screen
+        name="Address"
+        component={Address}
+        options={{ headerTitle: "Địa chỉ của bạn" }}
+      />
       <Stack.Screen name="NewAddress" component={NewAddress} />
       {/* Hồ sơ */}
       <Stack.Screen name="Profile" component={Profile} />

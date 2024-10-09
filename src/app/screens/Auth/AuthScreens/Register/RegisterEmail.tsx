@@ -10,7 +10,10 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
-import { RegisterParams } from "~/src/app/models/auth_models";
+import {
+  RegisterAccountParams,
+  RegisterParams,
+} from "~/src/app/models/auth_models";
 import {
   LoginScreenProps,
   RegisterEmailScreenProps,
@@ -45,15 +48,14 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
       email: "",
       password: "",
       rePassword: "",
-    },
+    } as RegisterAccountParams,
     validationSchema,
-    onSubmit: async () => {
+    onSubmit: async (values: RegisterAccountParams) => {
       setIsLoading(true);
       try {
-        console.log(params);
         if (!isFormEmpty()) {
           navigation.navigate("RegisterProfile", {
-            RegisterParams: params,
+            RegisterAccountParams: values,
           });
         }
       } catch (error) {
@@ -64,6 +66,10 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
     },
   });
 
+  useEffect(() => {
+    console.log(formik.values);
+  }, [formik.values]);
+
   const isFormEmpty = () => {
     return (
       !formik.values.email ||
@@ -71,27 +77,6 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
       !formik.values.rePassword
     );
   };
-
-  useEffect(() => {
-    setParams((prev) => ({
-      ...prev,
-      email: formik.values.email,
-      password: formik.values.password,
-    }));
-  }, [formik.values.email, formik.values.password]);
-
-  const [params, setParams] = useState<RegisterParams>({
-    name: "",
-    email: "",
-    address: "",
-    phone: "",
-    gender: 0,
-    dateBirth: "",
-    password: "",
-    company: "",
-    position: "",
-    taxNumber: "",
-  });
 
   return (
     <View className="flex justify-center items-center h-full text-base w-full p-10 bg-white">

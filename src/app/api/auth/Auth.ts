@@ -4,7 +4,7 @@ import {
   RefreshParams,
   RegisterParams,
 } from "~/src/app/models/auth_models";
-import requests from "../requests";
+import requests from "../request";
 
 const Auth = {
   login: (input: LoginParams) =>

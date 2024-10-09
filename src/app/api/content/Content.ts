@@ -1,4 +1,4 @@
-import requests from "../requests";
+import requests from "../request";
 
 const Content = {
   getContent: () => requests.baseApiGet("/contents"),
