@@ -1,22 +1,43 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, ScrollView, ActivityIndicator, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  Image,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from "react-native";
 import { WebView } from "react-native-webview";
 import { NewsDetailScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 import Toast from "react-native-toast-message";
 import Content from "~/src/app/api/content/Content";
 import { formatDate } from "~/src/app/utils/dateformat";
-import { mainBlue } from "~/src/app/constants/cssConstants";
+import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { NewsData } from "~/src/app/models/news_models";
 
-const NewsDetail = ({ route }: NewsDetailScreenProps) => {
+const NewsDetail = ({ navigation, route }: NewsDetailScreenProps) => {
   const { contentId } = route.params;
   const [news, setNews] = useState<NewsData>();
   const [isLoading, setIsLoading] = useState(true);
   const [webViewHeight, setWebViewHeight] = useState(0);
+  const imageHeight = 300;
 
   useEffect(() => {
     getNewsDetail();
   }, []);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollY = event.nativeEvent.contentOffset.y;
+    const newTintColor = scrollY < imageHeight ? "white" : mainBlue;
+    const newBackgroundColor =
+      scrollY < imageHeight ? "rgba(128, 128, 128, 0.3)" : "rgb(255, 255, 255)";
+
+    navigation.setParams({
+      headerTintColor: newTintColor,
+      headerBackgroundColor: newBackgroundColor, // Set background color too
+    });
+  };
 
   const getNewsDetail = async () => {
     try {
@@ -55,7 +76,7 @@ const NewsDetail = ({ route }: NewsDetailScreenProps) => {
       <ActivityIndicator color={mainBlue} size="large" />
     </View>
   ) : (
-    <ScrollView className="bg-white">
+    <ScrollView className="bg-white" onScroll={handleScroll}>
       <Image
         src={news?.imageUrl}
         alt="Hình tin tức"

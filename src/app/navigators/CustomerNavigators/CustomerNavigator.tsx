@@ -15,12 +15,25 @@ import TransactionHistory from "../../screens/Customer/TransactionScreens/Transa
 import VouchersWallet from "../../screens/Customer/PromotionScreens/VouchersWallet";
 import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
-import { mutedForground } from "../../constants/cssConstants";
+import { mainBlue, mutedForground } from "../../constants/cssConstants";
+import ProductImagesSlide from "../../screens/Customer/ProductScreens/ProductImagesSlide";
+import { MachineryImageData } from "../../models/machinery_models";
+import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";
+import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
-  NewsDetail: { contentId: number };
-  ProductDetail: { productId: number };
+  NewsDetail: {
+    contentId: number;
+    headerTintColor?: string;
+    headerBackgroundColor?: string;
+  };
+  ProductDetail: {
+    productId: number;
+    headerTintColor?: string;
+    headerBackgroundColor?: string;
+  };
+  ProductImagesSlide: { imagesList: MachineryImageData[]; chosenIndex: number };
   Cart: undefined;
   UserTiers: undefined;
   Address: undefined;
@@ -42,6 +55,10 @@ export type NewsDetailScreenProps = NativeStackScreenProps<
 export type ProductDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "ProductDetail"
+>;
+export type ProductImagesSlideScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "ProductImagesSlide"
 >;
 export type CartScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -86,21 +103,53 @@ const CustomerNavigator = () => {
         options={{ headerShown: false }}
       />
       {/* Máy móc */}
-      <Stack.Screen name="ProductDetail" component={ProductDetail} />
+      <Stack.Screen
+        name="ProductDetail"
+        component={ProductDetail}
+        options={({ route }) => ({
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: route.params?.headerTintColor || "white",
+          headerStyle: {
+            backgroundColor:
+              route.params?.headerBackgroundColor || "rgba(128, 128, 128, 0.3)",
+          },
+          headerRight: () => (
+            <DetailOpts color={route.params?.headerTintColor || "white"} />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="ProductImagesSlide"
+        component={ProductImagesSlide}
+        options={{
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: mainBlue,
+          headerStyle: {
+            backgroundColor: "rgba(128, 128, 128, 0.3)",
+          },
+          // headerRight: () => <DetailOpts />,
+        }}
+      />
       {/* Tin tức */}
       <Stack.Screen
         name="NewsDetail"
         component={NewsDetail}
-        options={{
+        options={({ route }) => ({
           headerTitle: "",
           headerTransparent: true,
-          headerTintColor: `hsl(${mutedForground})`,
-          headerBackTitleVisible: false,
+          headerTintColor: route.params?.headerTintColor || "white",
           headerStyle: {
-            backgroundColor: "rgba(128, 128, 128, 0.3)",
+            backgroundColor:
+              route.params?.headerBackgroundColor || "rgba(128, 128, 128, 0.3)",
           },
-        }}
+          headerRight: () => (
+            <DetailOpts color={route.params?.headerTintColor || "white"} />
+          ),
+        })}
       />
+
       {/* Giỏ hàng */}
       <Stack.Screen name="Cart" component={Cart} />
       {/* Voucher và khuyến mãi */}

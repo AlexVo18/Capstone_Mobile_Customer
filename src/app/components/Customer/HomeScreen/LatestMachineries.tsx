@@ -110,8 +110,9 @@ const LatestMachineries = ({ ListHeaderComponent, navigation }: Props) => {
                     <View className="flex justify-end flex-row items-center">
                       <Text
                         style={[{ color: mainBlue }]}
-                        className="text-xl font-bold"
+                        className="text-lg font-bold"
                       >
+                        {formatVND(item.rentPrice)} ~{" "}
                         {formatVND(item.rentPrice)}
                       </Text>
                     </View>
