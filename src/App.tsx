@@ -7,14 +7,20 @@ import { PaperProvider } from "react-native-paper";
 import AppNavigator from "./app/navigators/AppNavigator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
+import { LogBox } from "react-native";
 
 export default function App() {
+  // Chặn warning loop
+  LogBox.ignoreLogs(["Require cycle:"]);
+
   return (
     <GestureHandlerRootView>
       <PaperProvider>
         <NavigationContainer>
           <SafeAreaProvider>
             <AppNavigator />
+            <Toast topOffset={100} />
           </SafeAreaProvider>
         </NavigationContainer>
       </PaperProvider>

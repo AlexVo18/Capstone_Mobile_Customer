@@ -1,33 +1,118 @@
 import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-// import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import useAuth from "~/src/app/hooks/useAuth";
-import { LoginScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator"; // Correct type import
+import { LoginScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 import { cn } from "~/src/app/utils/cn";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { ErrorMessageLogin } from "~/src/app/constants/errorMessages";
+import Toast from "react-native-toast-message";
+import { LoginParams, TokenData, UserData } from "~/src/app/models/auth_models";
+import axios from "axios";
+import { getToken } from "~/src/app/config/firebaseConfig";
+import Auth from "~/src/app/api/auth/Auth";
+import { ActivityIndicator, Button } from "react-native-paper";
 
-const Login = ({ route, navigation }: LoginScreenProps) => {
-  const { userInfo, token, userLoading, login, logout } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login = ({ navigation }: LoginScreenProps) => {
+  const { login } = useAuth();
   const [viewPwd, setViewPwd] = useState(false);
   const [focusInput, setFocusInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    // Add your login validation and logic here
-    if (email === "abc@gmail.com" && password === "123") {
-      const token = "token";
-      const userData: UserData = {
-        email,
-        password,
-      };
-      if (userData) {
-        login(userData, token);
+  const validate = ErrorMessageLogin;
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required(validate.email.required),
+    password: Yup.string().required(validate.password.required),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      firebaseMessageToken: "",
+    } as LoginParams,
+    validationSchema,
+    onSubmit: async (values: LoginParams) => {
+      setIsLoading(true);
+      try {
+        if (!isFormEmpty()) {
+          const response = await Auth.login({
+            email: values.email,
+            password: values.password,
+            firebaseMessageToken: values.firebaseMessageToken,
+          });
+          if (response) {
+            const userData: UserData = {
+              accountId: response.accountId,
+              address: response.address,
+              dateCreate: response.dateCreate,
+              email: response.email,
+              name: response.name,
+              phone: response.phone,
+              roleId: response.roleId,
+              status: response.status,
+              username: response.username,
+            };
+            const token: TokenData = {
+              refreshToken: response.refreshToken,
+              refreshTokenExpiryTime: response.refreshTokenExpiryTime,
+              token: response.token,
+            };
+            console.log(response);
+            login(userData, token);
+            Toast.show({
+              type: "success",
+              text1: "Đăng nhập thành công",
+            });
+          }
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            if (error.response.data === "Tài khoản chưa kích hoạt") {
+              Toast.show({
+                type: "info",
+                text1: "Tài khoản chưa xác thực",
+                text2: "Vui lòng nhập mã OTP gửi qua mail để xác thực",
+              });
+              navigation.navigate("AuthenOTP", {
+                loginParams: {
+                  email: formik.values.email,
+                  password: formik.values.password,
+                  firebaseMessageToken: formik.values.firebaseMessageToken,
+                },
+                send: true,
+              });
+            } else {
+              Toast.show({
+                type: "error",
+                text1: "Đăng nhập thất bại",
+                text2: "Tài khoản hoặc mật khẩu không đúng",
+              });
+            }
+          }
+        }
+      } finally {
+        setIsLoading(false);
       }
-    }
+    },
+  });
+
+  useEffect(() => {
+    getMsgToken();
+  }, []);
+
+  const getMsgToken = async () => {
+    const token = await getToken();
+    console.log(token);
+    formik.setFieldValue("firebaseMessageToken", token);
+  };
+
+  const isFormEmpty = () => {
+    return !formik.values.email || !formik.values.password;
   };
 
   return (
@@ -62,8 +147,10 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
           Email
         </Text>
         <TextInput
-          value={email}
-          onChangeText={(value) => setEmail(value)}
+          value={formik.values.email}
+          onChangeText={(value) => {
+            formik.setFieldValue("email", value);
+          }}
           placeholder="Nhập email"
           className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
           onFocus={() => setFocusInput("email")}
@@ -79,11 +166,13 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
         >
           Mật khẩu
         </Text>
-        <View className="relative flex flex-row">
+        <View className="relative flex flex-row justify-end items-center">
           <TextInput
-            value={password}
+            value={formik.values.password}
             secureTextEntry={viewPwd ? false : true}
-            onChangeText={(value) => setPassword(value)}
+            onChangeText={(value) => {
+              formik.setFieldValue("password", value);
+            }}
             placeholder="Nhập mật khẩu"
             className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
             onFocus={() => setFocusInput("password")}
@@ -92,11 +181,12 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
           <TouchableOpacity
             className="absolute"
             onPress={() => setViewPwd(!viewPwd)}
+            style={styles.eyeIcon}
           >
             {viewPwd ? (
-              <EyeOff color={`hsl(${mutedForground})`} style={styles.eyeIcon} />
+              <EyeOff color={`hsl(${mutedForground})`} />
             ) : (
-              <Eye color={`hsl(${mutedForground})`} style={styles.eyeIcon} />
+              <Eye color={`hsl(${mutedForground})`} />
             )}
           </TouchableOpacity>
         </View>
@@ -112,26 +202,28 @@ const Login = ({ route, navigation }: LoginScreenProps) => {
         </TouchableOpacity>
       </View>
       <View className="w-full">
-        <Button
-          mode="contained"
-          className=""
-          buttonColor={mainBlue}
-          textColor="white"
-          style={[styles.buttonStyle]}
-          disabled={userLoading}
-          onPress={() => handleLogin()}
-        >
-          {userLoading ? (
-            <Text className="text-lg">Đang tải</Text>
-          ) : (
-            <Text className="text-lg">Đăng nhập</Text>
-          )}
-        </Button>
+        <View className="w-full">
+          <Button
+            mode="contained"
+            className=""
+            buttonColor={mainBlue}
+            textColor="white"
+            style={[styles.buttonStyle]}
+            disabled={isLoading}
+            onPress={() => formik.handleSubmit()}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+              <Text className="text-lg">Đăng nhập</Text>
+            )}
+          </Button>
+        </View>
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
         <Text style={{ fontSize: 16 }}>Không có tài khoản? </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Register")}
+          onPress={() => navigation.navigate("RegisterEmail")}
           className="flex items-center justify-center"
         >
           <Text style={{ color: mainBlue, fontSize: 16 }}>Đăng ký</Text>
@@ -159,6 +251,11 @@ const styles = StyleSheet.create({
   eyeIcon: {
     position: "absolute",
     right: 10,
-    top: "30%",
+  },
+  centerContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    display: "flex",
   },
 });

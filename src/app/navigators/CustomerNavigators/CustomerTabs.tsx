@@ -4,28 +4,18 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import Home from "../../screens/Customer/HomeScreens/Home";
-import Order from "../../screens/Customer/OrderScreens/Order";
 import SettingOption from "../../screens/Customer/ProfileScreens/SettingOption";
-import { View } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import {
-  Bell,
-  House,
-  Newspaper,
-  Package,
-  Search,
-  Settings,
-  ShoppingCart,
-} from "lucide-react-native";
-import { mainBlue, mutedForground } from "../../constants/cssConstants";
-import HomeUserOpts from "../../components/homeHeader/HomeUserOpts";
-import HomeSearchBar from "../../components/homeHeader/HomeSearchBar";
+import { House, Newspaper, Package, Settings } from "lucide-react-native";
+import { mainBlue } from "../../constants/cssConstants";
+import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";
+import HomeSearchBar from "../../components/Customer/HomeScreen/homeHeader/HomeSearchBar";
 import News from "../../screens/Customer/NewsScreens/News";
+import OrderTopTabs from "./OrderTopTabs";
 
 export type CustomerTabParamList = {
   Home: undefined;
   News: undefined;
-  Order: undefined;
+  OrderTopTabs: undefined;
   SettingOption: undefined;
 };
 
@@ -37,9 +27,9 @@ export type NewsScreenProps = BottomTabScreenProps<
   CustomerTabParamList,
   "News"
 >;
-export type OrderScreenProps = BottomTabScreenProps<
+export type OrderTopTabsScreenProps = BottomTabScreenProps<
   CustomerTabParamList,
-  "Order"
+  "OrderTopTabs"
 >;
 export type SettingOptionScreenProps = BottomTabScreenProps<
   CustomerTabParamList,
@@ -59,7 +49,7 @@ const CustomerTabs = () => {
             return (
               <Newspaper size={size} color={focused ? mainBlue : "#808080"} />
             );
-          } else if (route.name === "Order") {
+          } else if (route.name === "OrderTopTabs") {
             return (
               <Package size={size} color={focused ? mainBlue : "#808080"} />
             );
@@ -86,14 +76,15 @@ const CustomerTabs = () => {
         options={{
           tabBarLabel: "Tin tức",
           headerRight: () => <HomeUserOpts />,
+          // headerTitle: "Tin tức",
         }}
       />
       <Tab.Screen
-        name="Order"
-        component={Order}
+        name="OrderTopTabs"
+        component={OrderTopTabs}
         options={{
+          headerShown: false,
           tabBarLabel: "Đơn hàng",
-          headerRight: () => <HomeUserOpts />,
         }}
       />
       <Tab.Screen

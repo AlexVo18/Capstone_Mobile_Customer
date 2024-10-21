@@ -14,10 +14,26 @@ import UserReview from "../../screens/Customer/ProfileScreens/UserReview";
 import TransactionHistory from "../../screens/Customer/TransactionScreens/TransactionHistory";
 import VouchersWallet from "../../screens/Customer/PromotionScreens/VouchersWallet";
 import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
+import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
+import { mainBlue, mutedForground } from "../../constants/cssConstants";
+import ProductImagesSlide from "../../screens/Customer/ProductScreens/ProductImagesSlide";
+import { MachineryImageData } from "../../models/machinery_models";
+import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";
+import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
-  ProductDetail: { productId: number };
+  NewsDetail: {
+    contentId: number;
+    headerTintColor?: string;
+    headerBackgroundColor?: string;
+  };
+  ProductDetail: {
+    productId: number;
+    headerTintColor?: string;
+    headerBackgroundColor?: string;
+  };
+  ProductImagesSlide: { imagesList: MachineryImageData[]; chosenIndex: number };
   Cart: undefined;
   UserTiers: undefined;
   Address: undefined;
@@ -32,9 +48,17 @@ export type CustomerTabsScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "CustomerTabs"
 >;
+export type NewsDetailScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "NewsDetail"
+>;
 export type ProductDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "ProductDetail"
+>;
+export type ProductImagesSlideScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "ProductImagesSlide"
 >;
 export type CartScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -78,14 +102,65 @@ const CustomerNavigator = () => {
         component={CustomerTabs}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="ProductDetail" component={ProductDetail} />
+      {/* Máy móc */}
+      <Stack.Screen
+        name="ProductDetail"
+        component={ProductDetail}
+        options={({ route }) => ({
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: route.params?.headerTintColor || "white",
+          headerStyle: {
+            backgroundColor:
+              route.params?.headerBackgroundColor || "rgba(128, 128, 128, 0.3)",
+          },
+          headerRight: () => (
+            <DetailOpts color={route.params?.headerTintColor || "white"} />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="ProductImagesSlide"
+        component={ProductImagesSlide}
+        options={{
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: mainBlue,
+          headerStyle: {
+            backgroundColor: "rgba(128, 128, 128, 0.3)",
+          },
+          // headerRight: () => <DetailOpts />,
+        }}
+      />
+      {/* Tin tức */}
+      <Stack.Screen
+        name="NewsDetail"
+        component={NewsDetail}
+        options={({ route }) => ({
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: route.params?.headerTintColor || "white",
+          headerStyle: {
+            backgroundColor:
+              route.params?.headerBackgroundColor || "rgba(128, 128, 128, 0.3)",
+          },
+          headerRight: () => (
+            <DetailOpts color={route.params?.headerTintColor || "white"} />
+          ),
+        })}
+      />
+
       {/* Giỏ hàng */}
       <Stack.Screen name="Cart" component={Cart} />
       {/* Voucher và khuyến mãi */}
       <Stack.Screen name="UserTiers" component={UserTiers} />
       <Stack.Screen name="VouchersWallet" component={VouchersWallet} />
       {/* Địa chỉ */}
-      <Stack.Screen name="Address" component={Address} />
+      <Stack.Screen
+        name="Address"
+        component={Address}
+        options={{ headerTitle: "Địa chỉ của bạn" }}
+      />
       <Stack.Screen name="NewAddress" component={NewAddress} />
       {/* Hồ sơ */}
       <Stack.Screen name="Profile" component={Profile} />

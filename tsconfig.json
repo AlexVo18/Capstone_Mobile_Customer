@@ -4,13 +4,10 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "*"
-      ]
+      "~/*": ["*"]
+      // "@env": ["node_modules/react-native-dotenv"]
     },
-    "types": [
-      "nativewind/types"
-    ]
+    "types": ["nativewind/types"]
   },
   "include": [
     "**/*.ts",

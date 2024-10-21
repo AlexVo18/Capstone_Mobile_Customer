@@ -42,7 +42,7 @@ const AuthMenu = ({ route, navigation }: AuthMenuScreenProps) => {
         </Button>
         <Button
           mode="outlined"
-          onPress={() => navigation.navigate("Register")}
+          onPress={() => navigation.navigate("RegisterEmail")}
           className="mt-5"
           textColor={mainBlue}
           style={[styles.outlineButton, styles.buttonStyle]}
