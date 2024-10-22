@@ -20,6 +20,7 @@ import ProductImagesSlide from "../../screens/Customer/ProductScreens/ProductIma
 import { MachineryImageData } from "../../models/machinery_models";
 import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";
 import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
+import Collection from "../../screens/Customer/ProductScreens/Collection";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
@@ -28,6 +29,7 @@ export type CustomerStackParamList = {
     headerTintColor?: string;
     headerBackgroundColor?: string;
   };
+  Collection: undefined;
   ProductDetail: {
     productId: number;
     headerTintColor?: string;
@@ -55,6 +57,10 @@ export type NewsDetailScreenProps = NativeStackScreenProps<
 export type ProductDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "ProductDetail"
+>;
+export type CollectionScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "Collection"
 >;
 export type ProductImagesSlideScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -103,6 +109,22 @@ const CustomerNavigator = () => {
         options={{ headerShown: false }}
       />
       {/* Máy móc */}
+      <Stack.Screen
+        name="Collection"
+        component={Collection}
+        // options={({ route }) => ({
+        //   headerTitle: "",
+        //   headerTransparent: true,
+        //   headerTintColor: route.params?.headerTintColor || "white",
+        //   headerStyle: {
+        //     backgroundColor:
+        //       route.params?.headerBackgroundColor || "rgba(128, 128, 128, 0.3)",
+        //   },
+        //   headerRight: () => (
+        //     <DetailOpts color={route.params?.headerTintColor || "white"} />
+        //   ),
+        // })}
+      />
       <Stack.Screen
         name="ProductDetail"
         component={ProductDetail}

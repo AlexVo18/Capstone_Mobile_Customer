@@ -1,4 +1,9 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 import Auth from "./auth/Auth";
 import { TokenData } from "../models/auth_models";
 import { VITE_SERVER } from "@env";
@@ -8,10 +13,25 @@ import Toast from "react-native-toast-message";
 
 const baseURL = VITE_SERVER;
 
-const jwtApi = axios.create({
-  baseURL,
-  withCredentials: true,
-});
+let isRefreshing = false;
+let refreshSubscribers: ((token: string) => void)[] = [];
+
+const setToken = (tokenData: TokenData): void => {
+  SecureStore.setItemAsync("token", JSON.stringify(tokenData));
+};
+
+const clearToken = () => {
+  SecureStore.deleteItemAsync("user");
+  SecureStore.deleteItemAsync("token");
+};
+const onTokenRefreshed = (token: string): void => {
+  refreshSubscribers.forEach((callback) => callback(token));
+  refreshSubscribers = [];
+};
+
+const addRefreshSubscriber = (callback: (token: string) => void): void => {
+  refreshSubscribers.push(callback);
+};
 
 // Lấy token từ storage
 const getToken = async () => {
@@ -19,6 +39,7 @@ const getToken = async () => {
   if (token) {
     return JSON.parse(token);
   }
+  return null;
 };
 
 // Lấy accessToken mới
@@ -40,7 +61,7 @@ export const getNewAccessToken = async () => {
         token: response.token,
       };
       const stringifyToken = JSON.stringify(newToken);
-      localStorage.setItem("token", stringifyToken);
+      SecureStore.setItemAsync("token", stringifyToken);
 
       return newToken;
     }
@@ -50,80 +71,137 @@ export const getNewAccessToken = async () => {
   }
 };
 
-// Gắn accessToken vào API
-jwtApi.interceptors.request.use(
-  async (config: InternalAxiosRequestConfig) => {
-    let token = await getToken();
-    if (config.headers) {
-      if (token && !isTokenExpired(token.token)) {
-        config.headers.Authorization = `Bearer ${token.token}`;
-      }
-
-      // Lấy access token mới
-      try {
-        const newToken = await getNewAccessToken();
-        if (newToken) {
-          config.headers.Authorization = `Bearer ${newToken.token}`;
-        } else {
-          throw new Error("Failed to refresh token");
-        }
-      } catch (error) {
-        localStorage.clear();
-        Toast.show({
-          type: "error",
-          text1: "Phiên đăng nhập đã hết hạn",
-        });
-        return Promise.reject(error);
-      }
+export const refreshAccessToken = async () => {
+  try {
+    const token = await getToken();
+    if (!token?.refreshToken) {
+      throw new Error("không có token");
     }
 
-    return config;
-  },
-  (error: AxiosError) => {
-    return Promise.reject(error);
+    const response = await Auth.refreshAccessToken({
+      accessToken: token.token,
+      refreshToken: token.refreshToken,
+    });
+
+    if (response?.token) {
+      const newToken: TokenData = {
+        refreshToken: token.refreshToken,
+        refreshTokenExpiryTime: token.refreshTokenExpiryTime,
+        token: response.token,
+      };
+      setToken(newToken);
+      return newToken;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    return null;
   }
-);
+};
 
-// Trường hợp lỗi 401 Unauthorized
-jwtApi.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error: AxiosError) => {
-    // Lỗi 401
-    if (error.response?.status === 401) {
-      console.log("Token expired");
+const setupRequestInterceptor = (instance: AxiosInstance): void => {
+  instance.interceptors.request.use(
+    async (config: InternalAxiosRequestConfig) => {
+      const token = await getToken();
 
-      try {
-        const newToken = await getNewAccessToken();
-        if (newToken) {
-          const config = error.config;
-          if (config) {
+      if (!token) {
+        return config;
+      }
+
+      if (!isTokenExpired(token.token)) {
+        config.headers.Authorization = `Bearer ${token.token}`;
+        return config;
+      }
+
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const newToken = await refreshAccessToken();
+          if (newToken) {
+            onTokenRefreshed(newToken.token);
             config.headers.Authorization = `Bearer ${newToken.token}`;
-            return jwtApi(config);
+          } else {
+            clearToken();
+            throw new Error("Failed to refresh token");
+          }
+        } catch (error) {
+          clearToken();
+          return Promise.reject(error);
+        } finally {
+          isRefreshing = false;
+        }
+      } else {
+        return new Promise((resolve) => {
+          addRefreshSubscriber((token: string) => {
+            config.headers.Authorization = `Bearer ${token}`;
+            resolve(config);
+          });
+        });
+      }
+
+      return config;
+    },
+    (error: AxiosError) => Promise.reject(error)
+  );
+};
+
+const setupResponseInterceptor = (instance: AxiosInstance): void => {
+  instance.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    async (error: AxiosError) => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 && originalRequest) {
+        if (!isRefreshing) {
+          isRefreshing = true;
+          try {
+            const newToken = await refreshAccessToken();
+            if (newToken) {
+              onTokenRefreshed(newToken.token);
+              originalRequest.headers.Authorization = `Bearer ${newToken.token}`;
+              return instance(originalRequest);
+            }
+          } catch (refreshError) {
+            console.error("Error refreshing token:", refreshError);
+          } finally {
+            isRefreshing = false;
           }
         } else {
-          throw new Error("Token refresh failed");
+          return new Promise((resolve) => {
+            addRefreshSubscriber((token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(instance(originalRequest));
+            });
+          });
         }
-      } catch (error) {
-        localStorage.clear();
+        clearToken();
+      }
+      if (error.response?.status === 403) {
         Toast.show({
           type: "error",
           text1: "Phiên đăng nhập đã hết hạn",
         });
-        return Promise.reject(error);
       }
-    }
 
-    // Lỗi 403
-    if (error.response?.status === 403) {
-      Toast.show({
-        type: "error",
-        text1: "Tài khoản không có quyền đăng nhập",
-      });
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
-);
+  );
+};
+
+const createAxiosInstance = (): AxiosInstance => {
+  return axios.create({
+    baseURL,
+    withCredentials: true,
+  });
+};
+
+const createApi = (): AxiosInstance => {
+  const instance = createAxiosInstance();
+  setupRequestInterceptor(instance);
+  setupResponseInterceptor(instance);
+  return instance;
+};
+
+export const jwtApi = createApi();
 
 export default jwtApi;

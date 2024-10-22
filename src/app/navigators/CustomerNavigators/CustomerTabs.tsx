@@ -64,11 +64,11 @@ const CustomerTabs = () => {
       <Tab.Screen
         name="Home"
         component={Home}
-        options={{
+        options={({ navigation }) => ({
           tabBarLabel: "Trang chủ",
-          headerTitle: () => <HomeSearchBar />,
+          headerTitle: () => <HomeSearchBar navigation={navigation} />,
           headerRight: () => <HomeUserOpts />,
-        }}
+        })}
       />
       <Tab.Screen
         name="News"
