@@ -1,27 +1,27 @@
-import { StyleSheet, View, Text } from "react-native";
-import React from "react";
-import Map from "~/src/app/components/map/Map";
-import { Button, Modal, Portal } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import React, { useRef } from "react";
+import MapLibreGL from "@maplibre/maplibre-react-native";
 
+MapLibreGL.setAccessToken(null);
 const NewAddress = () => {
-  const [visible, setVisible] = React.useState(false);
+  const mapStyleURL =
+    "https://tiles.goong.io/assets/goong_map_web.json?api_key=ezmMzOjP5avaIKTm0fOJXWxykZCmGxjb6aRrfFVF";
+  const camera = useRef(null);
 
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
   return (
-    <View style={styles.container}>
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={styles.containerStyle}
-        >
-          <Map />
-        </Modal>
-      </Portal>
-      <Button style={{ marginTop: 30 }} onPress={showModal} >
-        Show
-      </Button>
+    <View style={styles.page}>
+      <MapLibreGL.MapView
+        style={styles.map}
+        logoEnabled={false}
+        styleURL={mapStyleURL}
+        zoomEnabled={true}
+      >
+        <MapLibreGL.Camera
+          centerCoordinate={[106.7048655, 10.7713563]}
+          ref={camera}
+          zoomLevel={15.5}
+        />
+      </MapLibreGL.MapView>
     </View>
   );
 };
@@ -29,12 +29,14 @@ const NewAddress = () => {
 export default NewAddress;
 
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF",
   },
-  containerStyle: {
-    backgroundColor: "white",
-    height: "80%", // Adjust as needed
-    width: "100%",
+  map: {
+    flex: 1,
+    alignSelf: "stretch",
   },
 });

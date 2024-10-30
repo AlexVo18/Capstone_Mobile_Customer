@@ -17,17 +17,25 @@ export default {
       supportsTablet: true,
     },
     android: {
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+      googleServicesFile:
+        // process.env.GOOGLE_SERVICES_JSON ||
+        "./android/app/google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/images/Logo.jpg",
         backgroundColor: "#ffffff",
+        monochromeImage: "./assets/images/Logo.jpg",
       },
       package: "com.trivo18.customermobile",
       buildType: "apk",
-      keystorePath: process.env.DEBUG_KEYSTORE,
+      keystorePath:
+        // process.env.DEBUG_KEYSTORE ||
+        "./android/app/debug.keystore",
       keystorePassword: "android",
       keyAlias: "androiddebugkey",
       keyPassword: "android",
+      config: {
+        googleMaps: { apiKey: "Rbn6B9ATYJdi23CqzCa5aGWpLp1nxE9wdpeESNgp" },
+      },
     },
     web: {
       bundler: "metro",

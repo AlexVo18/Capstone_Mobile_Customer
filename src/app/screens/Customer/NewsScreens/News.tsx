@@ -9,7 +9,6 @@ import {
 import Toast from "react-native-toast-message";
 import Content from "~/src/app/api/content/Content";
 import { NewsData } from "~/src/app/models/news_models";
-import { newsList } from "~/src/app/data/newsList";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { NewsScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
 import NewsSearchBar from "~/src/app/components/Customer/NewsScreen/newsHeader/NewsSearchBar";

@@ -11,8 +11,9 @@ import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
 
 export default function App() {
-  // Chặn warning loop
+
   LogBox.ignoreLogs(["Require cycle:"]);
+  LogBox.ignoreLogs(["MapLibre warning {TextureViewRend}[ParseStyle]:"]);
 
   return (
     <GestureHandlerRootView>

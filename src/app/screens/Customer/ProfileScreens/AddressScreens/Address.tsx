@@ -10,7 +10,7 @@ const Address = ({ navigation }: AddressScreenProps) => {
 
   return (
     <ScrollView style={styles.container} className="bg-white">
-      {/* <Button
+      <Button
         mode="outlined"
         onPress={() => navigation.navigate("NewAddress")}
         className="mt-5"
@@ -18,7 +18,7 @@ const Address = ({ navigation }: AddressScreenProps) => {
         style={[styles.outlineButton, styles.buttonStyle]}
       >
         <Text className="text-lg">Tạo địa chỉ mới</Text>
-      </Button> */}
+      </Button>
     </ScrollView>
   );
 };
