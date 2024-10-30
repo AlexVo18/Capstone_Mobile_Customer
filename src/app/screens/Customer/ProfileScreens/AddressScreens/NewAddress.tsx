@@ -1,12 +1,25 @@
 import { StyleSheet, View } from "react-native";
 import React, { useRef } from "react";
-import MapLibreGL from "@maplibre/maplibre-react-native";
+import MapLibreGL, { Logger } from "@maplibre/maplibre-react-native";
 
 MapLibreGL.setAccessToken(null);
 const NewAddress = () => {
   const mapStyleURL =
     "https://tiles.goong.io/assets/goong_map_web.json?api_key=ezmMzOjP5avaIKTm0fOJXWxykZCmGxjb6aRrfFVF";
   const camera = useRef(null);
+
+  // Chặn spam log từ mapbox
+  Logger.setLogCallback((log) => {
+    const { message } = log;
+
+    if (
+      message.match("Request failed due to a permanent error: Canceled") ||
+      message.match("Request failed due to a permanent error: Socket Closed")
+    ) {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <View style={styles.page}>
