@@ -39,6 +39,24 @@ export interface UserData {
   address: string;
   status: string;
   roleId: number;
+  avatarImg: string;
+}
+
+export interface UserDetailData {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  gender: number;
+  dateBirth: string;
+  company: string;
+  position: string;
+  taxNumber: string;
+  avatarImg: string;
+  accountId?: number;
+  dateCreate?: string;
+  status?: string;
+  roleId?: number;
 }
 
 export interface TokenData {
@@ -50,4 +68,17 @@ export interface TokenData {
 export interface RefreshParams {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface ChangePasswordParams {
+  oldPassword: string;
+  password: string;
+  rePassword?: string;
+}
+
+export interface ForgetPasswordParams {
+  email: string;
+  otp: string;
+  password: string;
+  rePassword?: string;
 }

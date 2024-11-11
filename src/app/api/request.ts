@@ -30,6 +30,12 @@ const requests = {
   codeApiGet: <T>(url: string, params?: T) => baseApi.get(url, { params }),
   codeApiPost: <T>(url: string, body: T) => baseApi.post(url, body),
   codeApiPut: <T>(url: string, body: T) => baseApi.put(url, body),
+
+  codeJwtApiGet: <T>(url: string, params?: T) => jwtApi.get(url, { params }),
+  codeJwtApiPost: <T>(url: string, body: T) => jwtApi.post(url, body),
+  codeJwtApiPut: <T>(url: string, body: T) => jwtApi.put(url, body),
+  codeJwtApiDelete: <T>(url: string, params?: T) =>
+    jwtApi.delete(url, { params }),
 };
 
 export default requests;
