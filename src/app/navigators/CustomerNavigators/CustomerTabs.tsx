@@ -15,7 +15,7 @@ import OrderTopTabs from "./OrderTopTabs";
 export type CustomerTabParamList = {
   Home: undefined;
   News: undefined;
-  OrderTopTabs: undefined;
+  // OrderTopTabs: undefined;
   SettingOption: undefined;
 };
 
@@ -27,10 +27,10 @@ export type NewsScreenProps = BottomTabScreenProps<
   CustomerTabParamList,
   "News"
 >;
-export type OrderTopTabsScreenProps = BottomTabScreenProps<
-  CustomerTabParamList,
-  "OrderTopTabs"
->;
+// export type OrderTopTabsScreenProps = BottomTabScreenProps<
+//   CustomerTabParamList,
+//   "OrderTopTabs"
+// >;
 export type SettingOptionScreenProps = BottomTabScreenProps<
   CustomerTabParamList,
   "SettingOption"
@@ -49,10 +49,10 @@ const CustomerTabs = () => {
             return (
               <Newspaper size={size} color={focused ? mainBlue : "#808080"} />
             );
-          } else if (route.name === "OrderTopTabs") {
-            return (
-              <Package size={size} color={focused ? mainBlue : "#808080"} />
-            );
+          // } else if (route.name === "OrderTopTabs") {
+          //   return (
+          //     <Package size={size} color={focused ? mainBlue : "#808080"} />
+          //   );
           } else if (route.name === "SettingOption") {
             return (
               <Settings size={size} color={focused ? mainBlue : "#808080"} />
@@ -79,14 +79,14 @@ const CustomerTabs = () => {
           // headerTitle: "Tin tức",
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="OrderTopTabs"
         component={OrderTopTabs}
         options={{
           headerShown: false,
           tabBarLabel: "Đơn hàng",
         }}
-      />
+      /> */}
       <Tab.Screen
         name="SettingOption"
         component={SettingOption}

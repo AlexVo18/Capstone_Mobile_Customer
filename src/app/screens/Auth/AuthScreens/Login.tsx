@@ -61,7 +61,6 @@ const Login = ({ navigation }: LoginScreenProps) => {
               refreshTokenExpiryTime: response.refreshTokenExpiryTime,
               token: response.token,
             };
-            console.log(response);
             login(userData, token);
             Toast.show({
               type: "success",
@@ -107,7 +106,6 @@ const Login = ({ navigation }: LoginScreenProps) => {
 
   const getMsgToken = async () => {
     const token = await getToken();
-    console.log(token);
     formik.setFieldValue("firebaseMessageToken", token);
   };
 

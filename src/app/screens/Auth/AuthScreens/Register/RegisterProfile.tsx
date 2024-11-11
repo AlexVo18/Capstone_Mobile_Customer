@@ -21,6 +21,9 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { formatDate } from "~/src/app/utils/dateformat";
 import RNPickerSelect from "react-native-picker-select";
+import { VITE_SERVER } from "@env";
+
+const baseURL = VITE_SERVER;
 
 const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
   const { RegisterAccountParams } = route.params;

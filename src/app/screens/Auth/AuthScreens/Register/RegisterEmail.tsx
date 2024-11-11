@@ -10,14 +10,8 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
-import {
-  RegisterAccountParams,
-  RegisterParams,
-} from "~/src/app/models/auth_models";
-import {
-  LoginScreenProps,
-  RegisterEmailScreenProps,
-} from "~/src/app/navigators/AuthNavigators/AuthNavigator";
+import { RegisterAccountParams } from "~/src/app/models/auth_models";
+import { RegisterEmailScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { cn } from "~/src/app/utils/cn";
@@ -65,10 +59,6 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
       }
     },
   });
-
-  useEffect(() => {
-    console.log(formik.values);
-  }, [formik.values]);
 
   const isFormEmpty = () => {
     return (

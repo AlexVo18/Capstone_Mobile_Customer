@@ -15,7 +15,7 @@ import TransactionHistory from "../../screens/Customer/TransactionScreens/Transa
 import VouchersWallet from "../../screens/Customer/PromotionScreens/VouchersWallet";
 import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
-import { mainBlue, mutedForground } from "../../constants/cssConstants";
+import { mainBlue } from "../../constants/cssConstants";
 import ProductImagesSlide from "../../screens/Customer/ProductScreens/ProductImagesSlide";
 import { MachineryImageData } from "../../models/machinery_models";
 import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";

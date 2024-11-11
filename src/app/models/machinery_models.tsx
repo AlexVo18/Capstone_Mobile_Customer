@@ -1,40 +1,42 @@
 export interface MachineryData {
-  productId: number;
-  productName: string;
+  categoryId: number;
   categoryName: string;
+  dateCreate: string;
+  description: string;
+  machineId: number;
+  machineName: string;
+  machinePrice: number;
   rentPrice: number;
-  productPrice: number;
+  shipPricePerKm: number;
   quantity: number;
   model: string;
-  description: string;
   origin: string;
-  categoryId: number;
-  dateCreate: string;
   status: string;
-  productImageList: MachineryImageData[];
+  thumbnail: string;
 }
 
 export interface MachineryImageData {
-  productImageId: number;
-  productId: number;
-  productImageUrl: string;
+  machineImageId: number;
+  machineId: number;
+  machineImageUrl: string;
   isThumbnail: boolean;
 }
 
 export interface ProductAttributeData {
-  productAttributeId: number;
-  productId: number;
+  machineAttributeId: number;
+  machineId: number;
   attributeName: string;
   specifications: string;
   unit: string;
 }
+
 export interface ComponentProductData {
-  componentProductId: number;
-  productId: number;
+  machineComponentId: number;
+  machineId: number;
   componentName: string;
   componentId: number;
   quantity: number;
-  status: number;
+  isRequiredMoney: boolean;
 }
 
 export interface SearchMachineryParams {
@@ -44,34 +46,63 @@ export interface SearchMachineryParams {
 }
 
 export interface MachineryDetailData {
-  productId: number;
-  productName: string;
+  categoryId: number;
   categoryName: string;
+  dateCreate: string;
+  description: string;
+  machineId: number;
+  machineName: string;
   rentPrice: number;
-  productPrice: number;
+  machinePrice: number;
   quantity: number;
   model: string;
-  description: string;
   origin: string;
-  categoryId: number;
-  dateCreate: string;
   status: string;
-  productImageList: MachineryImageData[];
-  productAttributeList: ProductAttributeData[];
-  componentProductList: ComponentProductData[];
+  shipPricePerKm: number;
+  machineImageList: MachineryImageData[];
+  machineAttributeList: ProductAttributeData[];
+  machineComponentList: ComponentProductData[];
+  machineTermList: MachineryTerm[];
 }
 
-export interface LocalCartData {
-  productId: number;
-  quantity: number;
+export interface LocalOrderData {
+  machineId: number;
 }
 
 export interface MachineryCartData {
-  productId: number;
-  productName: string;
+  machineId: number;
+  machineName: string;
   rentPrice: number;
-  productPrice: number;
+  machinePrice: number;
   quantity: number;
+  shipPricePerKm: number;
   categoryName: string;
   thumbnailUrl: string;
+  rentPrices: number[];
+  machineTerms: MachineryTerm[];
+  machineSerialNumbers: MachineSerialData[];
+}
+
+interface MachineSerialData {
+  machineId: number;
+  actualRentPrice: number;
+  dateCreate: string;
+  rentDaysCounter: number;
+  serialNumber: string;
+  status: string;
+}
+
+export interface MachineryTerm {
+  productTermId: number;
+  machineId: number;
+  title: string;
+  content: string;
+}
+
+export interface ReviewCartData {
+  machineId: number;
+  machineName: string;
+  quantity: number;
+  thumbnailUrl: string;
+  rentPrices: number[];
 }
