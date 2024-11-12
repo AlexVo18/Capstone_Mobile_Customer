@@ -5,7 +5,7 @@ import {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 import CustomerTabs from "./CustomerTabs";
-import ProductDetail from "../../screens/Customer/ProductScreens/ProductDetail";
+import MachineDetail from "../../screens/Customer/ProductScreens/MachineDetail";
 import Cart from "../../screens/Customer/CartScreens/Cart";
 import UserTiers from "../../screens/Customer/PromotionScreens/UserTiers";
 import Address from "../../screens/Customer/ProfileScreens/AddressScreens/Address";
@@ -30,8 +30,8 @@ export type CustomerStackParamList = {
     headerBackgroundColor?: string;
   };
   Collection: undefined;
-  ProductDetail: {
-    productId: number;
+  MachineDetail: {
+    machineId: number;
     headerTintColor?: string;
     headerBackgroundColor?: string;
   };
@@ -54,9 +54,9 @@ export type NewsDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "NewsDetail"
 >;
-export type ProductDetailScreenProps = NativeStackScreenProps<
+export type MachineDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
-  "ProductDetail"
+  "MachineDetail"
 >;
 export type CollectionScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -126,8 +126,8 @@ const CustomerNavigator = () => {
         // })}
       />
       <Stack.Screen
-        name="ProductDetail"
-        component={ProductDetail}
+        name="MachineDetail"
+        component={MachineDetail}
         options={({ route }) => ({
           headerTitle: "",
           headerTransparent: true,

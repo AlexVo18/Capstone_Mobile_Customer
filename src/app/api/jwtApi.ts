@@ -11,6 +11,10 @@ import { isTokenExpired } from "../utils/isTokenExpired";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
 
+if (__DEV__) {
+  console.log("Environment URL:", VITE_SERVER);
+}
+
 const baseURL = VITE_SERVER;
 
 let isRefreshing = false;

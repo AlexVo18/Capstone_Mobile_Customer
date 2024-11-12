@@ -1,9 +1,9 @@
 import requests from "../request";
 
 const Machinery = {
-  getAllMachineries: () => requests.baseApiGet("/products"),
+  getAllMachineries: () => requests.baseApiGet("/machines"),
   getMachineryDetail: (input: number) =>
-    requests.baseApiGet(`/products/${input}`),
-  getLatestMachineries: () => requests.baseApiGet("/products/latest")
+    requests.baseApiGet(`/machines/${input}`),
+  getLatestMachineries: () => requests.baseApiGet("/machines/latest"),
 };
 export default Machinery;
