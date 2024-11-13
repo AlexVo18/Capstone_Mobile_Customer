@@ -1,28 +1,21 @@
 import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Pressable,
-  ActivityIndicator,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
-import {
-  ForgetPasswordParams,
-  RegisterAccountParams,
-} from "~/src/app/models/auth_models";
+import { ForgetPasswordParams } from "~/src/app/models/auth_models";
 import { ForgotPasswordScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { cn } from "~/src/app/utils/cn";
-import {
-  ErrorMessageForgetPassword,
-  ErrorMessageRegister,
-} from "~/src/app/constants/errorMessages";
+import { ErrorMessageForgetPassword } from "~/src/app/constants/errorMessages";
 import Auth from "~/src/app/api/auth/Auth";
 import Toast from "react-native-toast-message";
 import axios from "axios";
@@ -37,7 +30,6 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
   const [viewPwd, setViewPwd] = useState(false);
   const [viewRePwd, setViewRePwd] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
-  const [showOtp, setShowOtp] = useState(false);
   const [send, setSend] = useState(false);
 
   const validate = ErrorMessageForgetPassword;
@@ -125,8 +117,8 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
             type: "success",
             text1: "Gửi OTP thành công, vui lòng check email",
           });
+          setSend(true);
           start(60);
-          setShowOtp(true);
         }
       }
     } catch (error) {
@@ -158,7 +150,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
           className="text-lg text-center"
           style={{ color: `hsl(${mutedForground})` }}
         >
-          Nhập email và mật khẩu để đăng ký tài khoản
+          Nhập thông tin để đổi mật khẩu tài khoản
         </Text>
       </View>
       <View className="w-full mb-4">
@@ -171,64 +163,62 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
           Email
           <Text className="text-red-600"> *</Text>
         </Text>
+        <View className="flex flex-row w-full">
+          <View style={{ flex: 1 }}>
+            <TextInput
+              value={formik.values.email}
+              onChangeText={(value) => {
+                formik.setFieldValue("email", value);
+              }}
+              placeholder="Nhập email"
+              className={`h-14 bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
+              onFocus={() => setFocusInput("email")}
+              onBlur={() => {
+                setFocusInput("");
+                formik.setFieldTouched("email");
+              }}
+            />
+          </View>
 
-        <TextInput
-          value={formik.values.email}
-          onChangeText={(value) => {
-            formik.setFieldValue("email", value);
-          }}
-          placeholder="Nhập email"
-          className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
-          onFocus={() => setFocusInput("email")}
-          onBlur={() => {
-            setFocusInput("");
-            formik.setFieldTouched("email");
-          }}
-        />
+          <Button
+            mode="contained"
+            className=""
+            buttonColor={mainBlue}
+            textColor="white"
+            style={[styles.sendOtpButton]}
+            disabled={
+              otpLoading ||
+              secondsLeft > 0 ||
+              (formik.errors.email && formik.errors.email.length !== 0) ||
+              !formik.values.email
+            }
+            onPress={sendOTP}
+          >
+            {otpLoading
+              ? "Đang gửi"
+              : secondsLeft
+                ? `Gửi lại (${secondsLeft}s)`
+                : "Gửi OTP"}
+          </Button>
+        </View>
+
         {formik.touched.email && formik.errors.email ? (
           <View>
             <Text className="text-red-600 text-sm">{formik.errors.email}</Text>
           </View>
         ) : null}
       </View>
-
-      <View className="my-4">
-        <OtpInput
-          numberOfDigits={6}
-          onTextChange={(text) => formik.setFieldValue("otp", text)}
-          focusColor={mainBlue}
-          autoFocus={false}
-          disabled={!send}
-        />
-      </View>
-      <View>
-        {send ? (
-          secondsLeft === 0 ? (
-            <View>
-              <Text className="text-center">
-                Bạn đã nhận được mã OTP chưa? Nếu chưa, vui lòng bấm{" "}
-                {!isLoading ? (
-                  <Text
-                    className="text-blue-700"
-                    onPress={sendOTP}
-                    aria-disabled={isLoading}
-                  >
-                    Gửi lại
-                  </Text>
-                ) : (
-                  <ActivityIndicator size={8} color="rgb(29 78 216)" />
-                )}
-                <Text> để được gửi lại mã OTP mới</Text>
-              </Text>
-            </View>
-          ) : (
-            <Text>
-              Vui lòng chờ <Text className="text-blue-700">{secondsLeft}</Text>{" "}
-              giây để có thể gửi mã xác thực mới
-            </Text>
-          )
-        ) : null}
-      </View>
+      {send && (
+        <View className="my-4">
+          <OtpInput
+            numberOfDigits={6}
+            onTextChange={(text) => formik.setFieldValue("otp", text)}
+            focusColor={mainBlue}
+            autoFocus={false}
+            disabled={!send}
+          />
+        </View>
+      )}
 
       <View className="w-full ">
         <Text
@@ -237,7 +227,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
             focusInput === "password" ? "text-blue-700" : ""
           )}
         >
-          Mật khẩu
+          Mật khẩu mới
           <Text className="text-red-600"> *</Text>
         </Text>
         <View className="relative flex flex-row justify-end items-center">
@@ -245,7 +235,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
             value={formik.values.password}
             secureTextEntry={!viewPwd}
             onChangeText={formik.handleChange("password")}
-            placeholder="Nhập mật khẩu"
+            placeholder="Nhập mật khẩu mới"
             className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
             onFocus={() => setFocusInput("password")}
             onBlur={() => {
@@ -282,7 +272,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
             focusInput === "rePassword" ? "text-blue-700" : ""
           )}
         >
-          Nhập lại mật khẩu
+          Nhập lại mật khẩu mới
           <Text className="text-red-600"> *</Text>
         </Text>
         <View className="relative flex flex-row justify-end items-center">
@@ -290,7 +280,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
             value={formik.values.rePassword}
             secureTextEntry={!viewRePwd}
             onChangeText={formik.handleChange("rePassword")}
-            placeholder="Nhập lại mật khẩu"
+            placeholder="Nhập lại mật khẩu mới"
             className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
             onFocus={() => setFocusInput("rePassword")}
             onBlur={() => {
@@ -334,12 +324,12 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
           {isLoading ? (
             <Text className="text-lg">Đang tải</Text>
           ) : (
-            <Text className="text-lg">Tiếp theo</Text>
+            <Text className="text-lg">Đổi mật khẩu</Text>
           )}
         </Button>
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
-        <Text style={{ fontSize: 16 }}>Đã có tài khoản? </Text>
+        <Text style={{ fontSize: 16 }}>Đã nhớ mật khẩu? </Text>
         <TouchableOpacity
           onPress={() => navigation.navigate("Login")}
           className="flex items-center justify-center"
@@ -363,6 +353,10 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     width: "100%",
+    borderRadius: 10,
+    paddingVertical: 4,
+  },
+  sendOtpButton: {
     borderRadius: 10,
     paddingVertical: 4,
   },
