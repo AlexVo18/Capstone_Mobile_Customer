@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useRef, useState } from "react";
+import React from "react";
 import Banner from "~/src/app/components/Customer/HomeScreen/Banner";
 import { HomeScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
 import LatestMachineries from "~/src/app/components/Customer/HomeScreen/LatestMachineries";
@@ -14,9 +14,6 @@ const Home = ({ route, navigation }: HomeScreenProps) => {
         ListHeaderComponent={
           <View>
             <Banner />
-            <View>
-              <Text>Slider</Text>
-            </View>
             <View className="w-full flex flex-row justify-between px-5">
               <Text className="text-xl font-bold">Các sản phẩm của shop</Text>
               <TouchableOpacity
