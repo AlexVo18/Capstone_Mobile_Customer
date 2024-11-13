@@ -19,6 +19,7 @@ import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
 import Collection from "../../screens/Customer/MachineScreens/Collection";
 import UserAddress from "../../screens/Customer/ProfileScreens/AddressScreens/UserAddress";
 import EditAddress from "../../screens/Customer/ProfileScreens/AddressScreens/EditAddress";
+import { AddressData } from "../../models/address_models";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
@@ -40,7 +41,7 @@ export type CustomerStackParamList = {
   Profile: undefined;
   TransactionHistory: undefined;
   NewAddress: undefined;
-  EditAddress: { addressId: number };
+  EditAddress: { chosenAddress: AddressData };
 };
 
 export type CustomerTabsScreenProps = NativeStackScreenProps<

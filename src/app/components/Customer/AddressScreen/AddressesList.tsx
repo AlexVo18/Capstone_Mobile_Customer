@@ -27,7 +27,7 @@ const AddressesList = ({
         <TouchableOpacity
           onPress={() =>
             newsScreenProps.navigation.navigate("EditAddress", {
-              addressId: item.addressId,
+              chosenAddress: item,
             })
           }
         >
