@@ -47,6 +47,8 @@ export default {
       "@react-native-firebase/app",
       "@react-native-firebase/messaging",
       "expo-secure-store",
+      "expo-build-properties",
+      "expo-font",
     ],
     experiments: {
       typedRoutes: true,

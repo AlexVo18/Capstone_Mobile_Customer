@@ -133,7 +133,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
         <View className="relative flex flex-row justify-end items-center">
           <TextInput
             value={formik.values.password}
-            secureTextEntry={viewPwd ? false : true}
+            secureTextEntry={!viewPwd}
             onChangeText={formik.handleChange("password")}
             placeholder="Nhập mật khẩu"
             className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
@@ -149,7 +149,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
             }}
             style={styles.eyeIcon}
           >
-            {viewPwd ? (
+            {!viewPwd ? (
               <EyeOff color={`hsl(${mutedForground})`} />
             ) : (
               <Eye color={`hsl(${mutedForground})`} />
@@ -193,7 +193,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
             }}
             style={styles.eyeIcon}
           >
-            {viewRePwd ? (
+            {!viewRePwd ? (
               <EyeOff color={`hsl(${mutedForground})`} />
             ) : (
               <Eye color={`hsl(${mutedForground})`} />

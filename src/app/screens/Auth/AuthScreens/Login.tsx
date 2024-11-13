@@ -55,6 +55,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
               roleId: response.roleId,
               status: response.status,
               username: response.username,
+              avatarImg: response.avatarImg,
             };
             const token: TokenData = {
               refreshToken: response.refreshToken,
@@ -167,7 +168,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
         <View className="relative flex flex-row justify-end items-center">
           <TextInput
             value={formik.values.password}
-            secureTextEntry={viewPwd ? false : true}
+            secureTextEntry={!viewPwd}
             onChangeText={(value) => {
               formik.setFieldValue("password", value);
             }}
@@ -181,7 +182,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
             onPress={() => setViewPwd(!viewPwd)}
             style={styles.eyeIcon}
           >
-            {viewPwd ? (
+            {!viewPwd ? (
               <EyeOff color={`hsl(${mutedForground})`} />
             ) : (
               <Eye color={`hsl(${mutedForground})`} />
@@ -191,7 +192,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
       </View>
       <View className="w-full mt-2 mb-6 items-end">
         <TouchableOpacity
-          onPress={() => navigation.navigate("Forgot")}
+          onPress={() => navigation.navigate("ForgotPassword")}
           className="flex items-center justify-center"
         >
           <Text className="" style={{ color: `hsl(${mutedForground})` }}>
@@ -203,7 +204,6 @@ const Login = ({ navigation }: LoginScreenProps) => {
         <View className="w-full">
           <Button
             mode="contained"
-            className=""
             buttonColor={mainBlue}
             textColor="white"
             style={[styles.buttonStyle]}
