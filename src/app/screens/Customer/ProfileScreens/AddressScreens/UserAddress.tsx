@@ -28,7 +28,6 @@ const UserAddress = ({ navigation, route }: UserAddressScreenProps) => {
     try {
       const response = await Address.getUserAddress();
       if (response) {
-        console.log(response);
         setAllList(response);
         setDisplayList(response.slice(0, 10));
       }

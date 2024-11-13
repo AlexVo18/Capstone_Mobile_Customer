@@ -58,7 +58,7 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
           const response = await Address.suggestAddresses(debouncedKeyword);
           if (response) {
             setSuggestions(response.predictions);
-            console.log(response);
+    
           }
         } catch (error) {
           console.log(error);
@@ -78,7 +78,6 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
       const response = await Address.stringAddressToGeocode(
         route.params.chosenAddress.addressBody
       );
-      console.log(response.results[0]);
       if (response) {
         setChosenLocation(response.results[0]);
       }
@@ -90,7 +89,6 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
   const handleGeoLocation = async (addressId: string) => {
     try {
       const response = await Address.addressToGeocode(addressId);
-      console.log(response.results[0]);
       if (response) {
         setChosenLocation(response.results[0]);
       }

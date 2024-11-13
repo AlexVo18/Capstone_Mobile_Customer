@@ -54,7 +54,7 @@ const NewAddress = ({ navigation }: NewAddressScreenProps) => {
           const response = await Address.suggestAddresses(debouncedKeyword);
           if (response) {
             setSuggestions(response.predictions);
-            console.log(response);
+  
           }
         } catch (error) {
           console.log(error);
@@ -72,7 +72,6 @@ const NewAddress = ({ navigation }: NewAddressScreenProps) => {
   const handleGeoLocation = async (addressId: string) => {
     try {
       const response = await Address.addressToGeocode(addressId);
-      console.log(response.results[0]);
       if (response) {
         setChosenLocation(response.results[0]);
       }

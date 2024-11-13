@@ -115,7 +115,6 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
             height={350}
             data={machinery?.machineImageList || []}
             scrollAnimationDuration={1000}
-            onSnapToItem={(index) => console.log("current index:", index)}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={{

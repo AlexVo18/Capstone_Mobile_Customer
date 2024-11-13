@@ -75,8 +75,6 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
 
   const checkedOTP = async (otp: string) => {
     setIsLoading(true);
-    console.log(otp);
-    console.log(route.params);
     try {
       if (otp.length === 6 && otp) {
         let response;
