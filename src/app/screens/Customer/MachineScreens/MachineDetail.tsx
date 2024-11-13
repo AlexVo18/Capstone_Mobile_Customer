@@ -125,7 +125,7 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
                   borderBottomEndRadius: 10,
                 }}
                 onPress={() =>
-                  navigation.navigate("ProductImagesSlide", {
+                  navigation.navigate("MachineImagesSlide", {
                     imagesList: machinery?.machineImageList || [],
                     chosenIndex: 1,
                   })

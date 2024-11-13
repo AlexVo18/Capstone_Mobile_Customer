@@ -48,7 +48,7 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
       />
       <SettingTab
         label="Địa chỉ giao hàng"
-        onPress={() => navigation.getParent()?.navigate("Address")}
+        onPress={() => navigation.getParent()?.navigate("UserAddress")}
         Icon={<MapPin size={24} color={mainBlue} />}
       />
       <SettingTab

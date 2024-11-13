@@ -1,11 +1,5 @@
-import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  FlatList,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import Content from "~/src/app/api/content/Content";
 import { NewsData } from "~/src/app/models/news_models";
@@ -14,7 +8,6 @@ import { NewsScreenProps } from "~/src/app/navigators/CustomerNavigators/Custome
 import NewsSearchBar from "~/src/app/components/Customer/NewsScreen/newsHeader/NewsSearchBar";
 import { Newspaper } from "lucide-react-native";
 import NewsList from "~/src/app/components/Customer/NewsScreen/NewsList";
-import { useDebounce } from "~/src/app/hooks/useDebounce";
 
 const News = ({ navigation, route }: NewsScreenProps) => {
   const [allList, setAllList] = useState<NewsData[]>([]);
@@ -24,7 +17,6 @@ const News = ({ navigation, route }: NewsScreenProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const pageRef = useRef(1);
-  // const debouncedKeyword = useDebounce(keyword);
 
   useLayoutEffect(() => {
     navigation.setOptions({

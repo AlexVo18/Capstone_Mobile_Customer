@@ -5,22 +5,20 @@ import {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 import CustomerTabs from "./CustomerTabs";
-import MachineDetail from "../../screens/Customer/ProductScreens/MachineDetail";
+import MachineDetail from "../../screens/Customer/MachineScreens/MachineDetail";
 import Cart from "../../screens/Customer/CartScreens/Cart";
 import UserTiers from "../../screens/Customer/PromotionScreens/UserTiers";
-import Address from "../../screens/Customer/ProfileScreens/AddressScreens/Address";
 import Profile from "../../screens/Customer/ProfileScreens/Profile";
-import UserReview from "../../screens/Customer/ProfileScreens/UserReview";
 import TransactionHistory from "../../screens/Customer/TransactionScreens/TransactionHistory";
-import VouchersWallet from "../../screens/Customer/PromotionScreens/VouchersWallet";
 import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
 import { mainBlue } from "../../constants/cssConstants";
-import ProductImagesSlide from "../../screens/Customer/ProductScreens/ProductImagesSlide";
+import MachineImagesSlide from "../../screens/Customer/MachineScreens/MachineImagesSlide";
 import { MachineryImageData } from "../../models/machinery_models";
-import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";
 import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
-import Collection from "../../screens/Customer/ProductScreens/Collection";
+import Collection from "../../screens/Customer/MachineScreens/Collection";
+import UserAddress from "../../screens/Customer/ProfileScreens/AddressScreens/UserAddress";
+import EditAddress from "../../screens/Customer/ProfileScreens/AddressScreens/EditAddress";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
@@ -35,15 +33,14 @@ export type CustomerStackParamList = {
     headerTintColor?: string;
     headerBackgroundColor?: string;
   };
-  ProductImagesSlide: { imagesList: MachineryImageData[]; chosenIndex: number };
+  MachineImagesSlide: { imagesList: MachineryImageData[]; chosenIndex: number };
   Cart: undefined;
   UserTiers: undefined;
-  Address: undefined;
+  UserAddress: undefined;
   Profile: undefined;
-  UserReview: undefined;
   TransactionHistory: undefined;
-  VouchersWallet: undefined;
   NewAddress: undefined;
+  EditAddress: { addressId: number };
 };
 
 export type CustomerTabsScreenProps = NativeStackScreenProps<
@@ -62,9 +59,9 @@ export type CollectionScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "Collection"
 >;
-export type ProductImagesSlideScreenProps = NativeStackScreenProps<
+export type MachineImagesSlideScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
-  "ProductImagesSlide"
+  "MachineImagesSlide"
 >;
 export type CartScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -74,13 +71,13 @@ export type UserTiersScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserTiers"
 >;
-export type VouchersWalletScreenProps = NativeStackScreenProps<
+export type UserAddressScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
-  "VouchersWallet"
+  "UserAddress"
 >;
-export type AddressScreenProps = NativeStackScreenProps<
+export type EditAddressScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
-  "Address"
+  "EditAddress"
 >;
 export type NewAddressScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -89,10 +86,6 @@ export type NewAddressScreenProps = NativeStackScreenProps<
 export type ProfileScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "Profile"
->;
-export type UserReviewScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "UserReview"
 >;
 export type TransactionHistoryScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -142,8 +135,8 @@ const CustomerNavigator = () => {
         })}
       />
       <Stack.Screen
-        name="ProductImagesSlide"
-        component={ProductImagesSlide}
+        name="MachineImagesSlide"
+        component={MachineImagesSlide}
         options={{
           headerTitle: "",
           headerTransparent: true,
@@ -176,17 +169,20 @@ const CustomerNavigator = () => {
       <Stack.Screen name="Cart" component={Cart} />
       {/* Voucher và khuyến mãi */}
       <Stack.Screen name="UserTiers" component={UserTiers} />
-      <Stack.Screen name="VouchersWallet" component={VouchersWallet} />
       {/* Địa chỉ */}
       <Stack.Screen
-        name="Address"
-        component={Address}
+        name="UserAddress"
+        component={UserAddress}
         options={{ headerTitle: "Địa chỉ của bạn" }}
+      />
+      <Stack.Screen
+        name="EditAddress"
+        component={EditAddress}
+        options={{ headerTitle: "Cập nhật địa chỉ" }}
       />
       <Stack.Screen name="NewAddress" component={NewAddress} />
       {/* Hồ sơ */}
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="UserReview" component={UserReview} />
       {/* Giao dịch */}
       <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
       {/* Chính sách */}
