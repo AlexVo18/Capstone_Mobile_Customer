@@ -19,6 +19,10 @@ import Collection from "../../screens/Customer/MachineScreens/Collection";
 import UserAddress from "../../screens/Customer/ProfileScreens/AddressScreens/UserAddress";
 import EditAddress from "../../screens/Customer/ProfileScreens/AddressScreens/EditAddress";
 import { AddressData } from "../../models/address_models";
+import MembershipTopTabs from "./MembershipNavigators/MembershipTopTabs";
+import HomeSearchBar from "../../components/Customer/HomeScreen/homeHeader/HomeSearchBar";
+import MachineSearchBar from "../../components/Customer/MachineScreen/MachineSearchBar";
+import MachineOpts from "../../components/Customer/MachineScreen/MachineOpts";
 
 export type CustomerStackParamList = {
   CustomerTabs: undefined;
@@ -41,6 +45,7 @@ export type CustomerStackParamList = {
   TransactionHistory: undefined;
   NewAddress: undefined;
   EditAddress: { chosenAddress: AddressData };
+  MembershipTopTabs: undefined;
 };
 
 export type CustomerTabsScreenProps = NativeStackScreenProps<
@@ -92,6 +97,11 @@ export type TransactionHistoryScreenProps = NativeStackScreenProps<
   "TransactionHistory"
 >;
 
+export type MembershipTopTabsProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "MembershipTopTabs"
+>;
+
 const CustomerNavigator = () => {
   const Stack = createNativeStackNavigator<CustomerStackParamList>();
   return (
@@ -105,18 +115,6 @@ const CustomerNavigator = () => {
       <Stack.Screen
         name="Collection"
         component={Collection}
-        // options={({ route }) => ({
-        //   headerTitle: "",
-        //   headerTransparent: true,
-        //   headerTintColor: route.params?.headerTintColor || "white",
-        //   headerStyle: {
-        //     backgroundColor:
-        //       route.params?.headerBackgroundColor || "rgba(128, 128, 128, 0.3)",
-        //   },
-        //   headerRight: () => (
-        //     <DetailOpts color={route.params?.headerTintColor || "white"} />
-        //   ),
-        // })}
       />
       <Stack.Screen
         name="MachineDetail"
@@ -169,6 +167,7 @@ const CustomerNavigator = () => {
       <Stack.Screen name="Cart" component={Cart} />
       {/* Voucher và khuyến mãi */}
       <Stack.Screen name="UserTiers" component={UserTiers} />
+      <Stack.Screen name="MembershipTopTabs" component={MembershipTopTabs} />
       {/* Địa chỉ */}
       <Stack.Screen
         name="UserAddress"

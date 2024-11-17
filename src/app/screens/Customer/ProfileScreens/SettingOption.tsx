@@ -8,11 +8,16 @@ import {
   Award,
   BookMinus,
   ChevronRight,
+  FileLock,
   IdCard,
   MapPin,
+  Package,
+  Receipt,
+  ScrollText,
   Star,
   TicketPercent,
   User,
+  Wrench,
 } from "lucide-react-native";
 import { SettingOptionScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
 import { Button } from "react-native-paper";
@@ -52,23 +57,29 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
         Icon={<MapPin size={24} color={mainBlue} />}
       />
       <SettingTab
-        label="Đánh giá của tôi"
-        onPress={() => navigation.getParent()?.navigate("UserReview")}
-        Icon={<Star size={24} color={mainBlue} />}
+        label="Đơn hàng"
+        onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
+        Icon={<Package size={24} color={mainBlue} />}
       />
       <SettingTab
-        label="Lịch sử giao dịch"
+        label="Hợp đồng"
         onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
-        Icon={<ArrowRightLeft size={24} color={mainBlue} />}
+        Icon={<ScrollText size={24} color={mainBlue} />}
       />
       <SettingTab
-        label="Ví Voucher"
+        label="Thanh toán"
         onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
-        Icon={<TicketPercent size={24} color={mainBlue} />}
+        Icon={<Receipt size={24} color={mainBlue} />}
+      />
+
+      <SettingTab
+        label="Yêu cầu sửa chữa"
+        onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
+        Icon={<Wrench size={24} color={mainBlue} />}
       />
       <SettingTab
         label="Khách hàng thân thiết"
-        onPress={() => navigation.getParent()?.navigate("UserTiers")}
+        onPress={() => navigation.getParent()?.navigate("MembershipTopTabs")}
         Icon={<Award size={24} color={mainBlue} />}
         title="Khách hàng bạc"
       />
@@ -78,9 +89,9 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
         Icon={<BookMinus size={24} color={mainBlue} />}
       />
       <SettingTab
-        label="Thiết lập tài khoản"
+        label="Đổi mật khẩu"
         onPress={() => navigation.getParent()?.navigate("UserTiers")}
-        Icon={<IdCard size={24} color={mainBlue} />}
+        Icon={<FileLock size={24} color={mainBlue} />}
       />
       <View className="mx-6">
         <Button

@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   MachineryData,
   SearchMachineryParams,
@@ -13,11 +13,13 @@ import { CollectionScreenProps } from "~/src/app/navigators/CustomerNavigators/C
 import MachineList from "~/src/app/components/Customer/MachineScreen/MachineList";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { PackageSearch } from "lucide-react-native";
+import MachineSearchBar from "~/src/app/components/Customer/MachineScreen/MachineSearchBar";
+import MachineOpts from "~/src/app/components/Customer/MachineScreen/MachineOpts";
 
 const Collection = ({ navigation, route }: CollectionScreenProps) => {
   const [searchParams, setSearchParams] = useState<SearchMachineryParams>({
     keyword: "",
-    priceRange: [500000, 100000000],
+    priceRange: [100000, 100000000],
     categories: [],
   });
   const debounceKeyword = useDebounce(searchParams.keyword);
@@ -36,6 +38,19 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
     // Lấy loại
     getCategories();
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <MachineSearchBar
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
+      ),
+      headerRight: () => <MachineOpts    searchParams={searchParams}
+      setSearchParams={setSearchParams}/>,
+    });
+  }, [searchParams.keyword]);
 
   // Chạy filter khi có list hoặc params
   useEffect(() => {
@@ -147,7 +162,7 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
         <View className="w-full h-full flex justify-center items-center flex-col">
           <PackageSearch color={`hsl(${mutedForground})`} size={48} />
           <Text style={{ color: `hsl(${mutedForground})` }} className="text-lg">
-            Không có tin tức nào cả
+            Không có máy móc nào cả
           </Text>
         </View>
       )}
