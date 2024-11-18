@@ -5,7 +5,13 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   MachineryData,
   SearchMachineryParams,
@@ -54,6 +60,15 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
     getCategories();
   }, []);
 
+  const toggleDrawer = useCallback(() => {
+    translateX.value = withSpring(isOpen ? DRAWER_WIDTH : 0, {
+      damping: 20,
+      stiffness: 150,
+      mass: 0.5,
+    });
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -64,16 +79,7 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
       ),
       headerRight: () => <MachineOpts onToggle={toggleDrawer} />,
     });
-  }, [searchParams.keyword, isOpen]);
-
-  const toggleDrawer = () => {
-    translateX.value = withSpring(isOpen ? DRAWER_WIDTH : 0, {
-      damping: 20,
-      stiffness: 150,
-      mass: 0.5,
-    });
-    setIsOpen(!isOpen);
-  };
+  }, [isOpen, searchParams.keyword]);
 
   // Chạy filter khi có list hoặc params
   useEffect(() => {
@@ -182,13 +188,6 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
             handleLoadMore={handleLoadMore}
             isLoadingMore={isLoadingMore}
           />
-          <MachineDrawer
-            translateX={translateX}
-            searchParams={searchParams}
-            setSearchParams={setSearchParams}
-            categoryList={categoryList}
-            isCateLoading={isCateLoading}
-          />
         </>
       ) : (
         <View className="w-full h-full flex justify-center items-center flex-col">
@@ -198,6 +197,13 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
           </Text>
         </View>
       )}
+      <MachineDrawer
+        translateX={translateX}
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        categoryList={categoryList}
+        isCateLoading={isCateLoading}
+      />
     </View>
   );
 };
