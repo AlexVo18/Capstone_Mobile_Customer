@@ -1,4 +1,10 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   MachineryData,
@@ -15,6 +21,15 @@ import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { PackageSearch } from "lucide-react-native";
 import MachineSearchBar from "~/src/app/components/Customer/MachineScreen/MachineSearchBar";
 import MachineOpts from "~/src/app/components/Customer/MachineScreen/MachineOpts";
+import {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import MachineDrawer from "~/src/app/components/Customer/MachineScreen/MachineDrawer";
+
+const { width } = Dimensions.get("window");
+const DRAWER_WIDTH = width * 0.7;
 
 const Collection = ({ navigation, route }: CollectionScreenProps) => {
   const [searchParams, setSearchParams] = useState<SearchMachineryParams>({
@@ -30,12 +45,12 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
   const [categoryList, setCategoryList] = useState<CategoryData[]>([]);
   const [isCateLoading, setIsCateLoading] = useState<boolean>(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const translateX = useSharedValue(DRAWER_WIDTH);
+  const [isOpen, setIsOpen] = useState(false);
   const pageRef = useRef(1);
 
   useEffect(() => {
-    // Lấy máy
     getMachineries();
-    // Lấy loại
     getCategories();
   }, []);
 
@@ -47,10 +62,18 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
           setSearchParams={setSearchParams}
         />
       ),
-      headerRight: () => <MachineOpts    searchParams={searchParams}
-      setSearchParams={setSearchParams}/>,
+      headerRight: () => <MachineOpts onToggle={toggleDrawer} />,
     });
-  }, [searchParams.keyword]);
+  }, [searchParams.keyword, isOpen]);
+
+  const toggleDrawer = () => {
+    translateX.value = withSpring(isOpen ? DRAWER_WIDTH : 0, {
+      damping: 20,
+      stiffness: 150,
+      mass: 0.5,
+    });
+    setIsOpen(!isOpen);
+  };
 
   // Chạy filter khi có list hoặc params
   useEffect(() => {
@@ -152,12 +175,21 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
           <ActivityIndicator size="large" color={mainBlue} />
         </View>
       ) : displayList.length !== 0 ? (
-        <MachineList
-          displayList={displayList}
-          collectionScreenProps={{ navigation, route }}
-          handleLoadMore={handleLoadMore}
-          isLoadingMore={isLoadingMore}
-        />
+        <>
+          <MachineList
+            displayList={displayList}
+            collectionScreenProps={{ navigation, route }}
+            handleLoadMore={handleLoadMore}
+            isLoadingMore={isLoadingMore}
+          />
+          <MachineDrawer
+            translateX={translateX}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            categoryList={categoryList}
+            isCateLoading={isCateLoading}
+          />
+        </>
       ) : (
         <View className="w-full h-full flex justify-center items-center flex-col">
           <PackageSearch color={`hsl(${mutedForground})`} size={48} />

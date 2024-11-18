@@ -1,21 +1,15 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import {
-  ArrowRightLeft,
   Award,
   BookMinus,
-  ChevronRight,
   FileLock,
-  IdCard,
   MapPin,
   Package,
   Receipt,
   ScrollText,
-  Star,
-  TicketPercent,
   User,
   Wrench,
 } from "lucide-react-native";
@@ -25,7 +19,8 @@ import SettingTab from "~/src/app/components/settingTabs/SettingTab";
 import useAuth from "~/src/app/hooks/useAuth";
 
 const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
-  const { logout } = useAuth();
+  const { logout, userInfo } = useAuth();
+
   return (
     <ScrollView>
       <View
@@ -38,18 +33,23 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
       >
         <TouchableOpacity>
           <Image
-            source={{ uri: "https://i.redd.it/rm5trt03a5861.jpg" }}
+            source={{ uri: userInfo?.avatarImg }}
             style={{ width: 100, height: 100, borderRadius: 100 }}
           />
         </TouchableOpacity>
         <View>
-          <Text className="text-xl font-semibold">John Lee</Text>
+          <Text className="text-xl font-semibold">{userInfo?.name}</Text>
         </View>
       </View>
       <SettingTab
         label="Hồ sơ của tôi"
         onPress={() => navigation.getParent()?.navigate("Profile")}
         Icon={<User size={24} color={mainBlue} />}
+      />
+      <SettingTab
+        label="Đổi mật khẩu"
+        onPress={() => navigation.getParent()?.navigate("ChangePassword")}
+        Icon={<FileLock size={24} color={mainBlue} />}
       />
       <SettingTab
         label="Địa chỉ giao hàng"
@@ -87,11 +87,6 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
         label="Chính sách quy định"
         onPress={() => navigation.getParent()?.navigate("UserTiers")}
         Icon={<BookMinus size={24} color={mainBlue} />}
-      />
-      <SettingTab
-        label="Đổi mật khẩu"
-        onPress={() => navigation.getParent()?.navigate("UserTiers")}
-        Icon={<FileLock size={24} color={mainBlue} />}
       />
       <View className="mx-6">
         <Button
