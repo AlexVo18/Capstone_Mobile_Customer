@@ -77,23 +77,25 @@ const UserAddress = ({ navigation, route }: UserAddressScreenProps) => {
         </View>
       ) : displayList.length !== 0 ? (
         <>
-          <View className="px-10 mb-5">
-            <Button
-              mode="outlined"
-              onPress={() => navigation.navigate("NewAddress")}
-              className="mt-5"
-              textColor={mainBlue}
-              style={[styles.outlineButton, styles.buttonStyle]}
-            >
-              <Text className="text-lg">Thêm địa chỉ mới</Text>
-            </Button>
-          </View>
+          
 
           <AddressesList
             displayList={displayList}
             newsScreenProps={{ navigation, route }}
             handleLoadMore={handleLoadMore}
             isLoadingMore={isLoadingMore}
+            ListHeaderComponent={<View className="px-10 mb-5">
+              <Button
+                mode="outlined"
+                onPress={() => navigation.navigate("NewAddress")}
+                className="mt-5"
+                textColor={mainBlue}
+                style={[styles.outlineButton, styles.buttonStyle]}
+                
+              >
+                <Text className="text-lg">Thêm địa chỉ mới</Text>
+              </Button>
+            </View>}
           />
         </>
       ) : (

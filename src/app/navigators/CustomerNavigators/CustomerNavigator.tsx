@@ -112,10 +112,7 @@ const CustomerNavigator = () => {
         options={{ headerShown: false }}
       />
       {/* Máy móc */}
-      <Stack.Screen
-        name="Collection"
-        component={Collection}
-      />
+      <Stack.Screen name="Collection" component={Collection} />
       <Stack.Screen
         name="MachineDetail"
         component={MachineDetail}

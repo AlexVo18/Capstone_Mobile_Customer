@@ -5,12 +5,14 @@ import { AddressData } from "~/src/app/models/address_models";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { ActivityIndicator } from "react-native-paper";
+import { MapPinHouse } from "lucide-react-native";
 
 interface Props {
   displayList: AddressData[];
   newsScreenProps: UserAddressScreenProps;
   handleLoadMore: () => void;
   isLoadingMore: boolean;
+  ListHeaderComponent: React.ReactElement;
 }
 
 const AddressesList = ({
@@ -18,11 +20,13 @@ const AddressesList = ({
   newsScreenProps,
   handleLoadMore,
   isLoadingMore,
+  ListHeaderComponent
 }: Props) => {
   return (
     <FlatList
       data={displayList}
       keyExtractor={(item) => item.addressId.toString()}
+      ListHeaderComponent={ListHeaderComponent}
       renderItem={({ item }) => (
         <TouchableOpacity
           onPress={() =>
@@ -33,10 +37,16 @@ const AddressesList = ({
         >
           <View
             style={[styles.card]}
-            className="p-[20px] flex flex-row gap-2 border-b-[0.5px]"
+            className="p-[20px] flex flex-row gap-2 border-b-[0.5px] "
           >
-            <View style={{ flex: 1 }} className="flex justify-between">
+            <View
+              style={{ flex: 1 }}
+              className="flex gap-2 flex-row items-center"
+            >
               <View>
+                <MapPinHouse size={20} color={mainBlue} />
+              </View>
+              <View className="mr-[20px]">
                 <Text className="">{item.addressBody}</Text>
               </View>
             </View>

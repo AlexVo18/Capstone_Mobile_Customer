@@ -4,10 +4,7 @@ import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { formatVND } from "~/src/app/utils/formatVND";
 import { HomeScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
-import {
-  MachineryData,
-  MachineryImageData,
-} from "~/src/app/models/machinery_models";
+import { MachineryData } from "~/src/app/models/machinery_models";
 import Toast from "react-native-toast-message";
 import Machinery from "~/src/app/api/machinery/Machinery";
 import { ActivityIndicator } from "react-native-paper";
