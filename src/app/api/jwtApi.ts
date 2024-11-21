@@ -7,13 +7,9 @@ import axios, {
 import Auth from "./auth/Auth";
 import { TokenData } from "../models/auth_models";
 import { VITE_SERVER } from "@env";
-import { isTokenExpired } from "../utils/isTokenExpired";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
-
-if (__DEV__) {
-  console.log("Environment URL:", VITE_SERVER);
-}
+import useAuthStore from "../store/useAuthStore";
 
 const baseURL = VITE_SERVER;
 
@@ -25,9 +21,9 @@ const setToken = (tokenData: TokenData): void => {
 };
 
 const clearToken = () => {
-  SecureStore.deleteItemAsync("user");
-  SecureStore.deleteItemAsync("token");
+  useAuthStore.getState().logout();
 };
+
 const onTokenRefreshed = (token: string): void => {
   refreshSubscribers.forEach((callback) => callback(token));
   refreshSubscribers = [];
@@ -46,39 +42,11 @@ const getToken = async () => {
   return null;
 };
 
-// Lấy accessToken mới
-export const getNewAccessToken = async () => {
-  try {
-    const token = await getToken();
-    if (!token.refreshToken) {
-      throw new Error("No refresh token");
-    }
-
-    const response = await Auth.refreshAccessToken({
-      accessToken: token.token,
-      refreshToken: token.refreshToken,
-    });
-    if (response) {
-      const newToken: TokenData = {
-        refreshToken: token.refreshToken,
-        refreshTokenExpiryTime: token.refreshTokenExpiryTime,
-        token: response.token,
-      };
-      const stringifyToken = JSON.stringify(newToken);
-      SecureStore.setItemAsync("token", stringifyToken);
-
-      return newToken;
-    }
-  } catch (error) {
-    console.log("Error refreshing access token:", error);
-    return undefined;
-  }
-};
-
 export const refreshAccessToken = async () => {
   try {
     const token = await getToken();
     if (!token?.refreshToken) {
+      clearToken();
       throw new Error("không có token");
     }
 
@@ -86,7 +54,7 @@ export const refreshAccessToken = async () => {
       accessToken: token.token,
       refreshToken: token.refreshToken,
     });
-
+    console.log(response);
     if (response?.token) {
       const newToken: TokenData = {
         refreshToken: token.refreshToken,
@@ -99,6 +67,7 @@ export const refreshAccessToken = async () => {
     return null;
   } catch (error) {
     console.error("Error refreshing access token:", error);
+    clearToken();
     return null;
   }
 };
@@ -109,11 +78,6 @@ const setupRequestInterceptor = (instance: AxiosInstance): void => {
       const token = await getToken();
 
       if (!token) {
-        return config;
-      }
-
-      if (!isTokenExpired(token.token)) {
-        config.headers.Authorization = `Bearer ${token.token}`;
         return config;
       }
 
@@ -167,6 +131,7 @@ const setupResponseInterceptor = (instance: AxiosInstance): void => {
             }
           } catch (refreshError) {
             console.error("Error refreshing token:", refreshError);
+            clearToken();
           } finally {
             isRefreshing = false;
           }
@@ -178,13 +143,13 @@ const setupResponseInterceptor = (instance: AxiosInstance): void => {
             });
           });
         }
-        clearToken();
       }
       if (error.response?.status === 403) {
         Toast.show({
           type: "error",
-          text1: "Phiên đăng nhập đã hết hạn",
+          text1: "Không có quyền truy cập",
         });
+        clearToken();
       }
 
       return Promise.reject(error);

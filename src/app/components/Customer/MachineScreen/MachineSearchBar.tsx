@@ -2,7 +2,6 @@ import { StyleSheet, View, TextInput } from "react-native";
 import React, { useState } from "react";
 import { Search } from "lucide-react-native";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
-import { cn } from "~/src/app/utils/cn";
 import { SearchMachineryParams } from "~/src/app/models/machinery_models";
 
 interface Props {
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
     width: "85%",
     borderWidth: 1,
     borderColor: "transparent",
-    left: -40
+    left: -40,
   },
   focused: {
     borderColor: mainBlue,
