@@ -3,10 +3,8 @@ import {
   createMaterialTopTabNavigator,
   MaterialTopTabScreenProps,
 } from "@react-navigation/material-top-tabs";
-import { mainBlue } from "~/src/app/constants/cssConstants";
 import MembershipTiers from "~/src/app/screens/Customer/MembershipScreens/MembershipTiers";
 import MembershipLogs from "~/src/app/screens/Customer/MembershipScreens/MembershipLogs";
-import { Dimensions } from "react-native";
 
 export type MembershipTopTabParamList = {
   MembershipTiers: undefined;
@@ -27,17 +25,9 @@ const MembershipTopTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarScrollEnabled: true,
-        tabBarIndicatorStyle: {
-          backgroundColor: mainBlue,
+        tabBarContentContainerStyle: {
+          justifyContent: "space-around",
         },
-        tabBarLabelStyle: {
-          textTransform: "none",
-        },
-        // tabBarItemStyle: { width: 130 },
-      }}
-      initialLayout={{
-        width: Dimensions.get("window").width,
       }}
     >
       <Tab.Screen
@@ -45,6 +35,9 @@ const MembershipTopTabs = () => {
         component={MembershipTiers}
         options={{
           tabBarLabel: "Quyền lợi khách hàng",
+          tabBarLabelStyle: {
+            textAlign: "center",
+          },
         }}
       />
       <Tab.Screen
@@ -52,6 +45,9 @@ const MembershipTopTabs = () => {
         component={MembershipLogs}
         options={{
           tabBarLabel: "Hành trình hiện tại",
+          tabBarLabelStyle: {
+            textAlign: "center",
+          },
         }}
       />
     </Tab.Navigator>

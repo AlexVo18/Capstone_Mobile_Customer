@@ -26,6 +26,9 @@ export interface CreateOrderParams {
   note: string;
   rentingRequestSerialNumbers: OrderMachine[];
   serviceRentingRequests: number[];
+  accountNumber: string;
+  beneficiaryBank: string;
+  beneficiaryName: string;
 }
 
 export interface OrderMachine {

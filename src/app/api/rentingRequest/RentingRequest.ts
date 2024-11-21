@@ -19,6 +19,9 @@ const RentingRequest = {
       note: input.note,
       rentingRequestSerialNumbers: input.rentingRequestSerialNumbers,
       serviceRentingRequests: input.serviceRentingRequests,
+      accountNumber: input.accountNumber,
+      beneficiaryBank: input.beneficiaryBank,
+      beneficiaryName: input.beneficiaryName,
     }),
   getUserRequests: () => requests.jwtApiGet("/rentings/customer/requests"),
   cancelRequest: (input: string) =>

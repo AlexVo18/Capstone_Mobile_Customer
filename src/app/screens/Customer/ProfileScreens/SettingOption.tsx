@@ -78,17 +78,16 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
         Icon={<Wrench size={24} color={mainBlue} />}
       />
       <SettingTab
-        label="Khách hàng thân thiết"
+        label="Quyền lợi khách hàng"
         onPress={() => navigation.getParent()?.navigate("MembershipTopTabs")}
         Icon={<Award size={24} color={mainBlue} />}
-        title="Khách hàng bạc"
       />
       <SettingTab
         label="Chính sách quy định"
         onPress={() => navigation.getParent()?.navigate("UserTiers")}
         Icon={<BookMinus size={24} color={mainBlue} />}
       />
-      <View className="mx-6">
+      <View className="mx-6 mb-5">
         <Button
           mode="contained"
           className="py-1 mt-5 "
