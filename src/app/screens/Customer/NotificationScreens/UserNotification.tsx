@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const VouchersWallet = () => {
+const UserNotification = () => {
   return (
     <View>
-      <Text>VouchersWallet</Text>
+      <Text>UserNotification</Text>
     </View>
   );
 };
 
-export default VouchersWallet;
+export default UserNotification;
 
 const styles = StyleSheet.create({});

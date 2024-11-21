@@ -84,7 +84,7 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
       />
       <SettingTab
         label="Chính sách quy định"
-        onPress={() => navigation.getParent()?.navigate("UserTiers")}
+        onPress={() => navigation.getParent()?.navigate("SystemTerms")}
         Icon={<BookMinus size={24} color={mainBlue} />}
       />
       <View className="mx-6 mb-5">

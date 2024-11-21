@@ -13,7 +13,7 @@ const Home = ({ route, navigation }: HomeScreenProps) => {
         route={route}
         ListHeaderComponent={
           <View>
-            <Banner />
+            <Banner navigation={navigation} />
             <View className="w-full flex flex-row justify-between px-5">
               <Text className="text-xl font-bold">Các sản phẩm của shop</Text>
               <TouchableOpacity

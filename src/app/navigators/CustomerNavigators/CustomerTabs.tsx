@@ -4,7 +4,7 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import Home from "../../screens/Customer/HomeScreens/Home";
-import SettingOption from "../../screens/Customer/ProfileScreens/SettingOption";
+import SettingOption from "../../screens/Customer/SettingScreens/SettingOption";
 import { House, Newspaper, Package, Settings } from "lucide-react-native";
 import { mainBlue } from "../../constants/cssConstants";
 import HomeUserOpts from "../../components/Customer/HomeScreen/homeHeader/HomeUserOpts";

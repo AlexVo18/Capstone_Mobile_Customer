@@ -3,7 +3,6 @@ import React from "react";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { Rotate3D } from "lucide-react-native";
-import { useNavigation } from "@react-navigation/native";
 import { AuthMenuScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 
 const AuthMenu = ({ route, navigation }: AuthMenuScreenProps) => {

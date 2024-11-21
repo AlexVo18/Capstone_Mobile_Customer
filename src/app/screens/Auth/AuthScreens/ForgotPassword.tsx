@@ -310,23 +310,40 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
         ) : null}
       </View>
       <View className="w-full">
-        <Button
-          mode="contained"
-          className=""
-          buttonColor={mainBlue}
-          textColor="white"
-          style={[styles.buttonStyle]}
-          disabled={
-            isLoading || isFormEmpty() || !!Object.keys(formik.errors).length
-          }
-          onPress={() => formik.handleSubmit()}
-        >
-          {isLoading ? (
-            <Text className="text-lg">Đang tải</Text>
-          ) : (
-            <Text className="text-lg">Đổi mật khẩu</Text>
-          )}
-        </Button>
+        {isLoading || isFormEmpty() || !!Object.keys(formik.errors).length ? (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.disableButtonColor]}
+            disabled
+          >
+            {isLoading ? (
+              <Text className="text-lg text-center text-gray-500 font-semibold">
+                Đang tải
+              </Text>
+            ) : (
+              <Text className="text-lg text-center text-gray-500 font-semibold">
+                Đổi mật khẩu
+              </Text>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.buttonColor]}
+            disabled={
+              isLoading || isFormEmpty() || !!Object.keys(formik.errors).length
+            }
+            onPress={() => formik.handleSubmit()}
+          >
+            {isLoading ? (
+              <Text className="text-lg text-center text-gray-500 font-semibold">
+                Đang tải
+              </Text>
+            ) : (
+              <Text className="text-lg text-center text-white font-semibold">
+                Đổi mật khẩu
+              </Text>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
         <Text style={{ fontSize: 16 }}>Đã nhớ mật khẩu? </Text>
@@ -354,7 +371,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: "100%",
     borderRadius: 10,
-    paddingVertical: 4,
+    paddingVertical: 14,
+  },
+  buttonColor: {
+    backgroundColor: mainBlue,
+  },
+  disableButtonColor: {
+    backgroundColor: "#d1d5db",
   },
   sendOtpButton: {
     borderRadius: 10,

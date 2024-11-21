@@ -6,21 +6,21 @@ import {
 import CustomerTabs from "./CustomerTabs";
 import MachineDetail from "../../screens/Customer/MachineScreens/MachineDetail";
 import Cart from "../../screens/Customer/CartScreens/Cart";
-import UserTiers from "../../screens/Customer/PromotionScreens/UserTiers";
 import Profile from "../../screens/Customer/ProfileScreens/Profile";
 import TransactionHistory from "../../screens/Customer/TransactionScreens/TransactionHistory";
-import NewAddress from "../../screens/Customer/ProfileScreens/AddressScreens/NewAddress";
+import NewAddress from "../../screens/Customer/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
 import { mainBlue } from "../../constants/cssConstants";
 import MachineImagesSlide from "../../screens/Customer/MachineScreens/MachineImagesSlide";
 import { MachineryImageData } from "../../models/machinery_models";
 import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
 import Collection from "../../screens/Customer/MachineScreens/Collection";
-import UserAddress from "../../screens/Customer/ProfileScreens/AddressScreens/UserAddress";
-import EditAddress from "../../screens/Customer/ProfileScreens/AddressScreens/EditAddress";
+import UserAddress from "../../screens/Customer/AddressScreens/UserAddress";
+import EditAddress from "../../screens/Customer/AddressScreens/EditAddress";
 import { AddressData } from "../../models/address_models";
 import MembershipTopTabs from "./MembershipNavigators/MembershipTopTabs";
 import ChangePassword from "../../screens/Customer/ProfileScreens/ChangePassword";
+import SystemTerms from "../../screens/Customer/TermScreens/SystemTerms";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -51,6 +51,7 @@ export type CustomerStackParamList = {
   UserAddress: undefined;
 
   // Thanh toán
+  TransactionHistory: undefined;
 
   // Đơn hàng
 
@@ -58,13 +59,11 @@ export type CustomerStackParamList = {
 
   // Hợp đồng
 
-  UserTiers: undefined;
-  TransactionHistory: undefined;
-
   // Quyền lợi
   MembershipTopTabs: undefined;
 
   // Điều khoản
+  SystemTerms: undefined;
 };
 
 // Tabs
@@ -96,10 +95,6 @@ export type CartScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "Cart"
 >;
-export type UserTiersScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "UserTiers"
->;
 export type UserAddressScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserAddress"
@@ -130,6 +125,11 @@ export type MembershipTopTabsProps = NativeStackScreenProps<
   "MembershipTopTabs"
 >;
 
+export type SystemTermsScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "SystemTerms"
+>;
+
 const CustomerNavigator = () => {
   const Stack = createNativeStackNavigator<CustomerStackParamList>();
   return (
@@ -139,6 +139,7 @@ const CustomerNavigator = () => {
         component={CustomerTabs}
         options={{ headerShown: false }}
       />
+
       {/* Máy móc */}
       <Stack.Screen name="Collection" component={Collection} />
       <Stack.Screen
@@ -157,6 +158,7 @@ const CustomerNavigator = () => {
           ),
         })}
       />
+      
       <Stack.Screen
         name="MachineImagesSlide"
         component={MachineImagesSlide}
@@ -167,9 +169,9 @@ const CustomerNavigator = () => {
           headerStyle: {
             backgroundColor: "rgba(128, 128, 128, 0.3)",
           },
-          // headerRight: () => <DetailOpts />,
         }}
       />
+      
       {/* Tin tức */}
       <Stack.Screen
         name="NewsDetail"
@@ -190,13 +192,14 @@ const CustomerNavigator = () => {
 
       {/* Giỏ hàng */}
       <Stack.Screen name="Cart" component={Cart} />
-      {/* Voucher và khuyến mãi */}
-      <Stack.Screen name="UserTiers" component={UserTiers} />
+
+      {/* Quyền lợi */}
       <Stack.Screen
         name="MembershipTopTabs"
         component={MembershipTopTabs}
         options={{ headerTitle: "Quyền lợi khách hàng" }}
       />
+
       {/* Địa chỉ */}
       <Stack.Screen
         name="UserAddress"
@@ -209,12 +212,21 @@ const CustomerNavigator = () => {
         options={{ headerTitle: "Cập nhật địa chỉ" }}
       />
       <Stack.Screen name="NewAddress" component={NewAddress} />
+
       {/* Hồ sơ */}
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
+
       {/* Giao dịch */}
       <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
+      
+
       {/* Chính sách */}
+      <Stack.Screen
+        name="SystemTerms"
+        component={SystemTerms}
+        options={{ headerTitle: "Chính sách quy định" }}
+      />
     </Stack.Navigator>
   );
 };
