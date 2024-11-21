@@ -4,20 +4,20 @@ import {
   MaterialTopTabScreenProps,
 } from "@react-navigation/material-top-tabs";
 import MembershipTiers from "~/src/app/screens/Customer/MembershipScreens/MembershipTiers";
-import MembershipLogs from "~/src/app/screens/Customer/MembershipScreens/MembershipLogs";
+import UserMembership from "~/src/app/screens/Customer/MembershipScreens/UserMembership";
 
 export type MembershipTopTabParamList = {
   MembershipTiers: undefined;
-  MembershipLogs: undefined;
+  UserMembership: undefined;
 };
 
 export type MembershipTiersProps = MaterialTopTabScreenProps<
   MembershipTopTabParamList,
   "MembershipTiers"
 >;
-export type MembershipLogsProps = MaterialTopTabScreenProps<
+export type UserMembershipProps = MaterialTopTabScreenProps<
   MembershipTopTabParamList,
-  "MembershipLogs"
+  "UserMembership"
 >;
 
 const MembershipTopTabs = () => {
@@ -34,17 +34,17 @@ const MembershipTopTabs = () => {
         name="MembershipTiers"
         component={MembershipTiers}
         options={{
-          tabBarLabel: "Quyền lợi khách hàng",
+          tabBarLabel: "Thông tin quyền lợi",
           tabBarLabelStyle: {
             textAlign: "center",
           },
         }}
       />
       <Tab.Screen
-        name="MembershipLogs"
-        component={MembershipLogs}
+        name="UserMembership"
+        component={UserMembership}
         options={{
-          tabBarLabel: "Hành trình hiện tại",
+          tabBarLabel: "Nhật kí thành viên",
           tabBarLabelStyle: {
             textAlign: "center",
           },

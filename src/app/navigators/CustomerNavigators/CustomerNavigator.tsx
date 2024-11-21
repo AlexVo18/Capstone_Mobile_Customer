@@ -192,7 +192,11 @@ const CustomerNavigator = () => {
       <Stack.Screen name="Cart" component={Cart} />
       {/* Voucher và khuyến mãi */}
       <Stack.Screen name="UserTiers" component={UserTiers} />
-      <Stack.Screen name="MembershipTopTabs" component={MembershipTopTabs} />
+      <Stack.Screen
+        name="MembershipTopTabs"
+        component={MembershipTopTabs}
+        options={{ headerTitle: "Quyền lợi khách hàng" }}
+      />
       {/* Địa chỉ */}
       <Stack.Screen
         name="UserAddress"

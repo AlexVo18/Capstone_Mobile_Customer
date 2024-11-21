@@ -47,7 +47,7 @@ const MembershipTiers = () => {
                 style={[styles.card, styles.elevation]}
                 className="p-[10px] flex flex-row gap-2"
               >
-                <View className="items-center justify-center relative">
+                <View className="items-center justify-center ">
                   <Image
                     source={
                       membership.membershipRankName === "Hạng Đồng"
@@ -93,6 +93,7 @@ export default MembershipTiers;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   card: {
     backgroundColor: "white",
