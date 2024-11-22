@@ -1,17 +1,14 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Bell, ShoppingCart } from "lucide-react-native";
+import BellToggler from "../../NotificationScreen/BellToggler";
 
 const HomeUserOpts = () => {
   return (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <TouchableOpacity style={{ marginRight: 15 }}>
+      {/* <TouchableOpacity style={{ marginRight: 15 }}>
         <ShoppingCart size={24} color="black" />
-      </TouchableOpacity>
-      <TouchableOpacity style={{ marginRight: 10 }}>
-        <Bell size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <BellToggler style={{ marginRight: 15 }} />
     </View>
   );
 };

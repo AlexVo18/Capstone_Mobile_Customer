@@ -54,6 +54,7 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
   const translateX = useSharedValue(DRAWER_WIDTH);
   const [isOpen, setIsOpen] = useState(false);
   const pageRef = useRef(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     getMachineries();
@@ -125,7 +126,7 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
       setIsLoadingMore(true);
 
       pageRef.current += 1;
-      setDisplayList(filteredList.slice(0, 10 * pageRef.current));
+      setDisplayList(filteredList.slice(0, itemsPerPage * pageRef.current));
 
       setIsLoadingMore(false);
     }
@@ -170,7 +171,7 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
       // Lấy lại 10 item đầu
       pageRef.current = 1;
       setFilteredList(filtered); // List đã filter ban đầu
-      setDisplayList(filtered.slice(0, 10)); // List sẽ được hiện
+      setDisplayList(filtered.slice(0, itemsPerPage)); // List sẽ được hiện
     }
   };
 

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { UserMembershipProps } from "~/src/app/navigators/CustomerNavigators/MembershipNavigators/MembershipTopTabs";
-import MemberShipLog from "~/src/app/components/Customer/MembershipScreens/MemberShipLog";
+import MemberShipLog from "~/src/app/components/Customer/MembershipScreen/MemberShipLog";
 import {
   CustomerMemberShip,
   MembershipLog,

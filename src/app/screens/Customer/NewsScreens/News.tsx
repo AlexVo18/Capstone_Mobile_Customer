@@ -5,7 +5,7 @@ import Content from "~/src/app/api/content/Content";
 import { NewsData } from "~/src/app/models/news_models";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { NewsScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
-import NewsSearchBar from "~/src/app/components/Customer/NewsScreen/newsHeader/NewsSearchBar";
+import NewsSearchBar from "~/src/app/components/Customer/NewsScreen/NewsSearchBar";
 import { Newspaper } from "lucide-react-native";
 import NewsList from "~/src/app/components/Customer/NewsScreen/NewsList";
 

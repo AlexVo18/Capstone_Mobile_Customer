@@ -22,13 +22,13 @@ function buildDeepLinkFromNotificationData(data: any) {
     return null;
   }
   if (navigationId === "CustomerTabs") {
-    return "myapp://CustomerTabs";
+    return "mmrms-client://CustomerTabs";
   }
   return null;
 }
 
 const linking = {
-  prefixes: ["myapp://"],
+  prefixes: ["mmrms-client://"],
   config: {
     initialRouteName: "CustomerTabs" as RouteNames,
     screens: {

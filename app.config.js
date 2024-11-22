@@ -6,7 +6,7 @@ export default {
     entryPoint: "./src/App.tsx",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "myapp",
+    scheme: "mmrms-client",
     userInterfaceStyle: "automatic",
     splash: {
       image: "./assets/images/splash.png",

@@ -65,9 +65,6 @@ const styles = StyleSheet.create({
   contentWrapper: {
     position: "relative",
   },
-  // italic: {
-  //   fontStyle: "italic",
-  // },
 });
 
 interface Props {
