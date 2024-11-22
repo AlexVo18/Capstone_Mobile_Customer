@@ -30,6 +30,7 @@ import CreateCheckRequest from "../../screens/Customer/CheckRequestScreens/Creat
 import UserRentingRequest from "../../screens/Customer/RentingRequestScreens/UserRentingRequest";
 import RentingRequestDetail from "../../screens/Customer/RentingRequestScreens/RentingRequestDetail";
 import UserNotification from "../../screens/Customer/NotificationScreens/UserNotification";
+import ExtendContract from "../../screens/Customer/ContractScreens/ExtendContract";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -73,6 +74,7 @@ export type CustomerStackParamList = {
 
   // Hợp đồng
   UserContract: undefined;
+  ExtendContract: { contractId: string };
 
   // Giao hàng
   UserDelivery: undefined;
@@ -176,6 +178,10 @@ export type CreateCheckRequestScreenProps = NativeStackScreenProps<
 export type UserContractScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserContract"
+>;
+export type ExtendContractScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "ExtendContract"
 >;
 
 // Giao hàng
@@ -295,7 +301,10 @@ const CustomerNavigator = () => {
 
       {/* Đơn hàng */}
       <Stack.Screen name="UserRentingRequest" component={UserRentingRequest} />
-      <Stack.Screen name="RentingRequestDetail" component={RentingRequestDetail} />
+      <Stack.Screen
+        name="RentingRequestDetail"
+        component={RentingRequestDetail}
+      />
 
       {/* Yêu cầu sửa chữa */}
       <Stack.Screen name="UserCheckRequest" component={UserCheckRequest} />
@@ -304,6 +313,11 @@ const CustomerNavigator = () => {
 
       {/* Hợp đồng */}
       <Stack.Screen name="UserContract" component={UserContract} />
+      <Stack.Screen
+        name="ExtendContract"
+        component={ExtendContract}
+        options={{ headerTitle: "Gia hạn hợp đồng" }}
+      />
 
       {/* Giao hàng */}
       <Stack.Screen name="UserDelivery" component={UserDelivery} />

@@ -1,20 +1,32 @@
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDebounce } from "~/src/app/hooks/useDebounce";
 import { ContractData } from "~/src/app/models/contract_models";
 import Contract from "~/src/app/api/contract/Contract";
 import Toast from "react-native-toast-message";
 import { listErrorMsg } from "~/src/app/constants/toastMessage";
-import { mainBlue } from "~/src/app/constants/cssConstants";
+import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { formatDate } from "~/src/app/utils/dateformat";
+import { UserContractScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
+import ContractSearhBar from "~/src/app/components/Customer/ContractScreen/ContractSearhBar";
+import ContractOpts from "~/src/app/components/Customer/ContractScreen/ContractOpts";
+import { ScrollText } from "lucide-react-native";
+import ContractList from "~/src/app/components/Customer/ContractScreen/ContractList";
 
-const UserContract = () => {
+const UserContract = ({ navigation, route }: UserContractScreenProps) => {
   const [keyword, setKeyword] = useState<string>("");
   const [type, setType] = useState("all");
   const [allList, setAllList] = useState<ContractData[]>([]);
   const [filteredList, setFilteredList] = useState<ContractData[]>([]);
   const [displayList, setDisplayList] = useState<ContractData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const debounceKeyword = useDebounce(keyword);
   const itemsPerPage = 10;
@@ -23,6 +35,19 @@ const UserContract = () => {
   useEffect(() => {
     getContract();
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <ContractSearhBar keyword={keyword} setKeyword={setKeyword} />
+      ),
+      headerRight: () => <ContractOpts onToggle={toggleModal} />,
+    });
+  }, [isOpen, keyword]);
+
+  const toggleModal = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [isOpen]);
 
   const getContract = async () => {
     try {
@@ -75,7 +100,7 @@ const UserContract = () => {
           contract.machineName
             .toLowerCase()
             .includes(debounceKeyword.toLowerCase()) ||
-          contract.contractName
+          contract.contractId
             .toLowerCase()
             .includes(debounceKeyword.toLowerCase())
       );
@@ -98,16 +123,32 @@ const UserContract = () => {
   };
 
   return isLoading ? (
-    <View className="w-full h-full flex justify-center items-center">
+    <View className="w-full h-full flex justify-center items-center bg-white">
       <ActivityIndicator color={mainBlue} size={"large"} />
     </View>
+  ) : displayList.length !== 0 ? (
+    <View style={styles.container} className="bg-white">
+      <ContractList
+        displayList={displayList}
+        handleLoadMore={handleLoadMore}
+        isLoadingMore={isLoadingMore}
+        userContractScreenProps={{ navigation, route }}
+      />
+    </View>
   ) : (
-    <View>
-      <Text>UserContract</Text>
+    <View className="w-full h-full flex justify-center items-center flex-col">
+      <ScrollText color={`hsl(${mutedForground})`} size={48} />
+      <Text style={{ color: `hsl(${mutedForground})` }} className="text-lg">
+        Không có máy móc nào cả
+      </Text>
     </View>
   );
 };
 
 export default UserContract;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

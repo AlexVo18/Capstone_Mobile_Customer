@@ -176,7 +176,7 @@ const Collection = ({ navigation, route }: CollectionScreenProps) => {
   };
 
   return (
-    <View style={styles.container} className="bg-white ">
+    <View style={styles.container} className="bg-white">
       {isLoading ? (
         <View className="py-5">
           <ActivityIndicator size="large" color={mainBlue} />

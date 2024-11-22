@@ -41,14 +41,20 @@ export interface ContractData {
   dateStart: string;
   dateEnd: string;
   status: string;
-  depositPrice: number,
-  numberOfMonth: number,
-  rentPeriod: number,
-  totalRentPrice: number,
+  depositPrice: number;
+  isExtended: boolean;
+  rentPeriod: number;
+  totalRentPrice: number;
   machineId: number;
   machineName: string;
   serialNumber: string;
   rentPrice: number;
   thumbnail: string;
-  accountSignId: number
+  accountSignId: number;
+  baseContractId: string;
+}
+
+export interface ExtendContractParams {
+  contractId: string | undefined;
+  dateEnd: string | undefined;
 }
