@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const OrderHistory = () => {
+const InvoiceDetail = () => {
   return (
     <View>
-      <Text>OrderHistory</Text>
+      <Text>InvoiceDetail</Text>
     </View>
   )
 }
 
-export default OrderHistory
+export default InvoiceDetail
 
 const styles = StyleSheet.create({})

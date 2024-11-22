@@ -58,23 +58,23 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
       />
       <SettingTab
         label="Đơn hàng"
-        onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
+        onPress={() => navigation.getParent()?.navigate("UserInvoice")}
         Icon={<Package size={24} color={mainBlue} />}
       />
       <SettingTab
         label="Hợp đồng"
-        onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
+        onPress={() => navigation.getParent()?.navigate("UserInvoice")}
         Icon={<ScrollText size={24} color={mainBlue} />}
       />
       <SettingTab
         label="Thanh toán"
-        onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
+        onPress={() => navigation.getParent()?.navigate("UserInvoice")}
         Icon={<Receipt size={24} color={mainBlue} />}
       />
 
       <SettingTab
         label="Yêu cầu sửa chữa"
-        onPress={() => navigation.getParent()?.navigate("TransactionHistory")}
+        onPress={() => navigation.getParent()?.navigate("UserInvoice")}
         Icon={<Wrench size={24} color={mainBlue} />}
       />
       <SettingTab

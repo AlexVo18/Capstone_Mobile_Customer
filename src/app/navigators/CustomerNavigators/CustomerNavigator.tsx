@@ -5,9 +5,8 @@ import {
 } from "@react-navigation/native-stack";
 import CustomerTabs from "./CustomerTabs";
 import MachineDetail from "../../screens/Customer/MachineScreens/MachineDetail";
-import Cart from "../../screens/Customer/CartScreens/Cart";
 import Profile from "../../screens/Customer/ProfileScreens/Profile";
-import TransactionHistory from "../../screens/Customer/TransactionScreens/TransactionHistory";
+import UserInvoice from "../../screens/Customer/InvoiceScreens/UserInvoice";
 import NewAddress from "../../screens/Customer/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
 import { mainBlue } from "../../constants/cssConstants";
@@ -40,7 +39,6 @@ export type CustomerStackParamList = {
   };
   MachineImagesSlide: { imagesList: MachineryImageData[]; chosenIndex: number };
 
-  Cart: undefined;
   // Profile
   Profile: undefined;
   ChangePassword: undefined;
@@ -51,7 +49,7 @@ export type CustomerStackParamList = {
   UserAddress: undefined;
 
   // Thanh toán
-  TransactionHistory: undefined;
+  UserInvoice: undefined;
 
   // Đơn hàng
 
@@ -91,10 +89,8 @@ export type MachineImagesSlideScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "MachineImagesSlide"
 >;
-export type CartScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "Cart"
->;
+
+// Địa chỉ
 export type UserAddressScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserAddress"
@@ -107,6 +103,8 @@ export type NewAddressScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "NewAddress"
 >;
+
+// Profile
 export type ProfileScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "Profile"
@@ -115,16 +113,20 @@ export type ChangePasswordScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "ChangePassword"
 >;
-export type TransactionHistoryScreenProps = NativeStackScreenProps<
+
+// Thanh toán
+export type UserInvoiceScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
-  "TransactionHistory"
+  "UserInvoice"
 >;
 
+// Quyền lợi
 export type MembershipTopTabsProps = NativeStackScreenProps<
   CustomerStackParamList,
   "MembershipTopTabs"
 >;
 
+// Terms
 export type SystemTermsScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "SystemTerms"
@@ -190,9 +192,6 @@ const CustomerNavigator = () => {
         })}
       />
 
-      {/* Giỏ hàng */}
-      <Stack.Screen name="Cart" component={Cart} />
-
       {/* Quyền lợi */}
       <Stack.Screen
         name="MembershipTopTabs"
@@ -218,7 +217,7 @@ const CustomerNavigator = () => {
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
 
       {/* Giao dịch */}
-      <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
+      <Stack.Screen name="UserInvoice" component={UserInvoice} />
       
 
       {/* Chính sách */}

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const NoPaymentOrder = () => {
+const UserContract = () => {
   return (
     <View>
-      <Text>NoPaymentOrder</Text>
+      <Text>UserContract</Text>
     </View>
   )
 }
 
-export default NoPaymentOrder
+export default UserContract
 
 const styles = StyleSheet.create({})

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const CancelOrder = () => {
+const CreateCheckRequest = () => {
   return (
     <View>
-      <Text>CancelOrder</Text>
+      <Text>CreateCheckRequest</Text>
     </View>
   )
 }
 
-export default CancelOrder
+export default CreateCheckRequest
 
 const styles = StyleSheet.create({})
