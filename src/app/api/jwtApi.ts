@@ -54,7 +54,6 @@ export const refreshAccessToken = async () => {
       accessToken: token.token,
       refreshToken: token.refreshToken,
     });
-    console.log(response);
     if (response?.token) {
       const newToken: TokenData = {
         refreshToken: token.refreshToken,

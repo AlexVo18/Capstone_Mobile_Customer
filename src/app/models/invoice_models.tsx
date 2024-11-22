@@ -66,3 +66,16 @@ export interface PaymentUrlParams {
   status: string;
   orderCode: string;
 }
+
+export interface TaxCodeResponseData {
+  code: string;
+  desc: string;
+  data: TaxCodeData;
+}
+export interface TaxCodeData {
+  address: string;
+  id: string;
+  internationalName: string;
+  name: string;
+  shortName: string;
+}

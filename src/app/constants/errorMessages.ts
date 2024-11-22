@@ -44,6 +44,10 @@ export const ErrorMessageRegister = {
     required: "Mã số thuế đang trống ",
     invalid: "Mã số thuế không hợp lệ",
   },
+  avatarImg: {
+    required: "Ảnh đại diện không được trống",
+    notImg: "Loại tập tin không phù hợp",
+  },
 };
 
 export const ErrorMessageForgetPassword = {

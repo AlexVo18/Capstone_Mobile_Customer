@@ -11,5 +11,8 @@ const Invoice = {
     }),
   sendInvoiceData: (input: string) =>
     requests.jwtApiPost(`/invoices/${input}/post-transaction-check`, {}),
+  getBankList: () => requests.vietqrApiGet("/banks"),
+  getTaxCodeInfo: (input: string) =>
+    requests.vietqrApiGet(`/business/${input}`),
 };
 export default Invoice;

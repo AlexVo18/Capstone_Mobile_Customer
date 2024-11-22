@@ -49,6 +49,12 @@ export default {
       "expo-secure-store",
       "expo-build-properties",
       "expo-font",
+      [
+        "expo-image-picker",
+        {
+          photosPermission: "MMRMS cần truy cập thư viện ảnh của bạn",
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,

@@ -1,5 +1,5 @@
 import { View, Text, Image } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import { mainBlue } from "~/src/app/constants/cssConstants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import {
@@ -18,9 +18,16 @@ import { SettingOptionScreenProps } from "~/src/app/navigators/CustomerNavigator
 import { Button } from "react-native-paper";
 import SettingTab from "~/src/app/components/settingTabs/SettingTab";
 import useAuth from "~/src/app/hooks/useAuth";
+import { useFocusEffect } from "@react-navigation/native";
 
 const SettingOption = ({ navigation }: SettingOptionScreenProps) => {
-  const { logout, userInfo } = useAuth();
+  const { logout, userInfo, getLocalData } = useAuth();
+
+  useFocusEffect(
+    useCallback(() => {
+      getLocalData();
+    }, [])
+  );
 
   return (
     <ScrollView>
