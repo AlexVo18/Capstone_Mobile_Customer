@@ -1,4 +1,10 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState } from "react";
 import { ErrorMessageChangePassword } from "~/src/app/constants/errorMessages";
 import * as Yup from "yup";
@@ -231,9 +237,7 @@ const ChangePassword = () => {
             disabled
           >
             {isLoading ? (
-              <Text className="text-lg text-center text-gray-500 font-semibold">
-                Đang tải
-              </Text>
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
             ) : (
               <Text className="text-lg text-center text-gray-500 font-semibold">
                 Đổi mật khẩu
@@ -249,9 +253,7 @@ const ChangePassword = () => {
             onPress={() => formik.handleSubmit()}
           >
             {isLoading ? (
-              <Text className="text-lg text-center text-gray-500 font-semibold">
-                Đang tải
-              </Text>
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
             ) : (
               <Text className="text-lg text-center text-white font-semibold">
                 Đổi mật khẩu

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
@@ -179,8 +180,55 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
               }}
             />
           </View>
-
-          <Button
+          {otpLoading ||
+          secondsLeft > 0 ||
+          (formik.errors.email && formik.errors.email.length !== 0) ||
+          !formik.values.email ? (
+            <TouchableOpacity
+              style={[styles.sendOtpButton, styles.disableButtonColor]}
+              disabled
+            >
+              {otpLoading ? (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Đang gửi
+                </Text>
+              ) : secondsLeft ? (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Gửi lại ({secondsLeft}s)
+                </Text>
+              ) : (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Gửi OTP
+                </Text>
+              )}
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.sendOtpButton, styles.buttonColor]}
+              disabled={
+                otpLoading ||
+                secondsLeft > 0 ||
+                (formik.errors.email && formik.errors.email.length !== 0) ||
+                !formik.values.email
+              }
+              onPress={sendOTP}
+            >
+              {otpLoading ? (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Đang gửi
+                </Text>
+              ) : secondsLeft ? (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Gửi lại (${secondsLeft}s)
+                </Text>
+              ) : (
+                <Text className="text-lg text-center text-white font-semibold">
+                  Gửi OTP
+                </Text>
+              )}
+            </TouchableOpacity>
+          )}
+          {/* <Button
             mode="contained"
             className=""
             buttonColor={mainBlue}
@@ -199,7 +247,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
               : secondsLeft
                 ? `Gửi lại (${secondsLeft}s)`
                 : "Gửi OTP"}
-          </Button>
+          </Button> */}
         </View>
 
         {formik.touched.email && formik.errors.email ? (
@@ -316,9 +364,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
             disabled
           >
             {isLoading ? (
-              <Text className="text-lg text-center text-gray-500 font-semibold">
-                Đang tải
-              </Text>
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
             ) : (
               <Text className="text-lg text-center text-gray-500 font-semibold">
                 Đổi mật khẩu
@@ -334,9 +380,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
             onPress={() => formik.handleSubmit()}
           >
             {isLoading ? (
-              <Text className="text-lg text-center text-gray-500 font-semibold">
-                Đang tải
-              </Text>
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
             ) : (
               <Text className="text-lg text-center text-white font-semibold">
                 Đổi mật khẩu
@@ -381,7 +425,8 @@ const styles = StyleSheet.create({
   },
   sendOtpButton: {
     borderRadius: 10,
-    paddingVertical: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
   },
   eyeIcon: {
     position: "absolute",

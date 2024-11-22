@@ -443,21 +443,38 @@ const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
           ) : null}
         </View>
         <View className="w-full">
-          <Button
-            mode="contained"
-            className=""
-            buttonColor={mainBlue}
-            textColor="white"
-            style={[styles.buttonStyle]}
-            disabled={isLoading || isFormEmpty()}
-            onPress={() => formik.handleSubmit()}
-          >
-            {isLoading ? (
-              <ActivityIndicator size="small" color="#ffffff" />
-            ) : (
-              <Text className="text-lg">Tạo tài khoản</Text>
-            )}
-          </Button>
+          {isLoading || isFormEmpty() || !!Object.keys(formik.errors).length ? (
+            <TouchableOpacity
+              style={[styles.buttonStyle, styles.disableButtonColor]}
+              disabled
+            >
+              {isLoading ? (
+                <ActivityIndicator color={"#6b7280"} size={"small"} />
+              ) : (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Tạo tài khoản
+                </Text>
+              )}
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.buttonStyle, styles.buttonColor]}
+              disabled={
+                isLoading ||
+                isFormEmpty() ||
+                !!Object.keys(formik.errors).length
+              }
+              onPress={() => formik.handleSubmit()}
+            >
+              {isLoading ? (
+                <ActivityIndicator color={"#6b7280"} size={"small"} />
+              ) : (
+                <Text className="text-lg text-center text-white font-semibold">
+                  Tạo tài khoản
+                </Text>
+              )}
+            </TouchableOpacity>
+          )}
         </View>
         <View className="flex flex-row items-center justify-center w-full mt-1">
           <Text style={{ fontSize: 16 }}>Đã có tài khoản? </Text>
@@ -486,7 +503,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: "100%",
     borderRadius: 10,
-    paddingVertical: 4,
+    paddingVertical: 14,
+  },
+  buttonColor: {
+    backgroundColor: mainBlue,
+  },
+  disableButtonColor: {
+    backgroundColor: "#d1d5db",
   },
   eyeIcon: {
     position: "absolute",

@@ -1,5 +1,5 @@
 import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { RegisterAccountParams } from "~/src/app/models/auth_models";
 import { RegisterEmailScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
@@ -209,23 +209,36 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
         ) : null}
       </View>
       <View className="w-full">
-        <Button
-          mode="contained"
-          className=""
-          buttonColor={mainBlue}
-          textColor="white"
-          style={[styles.buttonStyle]}
-          disabled={
-            isLoading || isFormEmpty() || !!Object.keys(formik.errors).length
-          }
-          onPress={() => formik.handleSubmit()}
-        >
-          {isLoading ? (
-            <Text className="text-lg">Đang tải</Text>
-          ) : (
-            <Text className="text-lg">Tiếp theo</Text>
-          )}
-        </Button>
+      {isLoading || isFormEmpty() || !!Object.keys(formik.errors).length ? (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.disableButtonColor]}
+            disabled
+          >
+            {isLoading ? (
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
+            ) : (
+              <Text className="text-lg text-center text-gray-500 font-semibold">
+                Tiếp theo
+              </Text>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.buttonColor]}
+            disabled={
+              isLoading || isFormEmpty() || !!Object.keys(formik.errors).length
+            }
+            onPress={() => formik.handleSubmit()}
+          >
+            {isLoading ? (
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
+            ) : (
+              <Text className="text-lg text-center text-white font-semibold">
+                Tiếp theo
+              </Text>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
         <Text style={{ fontSize: 16 }}>Đã có tài khoản? </Text>
@@ -253,7 +266,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: "100%",
     borderRadius: 10,
-    paddingVertical: 4,
+    paddingVertical: 14,
+  },
+  buttonColor: {
+    backgroundColor: mainBlue,
+  },
+  disableButtonColor: {
+    backgroundColor: "#d1d5db",
   },
   eyeIcon: {
     position: "absolute",

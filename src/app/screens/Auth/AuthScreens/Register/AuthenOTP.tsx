@@ -209,14 +209,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
   },
-  outlineButton: {
-    borderColor: mainBlue,
-  },
-  buttonStyle: {
-    width: "100%",
-    borderRadius: 10,
-    paddingVertical: 4,
-  },
   eyeIcon: {
     position: "absolute",
     right: 10,

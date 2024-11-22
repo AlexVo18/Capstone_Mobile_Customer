@@ -58,7 +58,6 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
           const response = await Address.suggestAddresses(debouncedKeyword);
           if (response) {
             setSuggestions(response.predictions);
-    
           }
         } catch (error) {
           console.log(error);
@@ -250,7 +249,7 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
           mode="outlined"
           className=""
           textColor={mainBlue}
-          style={[styles.outlineButton, styles.buttonStyle]}
+          style={[styles.outlineButton, styles.deleteButtonStyle]}
           disabled={isLoading || isDeleting}
           onPress={handleDeleteAddress}
         >
@@ -262,29 +261,48 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
         </Button>
       </View>
       <View style={styles.searchContainer}>
-        <Button
-          mode="contained"
-          className=""
-          buttonColor={mainBlue}
-          textColor="white"
-          style={[styles.buttonStyle]}
-          disabled={
-            !chosenLocation ||
-            chosenLocation.compound.province !== "Hồ Chí Minh" ||
-            chosenLocation.formatted_address ===
-              route.params.chosenAddress.addressBody ||
-            chosenLocation.address_components.length < 4 ||
-            isLoading ||
-            isDeleting
-          }
-          onPress={handleUpdateAddress}
-        >
-          {isLoading ? (
-            <ActivityIndicator size="small" color="white" />
-          ) : (
-            <Text className="text-base">Cập nhật địa chỉ</Text>
-          )}
-        </Button>
+        {!chosenLocation ||
+        chosenLocation.compound.province !== "Hồ Chí Minh" ||
+        chosenLocation.formatted_address ===
+          route.params.chosenAddress.addressBody ||
+        chosenLocation.address_components.length < 4 ||
+        isLoading ||
+        isDeleting ? (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.disableButtonColor]}
+            disabled
+          >
+            {isLoading ? (
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
+            ) : (
+              <Text className="text-lg text-center text-gray-500 font-semibold">
+                Cập nhật địa chỉ
+              </Text>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.buttonColor]}
+            disabled={
+              !chosenLocation ||
+              chosenLocation.compound.province !== "Hồ Chí Minh" ||
+              chosenLocation.formatted_address ===
+                route.params.chosenAddress.addressBody ||
+              chosenLocation.address_components.length < 4 ||
+              isLoading ||
+              isDeleting
+            }
+            onPress={handleUpdateAddress}
+          >
+            {isLoading ? (
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
+            ) : (
+              <Text className="text-lg text-center text-white font-semibold">
+                Cập nhật địa chỉ
+              </Text>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -347,10 +365,21 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "white",
   },
-  buttonStyle: {
+  deleteButtonStyle: {
     width: "100%",
     borderRadius: 10,
     paddingVertical: 4,
+  },
+  buttonStyle: {
+    width: "100%",
+    borderRadius: 10,
+    paddingVertical: 14,
+  },
+  buttonColor: {
+    backgroundColor: mainBlue,
+  },
+  disableButtonColor: {
+    backgroundColor: "#d1d5db",
   },
   outlineButton: {
     borderColor: mainBlue,
