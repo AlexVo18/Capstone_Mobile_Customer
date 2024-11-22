@@ -1,6 +1,6 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
+import { mainBlue } from "~/src/app/constants/cssConstants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import {
   Award,
@@ -10,6 +10,7 @@ import {
   Package,
   Receipt,
   ScrollText,
+  Truck,
   User,
   Wrench,
 } from "lucide-react-native";
@@ -18,7 +19,7 @@ import { Button } from "react-native-paper";
 import SettingTab from "~/src/app/components/settingTabs/SettingTab";
 import useAuth from "~/src/app/hooks/useAuth";
 
-const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
+const SettingOption = ({ navigation }: SettingOptionScreenProps) => {
   const { logout, userInfo } = useAuth();
 
   return (
@@ -58,12 +59,17 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
       />
       <SettingTab
         label="Đơn hàng"
-        onPress={() => navigation.getParent()?.navigate("UserInvoice")}
+        onPress={() => navigation.getParent()?.navigate("UserRentingRequest")}
         Icon={<Package size={24} color={mainBlue} />}
       />
       <SettingTab
+        label="Giao hàng"
+        onPress={() => navigation.getParent()?.navigate("UserDelivery")}
+        Icon={<Truck size={24} color={mainBlue} />}
+      />
+      <SettingTab
         label="Hợp đồng"
-        onPress={() => navigation.getParent()?.navigate("UserInvoice")}
+        onPress={() => navigation.getParent()?.navigate("UserContract")}
         Icon={<ScrollText size={24} color={mainBlue} />}
       />
       <SettingTab
@@ -74,7 +80,7 @@ const SettingOption = ({ route, navigation }: SettingOptionScreenProps) => {
 
       <SettingTab
         label="Yêu cầu sửa chữa"
-        onPress={() => navigation.getParent()?.navigate("UserInvoice")}
+        onPress={() => navigation.getParent()?.navigate("UserCheckRequest")}
         Icon={<Wrench size={24} color={mainBlue} />}
       />
       <SettingTab

@@ -20,6 +20,16 @@ import { AddressData } from "../../models/address_models";
 import MembershipTopTabs from "./MembershipNavigators/MembershipTopTabs";
 import ChangePassword from "../../screens/Customer/ProfileScreens/ChangePassword";
 import SystemTerms from "../../screens/Customer/TermScreens/SystemTerms";
+import InvoiceDetail from "../../screens/Customer/InvoiceScreens/InvoiceDetail";
+import UserDelivery from "../../screens/Customer/DeliveryScreens/UserDelivery";
+import DeliveryDetail from "../../screens/Customer/DeliveryScreens/DeliveryDetail";
+import UserContract from "../../screens/Customer/ContractScreens/UserContract";
+import UserCheckRequest from "../../screens/Customer/CheckRequestScreens/UserCheckRequest";
+import CheckRequestDetail from "../../screens/Customer/CheckRequestScreens/CheckRequestDetail";
+import CreateCheckRequest from "../../screens/Customer/CheckRequestScreens/CreateCheckRequest";
+import UserRentingRequest from "../../screens/Customer/RentingRequestScreens/UserRentingRequest";
+import RentingRequestDetail from "../../screens/Customer/RentingRequestScreens/RentingRequestDetail";
+import UserNotification from "../../screens/Customer/NotificationScreens/UserNotification";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -50,18 +60,32 @@ export type CustomerStackParamList = {
 
   // Thanh toán
   UserInvoice: undefined;
+  InvoiceDetail: undefined;
 
   // Đơn hàng
+  UserRentingRequest: undefined;
+  RentingRequestDetail: undefined;
 
   // Yêu cầu sửa chữa
+  UserCheckRequest: undefined;
+  CheckRequestDetail: undefined;
+  CreateCheckRequest: undefined;
 
   // Hợp đồng
+  UserContract: undefined;
+
+  // Giao hàng
+  UserDelivery: undefined;
+  DeliveryDetail: undefined;
 
   // Quyền lợi
   MembershipTopTabs: undefined;
 
   // Điều khoản
   SystemTerms: undefined;
+
+  // Thông báo
+  UserNotification: undefined;
 };
 
 // Tabs
@@ -119,6 +143,50 @@ export type UserInvoiceScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserInvoice"
 >;
+export type InvoiceDetailScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "InvoiceDetail"
+>;
+
+// Đơn hàng
+export type UserRentingRequestScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "UserRentingRequest"
+>;
+export type RentingRequestDetailScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "RentingRequestDetail"
+>;
+
+// Yêu cầu sửa chữa
+export type UserCheckRequestScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "UserCheckRequest"
+>;
+export type CheckRequestDetailScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "CheckRequestDetail"
+>;
+export type CreateCheckRequestScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "CreateCheckRequest"
+>;
+
+// Hợp đồng
+export type UserContractScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "UserContract"
+>;
+
+// Giao hàng
+export type UserDeliveryScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "UserDelivery"
+>;
+export type DeliveryDetailScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "DeliveryDetail"
+>;
 
 // Quyền lợi
 export type MembershipTopTabsProps = NativeStackScreenProps<
@@ -130,6 +198,12 @@ export type MembershipTopTabsProps = NativeStackScreenProps<
 export type SystemTermsScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "SystemTerms"
+>;
+
+// Thông báo
+export type UserNotificationScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "UserNotification"
 >;
 
 const CustomerNavigator = () => {
@@ -160,7 +234,6 @@ const CustomerNavigator = () => {
           ),
         })}
       />
-      
       <Stack.Screen
         name="MachineImagesSlide"
         component={MachineImagesSlide}
@@ -173,7 +246,7 @@ const CustomerNavigator = () => {
           },
         }}
       />
-      
+
       {/* Tin tức */}
       <Stack.Screen
         name="NewsDetail"
@@ -199,6 +272,10 @@ const CustomerNavigator = () => {
         options={{ headerTitle: "Quyền lợi khách hàng" }}
       />
 
+      {/* Profile*/}
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+
       {/* Địa chỉ */}
       <Stack.Screen
         name="UserAddress"
@@ -212,13 +289,25 @@ const CustomerNavigator = () => {
       />
       <Stack.Screen name="NewAddress" component={NewAddress} />
 
-      {/* Hồ sơ */}
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="ChangePassword" component={ChangePassword} />
-
-      {/* Giao dịch */}
+      {/* Thanh toán */}
       <Stack.Screen name="UserInvoice" component={UserInvoice} />
-      
+      <Stack.Screen name="InvoiceDetail" component={InvoiceDetail} />
+
+      {/* Đơn hàng */}
+      <Stack.Screen name="UserRentingRequest" component={UserRentingRequest} />
+      <Stack.Screen name="RentingRequestDetail" component={RentingRequestDetail} />
+
+      {/* Yêu cầu sửa chữa */}
+      <Stack.Screen name="UserCheckRequest" component={UserCheckRequest} />
+      <Stack.Screen name="CheckRequestDetail" component={CheckRequestDetail} />
+      <Stack.Screen name="CreateCheckRequest" component={CreateCheckRequest} />
+
+      {/* Hợp đồng */}
+      <Stack.Screen name="UserContract" component={UserContract} />
+
+      {/* Giao hàng */}
+      <Stack.Screen name="UserDelivery" component={UserDelivery} />
+      <Stack.Screen name="DeliveryDetail" component={DeliveryDetail} />
 
       {/* Chính sách */}
       <Stack.Screen
@@ -226,6 +315,9 @@ const CustomerNavigator = () => {
         component={SystemTerms}
         options={{ headerTitle: "Chính sách quy định" }}
       />
+
+      {/* Hợp đồng */}
+      <Stack.Screen name="UserNotification" component={UserNotification} />
     </Stack.Navigator>
   );
 };
