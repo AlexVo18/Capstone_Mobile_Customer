@@ -9,6 +9,7 @@ export interface TermsData {
 
 export interface ContractDetailData {
   contractId: string;
+  baseContractId: string;
   contractName: string;
   dateCreate: string;
   dateSign: string;
