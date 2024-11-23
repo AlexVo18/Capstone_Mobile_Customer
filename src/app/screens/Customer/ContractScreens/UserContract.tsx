@@ -1,5 +1,11 @@
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDebounce } from "~/src/app/hooks/useDebounce";
 import { ContractData } from "~/src/app/models/contract_models";
 import Contract from "~/src/app/api/contract/Contract";
@@ -13,6 +19,7 @@ import ContractList from "~/src/app/components/Customer/ContractScreen/ContractL
 import RNPickerSelect from "react-native-picker-select";
 import KeywordSearchBar from "~/src/app/components/header/KeywordSearchBar";
 import DetailOpts from "~/src/app/components/header/DetailOpts";
+import { useFocusEffect } from "@react-navigation/native";
 
 const UserContract = ({ navigation, route }: UserContractScreenProps) => {
   const [keyword, setKeyword] = useState<string>("");
@@ -26,9 +33,11 @@ const UserContract = ({ navigation, route }: UserContractScreenProps) => {
   const itemsPerPage = 10;
   const pageRef = useRef(1);
 
-  useEffect(() => {
-    getContract();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getContract();
+    }, [])
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({

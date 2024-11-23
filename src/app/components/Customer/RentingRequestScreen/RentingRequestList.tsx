@@ -8,20 +8,12 @@ import { formatVND } from "~/src/app/utils/formatVND";
 import { formatDate } from "~/src/app/utils/dateformat";
 import RentingRequestStatusTag from "./RentingRequestStatusTag";
 import { Package } from "lucide-react-native";
-import RentingRequest from "~/src/app/api/rentingRequest/RentingRequest";
-import Toast from "react-native-toast-message";
-import {
-  cancelErrorMsg,
-  cancelSuccessMsg,
-} from "~/src/app/constants/toastMessage";
-import CancelModal from "../../modal/CancelModal";
 
 interface Props {
   displayList: RequestData[];
   userRentingRequestScreenProps: UserRentingRequestScreenProps;
   handleLoadMore: () => void;
   isLoadingMore: boolean;
-  onCancel: () => void;
 }
 
 const RentingRequestList = ({
@@ -29,43 +21,42 @@ const RentingRequestList = ({
   userRentingRequestScreenProps,
   handleLoadMore,
   isLoadingMore,
-  onCancel,
 }: Props) => {
-  const [chosen, setChosen] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [chosen, setChosen] = useState<string | undefined>(undefined);
+  // const [isLoading, setIsLoading] = useState(false);
 
-  const handleCancelRequest = async () => {
-    setIsLoading(true);
-    try {
-      if (chosen) {
-        const response = await RentingRequest.cancelRequest(chosen);
-        if (response) {
-          Toast.show({
-            type: "success",
-            text1: cancelSuccessMsg,
-          });
-          onCancel();
-        }
-      }
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: cancelErrorMsg,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const handleCancelRequest = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     if (chosen) {
+  //       const response = await RentingRequest.cancelRequest(chosen);
+  //       if (response) {
+  //         Toast.show({
+  //           type: "success",
+  //           text1: cancelSuccessMsg,
+  //         });
+  //         onCancel();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     Toast.show({
+  //       type: "error",
+  //       text1: cancelErrorMsg,
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <>
-      <CancelModal
+      {/* <CancelModal
         chosen={chosen}
         setChosen={setChosen}
         onPress={handleCancelRequest}
         isLoading={isLoading}
         type="RentingRequest"
-      />
+      /> */}
       <FlatList
         data={displayList}
         keyExtractor={(item) => item.rentingRequestId}

@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { InvoiceData } from "~/src/app/models/invoice_models";
 import { useDebounce } from "~/src/app/hooks/useDebounce";
 import { UserInvoiceScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
@@ -13,6 +13,7 @@ import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import InvoiceList from "~/src/app/components/Customer/InvoiceScreen/InvoiceList";
 import { Receipt } from "lucide-react-native";
 import RNPickerSelect from "react-native-picker-select";
+import { useFocusEffect } from "@react-navigation/native";
 
 const UserInvoice = ({ navigation, route }: UserInvoiceScreenProps) => {
   const [keyword, setKeyword] = useState<string>("");
@@ -36,9 +37,11 @@ const UserInvoice = ({ navigation, route }: UserInvoiceScreenProps) => {
     });
   }, [keyword]);
 
-  useEffect(() => {
-    getTransaction();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getTransaction();
+    }, [])
+  );
 
   useEffect(() => {
     filterRequests();

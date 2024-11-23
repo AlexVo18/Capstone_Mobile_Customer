@@ -1,5 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { RequestData } from "~/src/app/models/rentingRequest_models";
 import { useDebounce } from "~/src/app/hooks/useDebounce";
 import { UserRentingRequestScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
@@ -14,6 +20,7 @@ import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import RentingRequestList from "~/src/app/components/Customer/RentingRequestScreen/RentingRequestList";
 import { Package2 } from "lucide-react-native";
 import RNPickerSelect from "react-native-picker-select";
+import { useFocusEffect } from "@react-navigation/native";
 
 const UserRentingRequest = ({
   navigation,
@@ -40,9 +47,11 @@ const UserRentingRequest = ({
     });
   }, [keyword]);
 
-  useEffect(() => {
-    getRequests();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getRequests();
+    }, [])
+  );
 
   useEffect(() => {
     filterRequests();
@@ -122,7 +131,6 @@ const UserRentingRequest = ({
           handleLoadMore={handleLoadMore}
           isLoadingMore={isLoadingMore}
           userRentingRequestScreenProps={{ navigation, route }}
-          onCancel={() => getRequests()}
         />
       ) : (
         <View className="w-full h-full flex justify-center items-center flex-col">

@@ -30,8 +30,6 @@ const InvoiceList = ({
   isLoadingMore,
   onCancel,
 }: Props) => {
-  const [chosen, setChosen] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <FlatList
@@ -90,18 +88,6 @@ const InvoiceList = ({
                   </View>
                 </View>
               </View>
-              {/* <View className="flex flex-row gap-2 justify-end mt-2">
-                  {item.status.toLowerCase() === "unpaid" && (
-                    <TouchableOpacity
-                      style={[styles.buttonStyle, styles.outlineButtonColor]}
-                      onPress={() => setChosen(item.rentingRequestId)}
-                    >
-                      <Text className="text-sm text-center text-red-600 font-semibold">
-                        Hủy đơn hàng
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View> */}
             </View>
           </TouchableOpacity>
         );
