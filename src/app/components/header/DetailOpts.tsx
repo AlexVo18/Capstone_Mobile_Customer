@@ -1,8 +1,8 @@
 import { View } from "react-native";
 import React from "react";
-import BellToggler from "../NotificationScreen/BellToggler";
+import BellToggler from "../Customer/NotificationScreen/BellToggler";
 
-const ContractOpts = () => {
+const DetailOpts = () => {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
       <BellToggler />
@@ -10,4 +10,4 @@ const ContractOpts = () => {
   );
 };
 
-export default ContractOpts;
+export default DetailOpts;

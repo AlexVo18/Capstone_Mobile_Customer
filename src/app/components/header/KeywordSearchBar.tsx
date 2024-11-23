@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { Search } from "lucide-react-native";
@@ -9,7 +9,7 @@ interface Props {
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ContractSearhBar = ({ keyword, setKeyword }: Props) => {
+const KeywordSearchBar = ({ keyword, setKeyword }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
   return (
     <View style={[styles.container, isFocused && styles.focused]}>
@@ -30,7 +30,7 @@ const ContractSearhBar = ({ keyword, setKeyword }: Props) => {
   );
 };
 
-export default ContractSearhBar;
+export default KeywordSearchBar;
 
 const styles = StyleSheet.create({
   container: {
