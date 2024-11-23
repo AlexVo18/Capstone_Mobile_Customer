@@ -22,7 +22,7 @@ const RentingRequestStatusTag = ({ status }: Props) => {
   return (
     <View
       className={cn(
-        `p-1 rounded-2xl px-2 py-1 absolute bottom-0 -right-[20px]`,
+        `p-1 rounded-2xl px-2 py-1 absolute bottom-0 -right-[20px] w-fit`,
         getStatusColor(status)
       )}
     >

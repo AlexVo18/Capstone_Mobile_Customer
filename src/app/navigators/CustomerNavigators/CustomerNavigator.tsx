@@ -61,15 +61,15 @@ export type CustomerStackParamList = {
 
   // Thanh toán
   UserInvoice: undefined;
-  InvoiceDetail: undefined;
+  InvoiceDetail: { invoiceId: string };
 
   // Đơn hàng
   UserRentingRequest: undefined;
-  RentingRequestDetail: undefined;
+  RentingRequestDetail: { rentingRequestId: string };
 
   // Yêu cầu sửa chữa
   UserCheckRequest: undefined;
-  CheckRequestDetail: undefined;
+  CheckRequestDetail: { machineCheckRequestId: string };
   CreateCheckRequest: undefined;
 
   // Hợp đồng
@@ -78,7 +78,7 @@ export type CustomerStackParamList = {
 
   // Giao hàng
   UserDelivery: undefined;
-  DeliveryDetail: undefined;
+  DeliveryDetail: { deliveryTaskId: string };
 
   // Quyền lợi
   MembershipTopTabs: undefined;

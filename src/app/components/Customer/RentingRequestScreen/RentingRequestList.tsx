@@ -7,13 +7,14 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { formatVND } from "~/src/app/utils/formatVND";
 import { formatDate } from "~/src/app/utils/dateformat";
 import RentingRequestStatusTag from "./RentingRequestStatusTag";
-import { CircleAlert, Package } from "lucide-react-native";
+import { Package } from "lucide-react-native";
 import RentingRequest from "~/src/app/api/rentingRequest/RentingRequest";
 import Toast from "react-native-toast-message";
 import {
   cancelErrorMsg,
   cancelSuccessMsg,
 } from "~/src/app/constants/toastMessage";
+import CancelModal from "../../modal/CancelModal";
 
 interface Props {
   displayList: RequestData[];
@@ -58,31 +59,34 @@ const RentingRequestList = ({
 
   return (
     <>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={chosen !== undefined}
-        onRequestClose={() => {
-          setChosen(undefined);
-        }}
-      >
-        <View>
-          <CircleAlert />
-        </View>
-      </Modal>
+      <CancelModal
+        chosen={chosen}
+        setChosen={setChosen}
+        onPress={handleCancelRequest}
+        isLoading={isLoading}
+        type="RentingRequest"
+      />
       <FlatList
         data={displayList}
         keyExtractor={(item) => item.rentingRequestId}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity style={{ marginHorizontal: 15 }}>
+            <TouchableOpacity
+              style={{ marginHorizontal: 15 }}
+              onPress={() =>
+                userRentingRequestScreenProps.navigation.navigate(
+                  "RentingRequestDetail",
+                  { rentingRequestId: item.rentingRequestId }
+                )
+              }
+            >
               <View
                 style={[styles.card, styles.elevation]}
                 className="p-[10px] "
               >
-                <View className="flex flex-row gap-8">
+                <View className="flex flex-row gap-4">
                   <View className="items-center justify-center relative p-2">
-                    <Package size={60} color={"#000"} />
+                    <Package size={100} color={"#000"} />
                     <RentingRequestStatusTag status={item.status} />
                   </View>
                   <View style={{ flex: 1 }} className="flex justify-between">
@@ -124,8 +128,8 @@ const RentingRequestList = ({
                       style={[styles.buttonStyle, styles.outlineButtonColor]}
                       onPress={() => setChosen(item.rentingRequestId)}
                     >
-                      <Text className="text-sm text-center text-blue-700 font-semibold">
-                        Gia hạn hợp đồng
+                      <Text className="text-sm text-center text-red-600 font-semibold">
+                        Hủy đơn hàng
                       </Text>
                     </TouchableOpacity>
                   )}
@@ -184,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#d1d5db",
   },
   outlineButtonColor: {
-    borderColor: mainBlue,
+    borderColor: "#dc2626",
     borderWidth: 1,
   },
   buttonStyle: {

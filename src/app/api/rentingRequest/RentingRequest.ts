@@ -25,7 +25,7 @@ const RentingRequest = {
     }),
   getUserRequests: () => requests.jwtApiGet("/rentings/customer/requests"),
   cancelRequest: (input: string) =>
-    requests.codeApiPut(`/rentings/${input}/cancel`, {}),
+    requests.jwtApiPut(`/rentings/${input}/cancel`, {}),
   getRequestDetail: (input: string) => requests.jwtApiGet(`/rentings/${input}`),
 };
 export default RentingRequest;
