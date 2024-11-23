@@ -144,6 +144,7 @@ const UserContract = ({ navigation, route }: UserContractScreenProps) => {
             value: "all",
           }}
           items={[
+            { label: "Tất cả", value: "all" },
             { label: "Chưa ký", value: "notsigned" },
             { label: "Đã ký", value: "signed" },
             { label: "Đang giao", value: "shipping" },

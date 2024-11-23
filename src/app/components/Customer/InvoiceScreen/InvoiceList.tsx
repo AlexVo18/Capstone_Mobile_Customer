@@ -50,7 +50,7 @@ const InvoiceList = ({
             <View style={[styles.card, styles.elevation]} className="p-[10px] ">
               <View className="flex flex-row gap-4">
                 <View className="items-center justify-center relative p-2">
-                  <Receipt size={100} color={"#000"} />
+                  <Receipt size={80} color={"#000"} />
                   <InvoiceStatusTag status={item.status} />
                 </View>
                 <View style={{ flex: 1 }} className="flex justify-between">

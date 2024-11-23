@@ -86,7 +86,7 @@ const RentingRequestList = ({
               >
                 <View className="flex flex-row gap-4">
                   <View className="items-center justify-center relative p-2">
-                    <Package size={100} color={"#000"} />
+                    <Package size={80} color={"#000"} />
                     <RentingRequestStatusTag status={item.status} />
                   </View>
                   <View style={{ flex: 1 }} className="flex justify-between">
