@@ -18,6 +18,7 @@ import ContractSearhBar from "~/src/app/components/Customer/ContractScreen/Contr
 import ContractOpts from "~/src/app/components/Customer/ContractScreen/ContractOpts";
 import { ScrollText } from "lucide-react-native";
 import ContractList from "~/src/app/components/Customer/ContractScreen/ContractList";
+import RNPickerSelect from "react-native-picker-select";
 
 const UserContract = ({ navigation, route }: UserContractScreenProps) => {
   const [keyword, setKeyword] = useState<string>("");
@@ -41,13 +42,9 @@ const UserContract = ({ navigation, route }: UserContractScreenProps) => {
       headerTitle: () => (
         <ContractSearhBar keyword={keyword} setKeyword={setKeyword} />
       ),
-      headerRight: () => <ContractOpts onToggle={toggleModal} />,
+      headerRight: () => <ContractOpts />,
     });
   }, [isOpen, keyword]);
-
-  const toggleModal = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
 
   const getContract = async () => {
     try {
@@ -122,25 +119,50 @@ const UserContract = ({ navigation, route }: UserContractScreenProps) => {
     }
   };
 
-  return isLoading ? (
-    <View className="w-full h-full flex justify-center items-center bg-white">
-      <ActivityIndicator color={mainBlue} size={"large"} />
-    </View>
-  ) : displayList.length !== 0 ? (
-    <View style={styles.container} className="bg-white">
-      <ContractList
-        displayList={displayList}
-        handleLoadMore={handleLoadMore}
-        isLoadingMore={isLoadingMore}
-        userContractScreenProps={{ navigation, route }}
-      />
-    </View>
-  ) : (
-    <View className="w-full h-full flex justify-center items-center flex-col">
-      <ScrollText color={`hsl(${mutedForground})`} size={48} />
-      <Text style={{ color: `hsl(${mutedForground})` }} className="text-lg">
-        Không có máy móc nào cả
-      </Text>
+  return (
+    <View className="bg-white" style={styles.container}>
+      {isLoading ? (
+        <View className="w-full h-full flex justify-center items-center">
+          <ActivityIndicator color={mainBlue} size={"large"} />
+        </View>
+      ) : displayList.length !== 0 ? (
+        <ContractList
+          displayList={displayList}
+          handleLoadMore={handleLoadMore}
+          isLoadingMore={isLoadingMore}
+          userContractScreenProps={{ navigation, route }}
+        />
+      ) : (
+        <View className="w-full h-full flex justify-center items-center flex-col">
+          <ScrollText color={`hsl(${mutedForground})`} size={48} />
+          <Text style={{ color: `hsl(${mutedForground})` }} className="text-lg">
+            Không có máy móc nào cả
+          </Text>
+        </View>
+      )}
+      <View
+        className={` ${displayList.length === 0 && "absolute"} bottom-0 w-full border-t-[0.5px] border-muted-foreground`}
+      >
+        <RNPickerSelect
+          value={type}
+          onValueChange={(value) => setType(value)}
+          placeholder={{
+            label: "Chọn trạng thái",
+            value: "all",
+          }}
+          items={[
+            { label: "Chưa ký", value: "notsigned" },
+            { label: "Đã ký", value: "signed" },
+            { label: "Đang giao", value: "shipping" },
+            { label: "Đang được thuê", value: "renting" },
+            { label: "Đã hoàn tất", value: "completed" },
+            { label: "Đợi kiểm tra", value: "inspectionpending" },
+            { label: "Đang kiểm tra", value: "inspectioninprogress" },
+            { label: "Đợi hoàn tiền", value: "awaitingrefundinvoice" },
+            { label: "Đã hủy", value: "canceled&terminated" },
+          ]}
+        />
+      </View>
     </View>
   );
 };
