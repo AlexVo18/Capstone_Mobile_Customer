@@ -26,7 +26,6 @@ const UserRentingRequest = ({
   const [filteredList, setFilteredList] = useState<RequestData[]>([]);
   const [displayList, setDisplayList] = useState<RequestData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const debounceKeyword = useDebounce(keyword);
   const itemsPerPage = 10;
@@ -146,6 +145,7 @@ const UserRentingRequest = ({
                 value: "all",
               }}
               items={[
+                { label: "Tất cả", value: "all" },
                 { label: "Đã giao", value: "shipped" },
                 { label: "Chưa trả cọc", value: "unpaid" },
                 { label: "Đã ký", value: "signed" },
@@ -163,6 +163,7 @@ const UserRentingRequest = ({
                 value: "allType",
               }}
               items={[
+                { label: "Tất cả", value: "allType" },
                 { label: "Một lần", value: "oneTime" },
                 { label: "Theo tháng", value: "monthly" },
               ]}

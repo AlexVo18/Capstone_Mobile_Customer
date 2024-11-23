@@ -122,7 +122,7 @@ const RentingRequestList = ({
                     </View>
                   </View>
                 </View>
-                <View className="flex flex-row gap-2 justify-end mt-2">
+                {/* <View className="flex flex-row gap-2 justify-end mt-2">
                   {item.status.toLowerCase() === "unpaid" && (
                     <TouchableOpacity
                       style={[styles.buttonStyle, styles.outlineButtonColor]}
@@ -133,7 +133,7 @@ const RentingRequestList = ({
                       </Text>
                     </TouchableOpacity>
                   )}
-                </View>
+                </View> */}
               </View>
             </TouchableOpacity>
           );
@@ -145,7 +145,7 @@ const RentingRequestList = ({
             <ActivityIndicator size="large" color={mainBlue} />
           ) : null
         }
-        ListEmptyComponent={<Text>Không còn hợp đồng nào</Text>}
+        ListEmptyComponent={<Text>Không còn đơn hàng nào</Text>}
       />
     </>
   );
