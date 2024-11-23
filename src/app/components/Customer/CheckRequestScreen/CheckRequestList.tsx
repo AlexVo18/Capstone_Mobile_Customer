@@ -59,7 +59,7 @@ const CheckRequestList = ({
                     </Text>
                   </View>
                   <View>
-                    <Text className="line-clamp-1 ">
+                    <Text className="line-clamp-2 ">
                       - Địa chỉ: <Text>{item.contractAddress.addressBody}</Text>
                     </Text>
                   </View>

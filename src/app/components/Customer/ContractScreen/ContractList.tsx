@@ -117,7 +117,7 @@ const ContractList = ({
                   </View>
                 </View>
               </View>
-              <View className="flex flex-row gap-2 justify-end mt-2">
+              {/* <View className="flex flex-row gap-2 justify-end mt-2">
                 {item.status.toLowerCase() === "renting" &&
                   !item.isExtended && (
                     <TouchableOpacity
@@ -160,8 +160,8 @@ const ContractList = ({
                       </Text>
                     )}
                   </TouchableOpacity>
-                )} */}
-              </View>
+                )} 
+              </View> */}
             </View>
           </View>
         );

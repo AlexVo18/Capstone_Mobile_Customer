@@ -78,7 +78,7 @@ export type CustomerStackParamList = {
 
   // Giao hàng
   UserDelivery: undefined;
-  DeliveryDetail: { deliveryTaskId: string };
+  DeliveryDetail: { deliveryTaskId: number };
 
   // Quyền lợi
   MembershipTopTabs: undefined;
