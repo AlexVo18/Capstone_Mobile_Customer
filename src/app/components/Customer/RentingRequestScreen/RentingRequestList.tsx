@@ -1,5 +1,5 @@
-import { ActivityIndicator, Modal, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import React from "react";
 import { RequestData } from "~/src/app/models/rentingRequest_models";
 import { UserRentingRequestScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";

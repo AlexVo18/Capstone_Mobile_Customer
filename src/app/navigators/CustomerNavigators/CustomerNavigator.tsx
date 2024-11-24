@@ -279,8 +279,16 @@ const CustomerNavigator = () => {
       />
 
       {/* Profile*/}
-      <Stack.Screen name="Profile" component={Profile} options={{ headerTitle: "Hồ sơ" }}/>
-      <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerTitle: "Thay đổi mật khẩu" }}/>
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{ headerTitle: "Hồ sơ" }}
+      />
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{ headerTitle: "Thay đổi mật khẩu" }}
+      />
 
       {/* Địa chỉ */}
       <Stack.Screen
@@ -343,8 +351,12 @@ const CustomerNavigator = () => {
         options={{ headerTitle: "Chính sách quy định" }}
       />
 
-      {/* Hợp đồng */}
-      <Stack.Screen name="UserNotification" component={UserNotification} />
+      {/* Thông báo */}
+      <Stack.Screen
+        name="UserNotification"
+        component={UserNotification}
+        options={{ headerTitle: "Thông báo" }}
+      />
     </Stack.Navigator>
   );
 };
