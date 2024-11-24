@@ -9,11 +9,9 @@ import AuthMenu from "../../screens/Auth/AuthScreens/AuthMenu";
 import RegisterProfile from "../../screens/Auth/AuthScreens/Register/RegisterProfile";
 import AuthenOTP from "../../screens/Auth/AuthScreens/Register/AuthenOTP";
 import RegisterEmail from "../../screens/Auth/AuthScreens/Register/RegisterEmail";
-import CustomBack from "../../components/header/CustomBack";
 import {
   LoginParams,
   RegisterAccountParams,
-  RegisterParams,
 } from "../../models/auth_models";
 
 export type AuthStackParamList = {

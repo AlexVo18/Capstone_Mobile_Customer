@@ -279,8 +279,8 @@ const CustomerNavigator = () => {
       />
 
       {/* Profile*/}
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="Profile" component={Profile} options={{ headerTitle: "Hồ sơ" }}/>
+      <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerTitle: "Thay đổi mật khẩu" }}/>
 
       {/* Địa chỉ */}
       <Stack.Screen

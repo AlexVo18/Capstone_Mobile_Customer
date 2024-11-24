@@ -36,7 +36,7 @@ const DeliveryList = ({
             }
           >
             <View style={[styles.card, styles.elevation]} className="p-[10px] ">
-              <View className="flex flex-row gap-4">
+              <View className="flex flex-row gap-7">
                 <View className="items-center justify-center relative p-2">
                   <Truck size={80} color={"#000"} />
                   <DeliveryStatusTag status={item.status} />
