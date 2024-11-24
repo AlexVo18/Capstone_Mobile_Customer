@@ -28,7 +28,6 @@ const InvoiceList = ({
   userInvoiceScreenProps,
   handleLoadMore,
   isLoadingMore,
-  onCancel,
 }: Props) => {
 
   return (

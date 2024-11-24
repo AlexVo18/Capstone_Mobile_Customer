@@ -48,8 +48,12 @@ const CancelModal = ({
           <View className="pb-4 pt-1">
             <Text className="text-center text-muted-foreground">
               Việc này sẽ tiếp tục với quá trình hủy{" "}
-              {type === "RentingRequest" ? "đơn hàng" : ""} của bạn và sẽ không
-              thay đổi được
+              {type === "RentingRequest"
+                ? "đơn hàng"
+                : type === "Invoice"
+                  ? "ticket sửa chữa"
+                  : ""}{" "}
+              của bạn và sẽ không thay đổi được
             </Text>
           </View>
 

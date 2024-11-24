@@ -297,18 +297,27 @@ const CustomerNavigator = () => {
 
       {/* Thanh toán */}
       <Stack.Screen name="UserInvoice" component={UserInvoice} />
-      <Stack.Screen name="InvoiceDetail" component={InvoiceDetail} />
+      <Stack.Screen
+        name="InvoiceDetail"
+        component={InvoiceDetail}
+        options={{ headerTitle: "Thông tin đơn thanh toán" }}
+      />
 
       {/* Đơn hàng */}
       <Stack.Screen name="UserRentingRequest" component={UserRentingRequest} />
       <Stack.Screen
         name="RentingRequestDetail"
         component={RentingRequestDetail}
+        options={{ headerTitle: "Thông tin đơn hàng" }}
       />
 
       {/* Yêu cầu sửa chữa */}
       <Stack.Screen name="UserCheckRequest" component={UserCheckRequest} />
-      <Stack.Screen name="CheckRequestDetail" component={CheckRequestDetail} />
+      <Stack.Screen
+        name="CheckRequestDetail"
+        component={CheckRequestDetail}
+        options={{ headerTitle: "Thông tin yêu cầu" }}
+      />
       <Stack.Screen name="CreateCheckRequest" component={CreateCheckRequest} />
 
       {/* Hợp đồng */}
@@ -321,7 +330,11 @@ const CustomerNavigator = () => {
 
       {/* Giao hàng */}
       <Stack.Screen name="UserDelivery" component={UserDelivery} />
-      <Stack.Screen name="DeliveryDetail" component={DeliveryDetail} />
+      <Stack.Screen
+        name="DeliveryDetail"
+        component={DeliveryDetail}
+        options={{ headerTitle: "Thông tin đơn giao hàng" }}
+      />
 
       {/* Chính sách */}
       <Stack.Screen

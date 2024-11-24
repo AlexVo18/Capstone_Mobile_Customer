@@ -3,7 +3,6 @@ import {
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  StyleSheet,
   Text,
   View,
 } from "react-native";
@@ -12,12 +11,8 @@ import { MachineDetailScreenProps } from "~/src/app/navigators/CustomerNavigator
 import { MachineryDetailData } from "~/src/app/models/machinery_models";
 import Machinery from "~/src/app/api/machinery/Machinery";
 import Toast from "react-native-toast-message";
-import {
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ActivityIndicator } from "react-native-paper";
 import { mainBlue } from "~/src/app/constants/cssConstants";
 import Carousel from "react-native-reanimated-carousel";
 import { formatVND } from "~/src/app/utils/formatVND";
@@ -27,7 +22,6 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
   const { machineId } = route.params;
   const [machinery, setMachinery] = useState<MachineryDetailData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [quantity, setQuantity] = useState<number>(1);
   const imageHeight = 300;
 
   const width = Dimensions.get("window").width;
@@ -87,15 +81,6 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
     formattedContent = formattedContent.replace(/(?<=\n|^)-/g, " -");
 
     return formattedContent;
-  };
-
-  const handleAddToCart = () => {
-    // Add your add-to-cart logic here
-    Toast.show({
-      type: "success",
-      text1: "Added to cart",
-      text2: `Quantity: ${quantity}`,
-    });
   };
 
   return isLoading ? (
@@ -287,62 +272,8 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
           </View>
         </View>
       </ScrollView>
-      {/* <View className="absolute bottom-0 w-full bg-white flex-row justify-between items-center py-5 px-3 border-t border-gray-300">
-        <View className="flex-row items-center ">
-          <TouchableOpacity
-            style={[styles.addItemButtonStyle, styles.minusButton]}
-          >
-            <Text className="text-2xl text-blue-700 font-semibold bottom-[2px]">
-              -
-            </Text>
-          </TouchableOpacity>
-          <Text className="px-4 text-lg font-semibold">{quantity}</Text>
-          <TouchableOpacity
-            style={[styles.addItemButtonStyle, styles.plusButton]}
-          >
-            <Text className="text-2xl text-[#ffffff] font-semibold bottom-[2px]">
-              +
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <Button
-          mode="contained"
-          onPress={handleAddToCart}
-          buttonColor={mainBlue}
-          textColor="white"
-          style={[styles.buttonStyle]}
-        >
-          <Text className="text-lg">Thêm vào giỏ hàng</Text>
-        </Button>
-      </View> */}
     </View>
   );
 };
 
 export default MachineDetail;
-
-const styles = StyleSheet.create({
-  buttonStyle: {
-    borderRadius: 10,
-    paddingVertical: 4,
-    width: 250,
-  },
-  addItemButtonStyle: {
-    borderRadius: 10,
-    width: 30,
-    height: 30,
-    borderWidth: 2,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    borderColor: mainBlue,
-  },
-  minusButton: {
-    backgroundColor: "white",
-  },
-  plusButton: {
-    backgroundColor: mainBlue,
-  },
-});

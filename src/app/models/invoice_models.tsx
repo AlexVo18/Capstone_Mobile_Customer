@@ -2,8 +2,7 @@ export interface InvoiceData {
   invoiceId: string;
   accountPaidId: number;
   accountPaidName: string;
-  contractPaymentId: string;
-  maintainTicketId: string;
+  componentReplacementTicketId: string;
   digitalTransactionId: string;
   paymentMethod: string;
   amount: number;
@@ -27,6 +26,7 @@ export interface InvoiceDetailData {
   type: string;
   note: string;
   contractPayments: ContractPaymentData[];
+  componentReplacementTicketId: string;
 }
 
 interface ContractPaymentData {
@@ -65,6 +65,26 @@ export interface PaymentUrlParams {
   cancel: boolean;
   status: string;
   orderCode: string;
+}
+
+export interface BankResponseData {
+  code: string;
+  desc: string;
+  data: BankData[];
+}
+export interface BankData {
+  bin: string;
+  code: string;
+  id: number;
+  isTransfer: number;
+  logo: string;
+  lookupSupported: number;
+  name: string;
+  shortName: string;
+  short_name: string;
+  support: number;
+  swift_code: string;
+  transferSupported: number;
 }
 
 export interface TaxCodeResponseData {

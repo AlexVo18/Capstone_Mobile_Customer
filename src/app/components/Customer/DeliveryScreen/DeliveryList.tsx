@@ -73,29 +73,8 @@ const DeliveryList = ({
                       )}
                     </Text>
                   </View>
-
-                  <View className="flex justify-end flex-row items-center mt-2">
-                    <Text>
-                      Ngày tạo:{" "}
-                      <Text className="text-muted-foreground">
-                        {formatDate(item.dateCreate)}
-                      </Text>
-                    </Text>
-                  </View>
                 </View>
               </View>
-              {/* <View className="flex flex-row gap-2 justify-end mt-2">
-                  {item.status.toLowerCase() === "unpaid" && (
-                    <TouchableOpacity
-                      style={[styles.buttonStyle, styles.outlineButtonColor]}
-                      onPress={() => setChosen(item.rentingRequestId)}
-                    >
-                      <Text className="text-sm text-center text-red-600 font-semibold">
-                        Hủy đơn hàng
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View> */}
             </View>
           </TouchableOpacity>
         );
