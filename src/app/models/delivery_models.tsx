@@ -42,7 +42,7 @@ interface DeliveryTaskLog {
   dateCreate: string;
 }
 
-export interface DeliveryDetail {
+export interface DeliveryDetailData {
   deliveryTask: DeliveryData;
   contractDeliveries: ContractDeliveryData[];
   deliveryTaskLogs: DeliveryTaskLog[];

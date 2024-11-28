@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { InvoiceDetailScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 import { InvoiceDetailData } from "~/src/app/models/invoice_models";
@@ -8,7 +8,6 @@ import Invoice from "~/src/app/api/invoice/Invoice";
 import ReplacementTicket from "~/src/app/api/replacementTicket/ReplacementTicket";
 import { mainBlue } from "~/src/app/constants/cssConstants";
 import { useFocusEffect } from "@react-navigation/native";
-import InvoiceStatusTag from "~/src/app/components/Customer/InvoiceScreen/InvoiceStatusTag";
 import { cn } from "~/src/app/utils/cn";
 import { formatDate } from "~/src/app/utils/dateformat";
 import { formatVND } from "~/src/app/utils/formatVND";
@@ -21,7 +20,7 @@ import {
 import CancelModal from "~/src/app/components/modal/CancelModal";
 import axios from "axios";
 
-const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
+const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
   const { invoiceId } = route.params;
   const [detail, setDetail] = useState<InvoiceDetailData>();
   const [ticketDetail, setTicketDetail] =
@@ -186,9 +185,7 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
                     {formatDate(detail.datePaid)}
                   </Text>
                 ) : (
-                  <Text className="text-muted-foreground">
-                    (Chưa có) {formatDate(detail.datePaid)}
-                  </Text>
+                  <Text className="text-muted-foreground">(Chưa có)</Text>
                 )}
               </Text>
             </View>
@@ -196,7 +193,10 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
           <View className="mb-2 mx-2 p-4 bg-white rounded-lg">
             <Text className="text-lg font-semibold">Thông tin</Text>
             <View className="h-[0.5px] bg-muted-foreground my-2"></View>
-            <View className="flex flex-row mb-1">
+            <View className="flex flex-row justify-between items-center">
+              <View>
+                <Text>Loại thanh toán</Text>
+              </View>
               <View
                 className={cn(
                   `rounded-2xl px-4 py-1 w-fit border-[1px]`,
