@@ -31,6 +31,7 @@ import UserRentingRequest from "../../screens/Customer/RentingRequestScreens/Use
 import RentingRequestDetail from "../../screens/Customer/RentingRequestScreens/RentingRequestDetail";
 import UserNotification from "../../screens/Customer/NotificationScreens/UserNotification";
 import ExtendContract from "../../screens/Customer/ContractScreens/ExtendContract";
+import ContractDetail from "../../screens/Customer/ContractScreens/ContractDetail";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -63,7 +64,7 @@ export type CustomerStackParamList = {
   UserInvoice: undefined;
   InvoiceDetail: { invoiceId: string };
 
-  // Đơn hàng
+  // Đơn thuê
   UserRentingRequest: undefined;
   RentingRequestDetail: { rentingRequestId: string };
 
@@ -75,6 +76,7 @@ export type CustomerStackParamList = {
   // Hợp đồng
   UserContract: undefined;
   ExtendContract: { contractId: string };
+  ContractDetail: { contractId: string };
 
   // Giao hàng
   UserDelivery: undefined;
@@ -150,7 +152,7 @@ export type InvoiceDetailScreenProps = NativeStackScreenProps<
   "InvoiceDetail"
 >;
 
-// Đơn hàng
+// Đơn thuê
 export type UserRentingRequestScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserRentingRequest"
@@ -178,6 +180,10 @@ export type CreateCheckRequestScreenProps = NativeStackScreenProps<
 export type UserContractScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserContract"
+>;
+export type ContractDetailScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "ContractDetail"
 >;
 export type ExtendContractScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
@@ -311,12 +317,12 @@ const CustomerNavigator = () => {
         options={{ headerTitle: "Thông tin đơn thanh toán" }}
       />
 
-      {/* Đơn hàng */}
+      {/* Đơn thuê */}
       <Stack.Screen name="UserRentingRequest" component={UserRentingRequest} />
       <Stack.Screen
         name="RentingRequestDetail"
         component={RentingRequestDetail}
-        options={{ headerTitle: "Thông tin đơn hàng" }}
+        options={{ headerTitle: "Thông tin đơn thuê" }}
       />
 
       {/* Yêu cầu sửa chữa */}
@@ -330,6 +336,11 @@ const CustomerNavigator = () => {
 
       {/* Hợp đồng */}
       <Stack.Screen name="UserContract" component={UserContract} />
+      <Stack.Screen
+        name="ContractDetail"
+        component={ContractDetail}
+        options={{ headerTitle: "Thông tin hợp đồng" }}
+      />
       <Stack.Screen
         name="ExtendContract"
         component={ExtendContract}

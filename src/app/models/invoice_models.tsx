@@ -29,7 +29,7 @@ export interface InvoiceDetailData {
   componentReplacementTicketId: string;
 }
 
-interface ContractPaymentData {
+export interface ContractPaymentData {
   contractPaymentId: number;
   contractId: string;
   invoiceId: string;

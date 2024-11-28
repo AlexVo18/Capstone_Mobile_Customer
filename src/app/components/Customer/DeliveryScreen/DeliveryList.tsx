@@ -86,7 +86,7 @@ const DeliveryList = ({
           <ActivityIndicator size="large" color={mainBlue} />
         ) : null
       }
-      ListEmptyComponent={<Text>Không còn đơn hàng nào</Text>}
+      ListEmptyComponent={<Text>Không còn đơn thuê nào</Text>}
     />
   );
 };

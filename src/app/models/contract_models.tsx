@@ -1,3 +1,4 @@
+import { ContractPaymentData } from "./invoice_models";
 import { AccountBusinessData, AccountOrderData } from "./rentingRequest_models";
 
 export interface TermsData {
@@ -30,6 +31,11 @@ export interface ContractDetailData {
   numberOfMonth: 0;
   totalRentPrice: 0;
   accountBusiness: AccountBusinessData;
+  contractAddress: ContractAddressData;
+  contractPayments: ContractPaymentData[];
+  bankAccountRefund: ContractBankInfoData;
+  thumbnail: string;
+  isExtended: boolean;
 }
 
 export interface ContractData {
@@ -52,9 +58,24 @@ export interface ContractData {
   thumbnail: string;
   accountSignId: number;
   baseContractId: string;
+  contractAddress: ContractAddressData;
 }
 
 export interface ExtendContractParams {
   contractId: string | undefined;
   dateEnd: string | undefined;
+}
+
+export interface ContractAddressData {
+  addressBody: string;
+  city: string;
+  coordinates: string;
+  district: string;
+  rentingRequestId: string;
+}
+
+export interface ContractBankInfoData {
+  accountNumber: string;
+  beneficiaryBank: string;
+  beneficiaryName: string;
 }

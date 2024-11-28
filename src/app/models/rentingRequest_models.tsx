@@ -35,6 +35,9 @@ export interface RequestDetailData {
   isOnetimePayment: boolean;
   note: string;
   status: string;
+  accountNumber: string;
+  beneficiaryBank: string;
+  beneficiaryName: string;
   serviceRentingRequests: ServiceRentingRequestData[];
   accountOrder: AccountOrderData;
   rentingRequestAddress: RentingRequestAddressData;
@@ -89,4 +92,15 @@ export interface AccountBusinessData {
   address: string;
   position: string;
   taxNumber: string;
+}
+
+export interface ReviewRequestData {
+  numOfMonth: number;
+  rentingRequestReviewSerialNumbers: RentingRequestReviewSerialNumberData[];
+}
+export interface RentingRequestReviewSerialNumberData {
+  serialNumber: string;
+  rentPricePerDays: number;
+  dateStart: string;
+  dateEnd: string;
 }

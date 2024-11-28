@@ -136,7 +136,7 @@ const UserRentingRequest = ({
         <View className="w-full h-full flex justify-center items-center flex-col">
           <Package2 color={`hsl(${mutedForground})`} size={48} />
           <Text style={{ color: `hsl(${mutedForground})` }} className="text-lg">
-            Không có đơn hàng nào cả
+            Không có đơn thuê nào cả
           </Text>
         </View>
       )}

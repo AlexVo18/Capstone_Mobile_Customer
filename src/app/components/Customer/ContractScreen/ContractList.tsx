@@ -60,8 +60,15 @@ const ContractList = ({
       keyExtractor={(item) => item.contractId}
       renderItem={({ item }) => {
         return (
-          <View style={{ marginHorizontal: 15 }}>
-            <View style={[styles.card, styles.elevation]} className="p-[10px] ">
+          <TouchableOpacity
+            style={{ marginHorizontal: 15 }}
+            onPress={() =>
+              userContractScreenProps.navigation.navigate("ContractDetail", {
+                contractId: item.contractId,
+              })
+            }
+          >
+            <View style={[styles.card, styles.elevation]} className="p-[10px]">
               <View className="flex flex-row gap-2">
                 <View className="items-center justify-center relative">
                   <Image
@@ -163,7 +170,7 @@ const ContractList = ({
                 )} 
               </View> */}
             </View>
-          </View>
+          </TouchableOpacity>
         );
       }}
       onEndReached={handleLoadMore}

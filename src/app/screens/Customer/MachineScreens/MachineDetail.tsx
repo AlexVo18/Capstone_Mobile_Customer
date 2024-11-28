@@ -108,12 +108,12 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
                   height: 350,
                   borderBottomEndRadius: 10,
                 }}
-                onPress={() =>
-                  navigation.navigate("MachineImagesSlide", {
-                    imagesList: machinery?.machineImageList || [],
-                    chosenIndex: 1,
-                  })
-                }
+                // onPress={() =>
+                //   navigation.navigate("MachineImagesSlide", {
+                //     imagesList: machinery?.machineImageList || [],
+                //     chosenIndex: 1,
+                //   })
+                // }
               >
                 <Image
                   src={item?.machineImageUrl}
