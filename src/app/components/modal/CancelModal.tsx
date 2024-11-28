@@ -15,7 +15,7 @@ interface Props {
   chosen: string | undefined;
   setChosen: React.Dispatch<React.SetStateAction<string | undefined>>;
   onPress: () => void;
-  type: "RentingRequest" | "Invoice" | "MachineCheck";
+  type: "RentingRequest" | "Invoice" | "MachineCheck" | "Contract";
   isLoading: boolean;
 }
 
@@ -54,7 +54,9 @@ const CancelModal = ({
                   ? "ticket sửa chữa"
                   : type === "MachineCheck"
                     ? "yêu cầu sửa chữa"
-                    : ""}{" "}
+                    : type === "Contract"
+                      ? "hợp đồng"
+                      : ""}{" "}
               của bạn và sẽ không thay đổi được
             </Text>
           </View>

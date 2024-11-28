@@ -288,12 +288,12 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     borderWidth: 1,
-    borderColor: "#d1d5db", // gray-300 equivalent
-    padding: 8, // p-2 equivalent (2 * 0.25rem = 8px)
-    borderRadius: 8, // rounded-lg equivalent
+    borderColor: "#d1d5db", 
+    padding: 8, 
+    borderRadius: 8, 
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 8, // gap-2 equivalent
+    gap: 8, 
   },
 });
