@@ -209,9 +209,9 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                     getTypeColor(detail.type)
                   )}
                 >
-                  {detail.status.toLowerCase() === "rental"
+                  {detail.type.toLowerCase() === "rental"
                     ? "Tiền thuê"
-                    : detail.status.toLowerCase() === "componentticket"
+                    : detail.type.toLowerCase() === "componentticket"
                       ? "Tiền sửa chữa"
                       : "Tiền cọc"}
                 </Text>

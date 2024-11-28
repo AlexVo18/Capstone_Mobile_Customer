@@ -10,5 +10,10 @@ const MachineCheckRequest = {
     requests.jwtApiGet("/machine-check-request/criterias"),
   createMachineCheckReq: (input: MachineRequestParams) =>
     requests.jwtApiPost("/machine-check-request", input),
+  cancelRequest: (input: string) =>
+    requests.codeJwtApiPatch(
+      `/machine-check-request/customer/${input}/cancel`,
+      {}
+    ),
 };
 export default MachineCheckRequest;

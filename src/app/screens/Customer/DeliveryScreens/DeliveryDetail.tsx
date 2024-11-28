@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, Text, View, Image } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { mainBlue } from "~/src/app/constants/cssConstants";
+import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { DeliveryDetailScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 import { DeliveryDetailData } from "~/src/app/models/delivery_models";
 import { DistanceData } from "~/src/app/models/address_models";
@@ -13,6 +13,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { cn } from "~/src/app/utils/cn";
 import { formatDate } from "~/src/app/utils/dateformat";
 import { formatTime } from "~/src/app/utils/formatTime";
+import { FileClock } from "lucide-react-native";
 
 const DeliveryDetail = ({ navigation, route }: DeliveryDetailScreenProps) => {
   const { deliveryTaskId } = route.params;
@@ -250,7 +251,15 @@ const DeliveryDetail = ({ navigation, route }: DeliveryDetailScreenProps) => {
                   </View>
                 ))
               ) : (
-                <></>
+                <View className=" flex justify-center items-center flex-col my-4">
+                  <FileClock color={`hsl(${mutedForground})`} size={36} />
+                  <Text
+                    style={{ color: `hsl(${mutedForground})` }}
+                    className="text-lg"
+                  >
+                    Không có cập nhật nào cả
+                  </Text>
+                </View>
               )}
             </View>
           </View>
