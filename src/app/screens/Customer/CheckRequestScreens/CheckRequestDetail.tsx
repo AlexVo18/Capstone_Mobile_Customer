@@ -115,7 +115,7 @@ const CheckRequestDetail = ({
           setChosen={setChosen}
           onPress={handleCancelRequest}
           isLoading={isLoading}
-          type="Invoice"
+          type="MachineCheck"
         />
         <ScrollView>
           <View className="m-2 p-4 bg-white rounded-lg">
@@ -159,27 +159,27 @@ const CheckRequestDetail = ({
             <Text className="text-lg font-semibold">Nội dung yêu cầu</Text>
             <View className="h-[0.5px] bg-muted-foreground my-2"></View>
             <View className="flex flex-row justify-between">
-              <Text>Mã hợp đồng: </Text>
+              <Text>Mã hợp đồng </Text>
               <Text className="text-muted-foreground">
                 {detail?.machineCheckRequest.contractId}
               </Text>
             </View>
             <View className="flex flex-row justify-between">
-              <Text>Mã máy: </Text>
+              <Text>Mã máy </Text>
               <Text className="text-muted-foreground">
                 {detail?.machineCheckRequest.serialNumber}
               </Text>
             </View>
             <View className="flex flex-row justify-between">
-              <Text>Địa chỉ: </Text>
+              <Text>Địa chỉ </Text>
               <Text className="text-muted-foreground text-right w-72">
                 {detail?.machineCheckRequest.contractAddress.addressBody}
               </Text>
             </View>
             {detail?.checkCriteriaList.length !== 0 ? (
               <View className="flex ">
-                <Text>Máy đang bị: </Text>
-                <View>
+                <Text>Máy đang bị </Text>
+                <Text>
                   {detail?.checkCriteriaList.map((criteria, index) => (
                     <Text key={index} className="text-muted-foreground">
                       {index < detail.checkCriteriaList.length &&
@@ -188,7 +188,7 @@ const CheckRequestDetail = ({
                       {criteria.criteriaName}
                     </Text>
                   ))}
-                </View>
+                </Text>
               </View>
             ) : null}
             <View className="flex">
@@ -221,13 +221,13 @@ const CheckRequestDetail = ({
                     }
                   >
                     <View className="flex flex-row justify-between items-center">
-                      <Text>Mã ticket: </Text>
+                      <Text>Mã ticket </Text>
                       <Text className="text-blue-700 text-lg font-semibold">
                         {ticket.componentReplacementTicketId}
                       </Text>
                     </View>
                     <View className="flex flex-row justify-between items-center">
-                      <Text>Trạng thái: </Text>
+                      <Text>Trạng thái </Text>
                       <View
                         className={cn(
                           `rounded-2xl px-4 py-1 w-fit `,
@@ -246,7 +246,7 @@ const CheckRequestDetail = ({
                       </View>
                     </View>
                     <View className="flex flex-row justify-between">
-                      <Text>Bộ phận thay thế: </Text>
+                      <Text>Bộ phận thay thế </Text>
                       <Text className="text-muted-foreground">
                         {ticket.componentName}{" "}
                         <Text className="font-semibold">
@@ -255,20 +255,20 @@ const CheckRequestDetail = ({
                       </Text>
                     </View>
                     <View className="flex flex-row justify-between">
-                      <Text>Tiền sửa chữa: </Text>
+                      <Text>Tiền sửa chữa </Text>
                       <Text className="text-muted-foreground">
                         {formatVND(ticket.totalAmount)}
                       </Text>
                     </View>
                     <View className="flex flex-row justify-between">
-                      <Text>Ngày tạo: </Text>
+                      <Text>Ngày tạo </Text>
                       <Text className="text-muted-foreground">
                         {formatDate(ticket.dateCreate)}
                       </Text>
                     </View>
                     {ticket.dateRepair && (
                       <View className="flex flex-row justify-between">
-                        <Text>Ngày sửa chữa: </Text>
+                        <Text>Ngày sửa chữa </Text>
                         <Text className="text-muted-foreground">
                           {formatDate(ticket.dateRepair)}
                         </Text>
@@ -289,6 +289,41 @@ const CheckRequestDetail = ({
               )}
             </View>
           </View>
+          {detail?.machineCheckRequest.status.toLowerCase() === "new" ||
+          detail?.machineCheckRequest.status.toLowerCase() === "assigned" ? (
+            <View className="w-full p-2">
+              {isCancelLoading ? (
+                <TouchableOpacity
+                  style={[styles.buttonStyle, styles.disableButtonColor]}
+                  disabled
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color={"#6b7280"} size={"small"} />
+                  ) : (
+                    <Text className="text-lg text-center text-gray-500 font-semibold">
+                      Hủy yêu cầu
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={[styles.buttonStyle, styles.redButtonColor]}
+                  disabled={isCancelLoading}
+                  onPress={() =>
+                    setChosen(detail.machineCheckRequest.machineCheckRequestId)
+                  }
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color={"#6b7280"} size={"small"} />
+                  ) : (
+                    <Text className="text-lg text-center text-white font-semibold">
+                      Hủy yêu cầu
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              )}
+            </View>
+          ) : null}
         </ScrollView>
       </>
     )

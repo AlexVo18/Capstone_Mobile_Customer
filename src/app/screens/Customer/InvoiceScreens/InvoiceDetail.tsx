@@ -351,7 +351,7 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                 </View>
                 <View className="flex flex-row justify-between">
                   <Text>Giá bộ phận</Text>
-                  <Text>{ticketDetail.componentPrice}</Text>
+                  <Text>{formatVND(ticketDetail.componentPrice)}</Text>
                 </View>
               </>
             )}
