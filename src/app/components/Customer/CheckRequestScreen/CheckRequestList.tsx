@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { UserCheckRequestScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 import { CheckRequestData } from "~/src/app/models/machineCheckRequest_models";
@@ -42,9 +42,17 @@ const CheckRequestList = ({
             }
           >
             <View style={[styles.card, styles.elevation]} className="p-[10px] ">
-              <View className="flex flex-row gap-4">
+              <View className="flex flex-row gap-2">
                 <View className="items-center justify-center relative p-2">
-                  <Wrench size={80} color={"#000"} />
+                  {/* <Wrench size={80} color={"#000"} /> */}
+                  <Image
+                    src={
+                      item.thumbnail ||
+                      "https://www.schaeffler.vn/remotemedien/media/_shared_media_rwd/04_sectors_1/industry_1/construction_machinery/00085545_16_9-schaeffler-industry-solutions-construction-machinery-crawler-excavator_rwd_600.jpg"
+                    }
+                    alt=""
+                    className="h-36 w-36 rounded-lg"
+                  />
                   <CheckRequestStatusTag status={item.status} />
                 </View>
                 <View style={{ flex: 1 }} className="flex justify-between">
@@ -53,14 +61,26 @@ const CheckRequestList = ({
                       {item.machineCheckRequestId}
                     </Text>
                   </View>
+
                   <View>
-                    <Text className="line-clamp-1 ">
-                      - Mã máy: <Text>{item.serialNumber}</Text>
+                    <Text className="line-clamp-1">
+                      Mã máy:{" "}
+                      <Text className="text-blue-700 font-semibold">
+                        {item.serialNumber}
+                      </Text>
+                    </Text>
+                  </View>
+                  <View>
+                    <Text className="text-muted-foreground line-clamp-2">
+                      {item.machineName}
                     </Text>
                   </View>
                   <View>
                     <Text className="line-clamp-2 ">
-                      - Địa chỉ: <Text>{item.contractAddress.addressBody}</Text>
+                      Địa chỉ:{" "}
+                      <Text className="text-muted-foreground">
+                        {item.contractAddress.addressBody}
+                      </Text>
                     </Text>
                   </View>
                   <View className="flex justify-end flex-row items-center mt-2">

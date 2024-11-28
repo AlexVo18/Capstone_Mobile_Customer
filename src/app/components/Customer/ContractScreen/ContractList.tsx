@@ -97,7 +97,7 @@ const ContractList = ({
                   </View>
                   <View>
                     <Text className="text-muted-foreground line-clamp-1">
-                      ({item.machineName})
+                      {item.machineName}
                     </Text>
                   </View>
                   <View>
