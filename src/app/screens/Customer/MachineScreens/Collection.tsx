@@ -28,7 +28,6 @@ import { PackageSearch } from "lucide-react-native";
 import MachineSearchBar from "~/src/app/components/Customer/MachineScreen/MachineSearchBar";
 import MachineOpts from "~/src/app/components/Customer/MachineScreen/MachineOpts";
 import {
-  useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";

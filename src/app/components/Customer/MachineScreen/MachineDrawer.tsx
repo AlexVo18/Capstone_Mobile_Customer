@@ -8,14 +8,12 @@ import {
 import React, { useState } from "react";
 import Animated, {
   useAnimatedStyle,
-  useSharedValue,
 } from "react-native-reanimated";
 import { SearchMachineryParams } from "~/src/app/models/machinery_models";
 import { CategoryData } from "~/src/app/models/category_models";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import {
   ChartColumnStacked,
-  PackageSearch,
   RefreshCw,
 } from "lucide-react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";

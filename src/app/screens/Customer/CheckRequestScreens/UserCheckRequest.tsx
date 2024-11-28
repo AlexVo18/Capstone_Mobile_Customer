@@ -127,7 +127,11 @@ const UserCheckRequest = ({
             <View className="px-10 mb-5">
               <Button
                 mode="outlined"
-                onPress={() => navigation.navigate("CreateCheckRequest")}
+                onPress={() =>
+                  navigation.navigate("CreateCheckRequest", {
+                    checkRequestList: allList,
+                  })
+                }
                 className="mt-5"
                 textColor={mainBlue}
                 style={[styles.outlineButton, styles.buttonStyle]}
@@ -142,7 +146,11 @@ const UserCheckRequest = ({
           <View className="px-10 mb-5">
             <Button
               mode="outlined"
-              onPress={() => navigation.navigate("CreateCheckRequest")}
+              onPress={() =>
+                navigation.navigate("CreateCheckRequest", {
+                  checkRequestList: allList,
+                })
+              }
               className="mt-5"
               textColor={mainBlue}
               style={[styles.outlineButton, styles.buttonStyle]}

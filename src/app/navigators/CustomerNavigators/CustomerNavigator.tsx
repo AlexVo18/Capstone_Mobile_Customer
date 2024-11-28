@@ -32,6 +32,7 @@ import RentingRequestDetail from "../../screens/Customer/RentingRequestScreens/R
 import UserNotification from "../../screens/Customer/NotificationScreens/UserNotification";
 import ExtendContract from "../../screens/Customer/ContractScreens/ExtendContract";
 import ContractDetail from "../../screens/Customer/ContractScreens/ContractDetail";
+import { CheckRequestData } from "../../models/machineCheckRequest_models";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -71,7 +72,7 @@ export type CustomerStackParamList = {
   // Yêu cầu sửa chữa
   UserCheckRequest: undefined;
   CheckRequestDetail: { machineCheckRequestId: string };
-  CreateCheckRequest: undefined;
+  CreateCheckRequest: { checkRequestList: CheckRequestData[] };
 
   // Hợp đồng
   UserContract: undefined;
@@ -332,7 +333,11 @@ const CustomerNavigator = () => {
         component={CheckRequestDetail}
         options={{ headerTitle: "Thông tin yêu cầu" }}
       />
-      <Stack.Screen name="CreateCheckRequest" component={CreateCheckRequest} />
+      <Stack.Screen
+        name="CreateCheckRequest"
+        component={CreateCheckRequest}
+        options={{ headerTitle: "Tạo yêu cầu sửa chữa" }}
+      />
 
       {/* Hợp đồng */}
       <Stack.Screen name="UserContract" component={UserContract} />

@@ -11,8 +11,8 @@ import React from "react";
 import { CircleAlert } from "lucide-react-native";
 
 interface Props {
-  chosen: string | undefined;
-  setChosen: React.Dispatch<React.SetStateAction<string | undefined>>;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onPress: () => void;
   type:
     | "RentingRequest"
@@ -23,9 +23,9 @@ interface Props {
   isLoading: boolean;
 }
 
-const CancelModal = ({
-  chosen,
-  setChosen,
+const CancelModalBoolean = ({
+  open,
+  setOpen,
   onPress,
   isLoading,
   type,
@@ -34,9 +34,9 @@ const CancelModal = ({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={chosen !== undefined}
+      visible={open}
       onRequestClose={() => {
-        setChosen(undefined);
+        setOpen(false);
       }}
     >
       <View style={styles.centeredView}>
@@ -87,7 +87,7 @@ const CancelModal = ({
                 disabled={isLoading}
                 onPress={() => {
                   onPress();
-                  setChosen(undefined);
+                  setOpen(false);
                 }}
               >
                 {isLoading ? (
@@ -101,7 +101,7 @@ const CancelModal = ({
             )}
             <TouchableOpacity
               style={[styles.buttonStyle, styles.cancelColor]}
-              onPress={() => setChosen(undefined)}
+              onPress={() => setOpen(false)}
               disabled={isLoading}
             >
               <Text className="text-center text-lg text-white font-semibold">
@@ -115,7 +115,7 @@ const CancelModal = ({
   );
 };
 
-export default CancelModal;
+export default CancelModalBoolean;
 
 const styles = StyleSheet.create({
   centeredView: {
