@@ -65,7 +65,7 @@ const SettingOption = ({ navigation }: SettingOptionScreenProps) => {
         Icon={<MapPin size={24} color={mainBlue} />}
       />
       <SettingTab
-        label="Đơn thuê"
+        label="Yêu cầu thuê"
         onPress={() => navigation.getParent()?.navigate("UserRentingRequest")}
         Icon={<Package size={24} color={mainBlue} />}
       />

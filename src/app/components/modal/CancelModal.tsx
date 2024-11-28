@@ -49,7 +49,7 @@ const CancelModal = ({
             <Text className="text-center text-muted-foreground">
               Việc này sẽ tiếp tục với quá trình hủy{" "}
               {type === "RentingRequest"
-                ? "đơn thuê"
+                ? "yêu cầu thuê"
                 : type === "Invoice"
                   ? "ticket sửa chữa"
                   : type === "MachineCheck"

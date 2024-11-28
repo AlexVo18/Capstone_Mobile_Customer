@@ -64,7 +64,7 @@ export type CustomerStackParamList = {
   UserInvoice: undefined;
   InvoiceDetail: { invoiceId: string };
 
-  // Đơn thuê
+  // Yêu cầu thuê
   UserRentingRequest: undefined;
   RentingRequestDetail: { rentingRequestId: string };
 
@@ -152,7 +152,7 @@ export type InvoiceDetailScreenProps = NativeStackScreenProps<
   "InvoiceDetail"
 >;
 
-// Đơn thuê
+// Yêu cầu thuê
 export type UserRentingRequestScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserRentingRequest"
@@ -317,12 +317,12 @@ const CustomerNavigator = () => {
         options={{ headerTitle: "Thông tin đơn thanh toán" }}
       />
 
-      {/* Đơn thuê */}
+      {/* Yêu cầu thuê */}
       <Stack.Screen name="UserRentingRequest" component={UserRentingRequest} />
       <Stack.Screen
         name="RentingRequestDetail"
         component={RentingRequestDetail}
-        options={{ headerTitle: "Thông tin đơn thuê" }}
+        options={{ headerTitle: "Thông tin yêu cầu thuê" }}
       />
 
       {/* Yêu cầu sửa chữa */}

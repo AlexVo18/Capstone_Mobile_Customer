@@ -234,7 +234,7 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
             ) : null}
             <View>
               <Text>
-                Ngày tạo:{" "}
+                Trả tiền:{" "}
                 <Text className="text-muted-foreground">
                   {detail?.isOnetimePayment ? "1 lần" : "Theo tháng"}
                 </Text>

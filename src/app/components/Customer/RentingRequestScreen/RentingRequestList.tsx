@@ -120,7 +120,7 @@ const RentingRequestList = ({
                       onPress={() => setChosen(item.rentingRequestId)}
                     >
                       <Text className="text-sm text-center text-red-600 font-semibold">
-                        Hủy đơn thuê
+                        Hủy yêu cầu thuê
                       </Text>
                     </TouchableOpacity>
                   )}
@@ -136,7 +136,7 @@ const RentingRequestList = ({
             <ActivityIndicator size="large" color={mainBlue} />
           ) : null
         }
-        ListEmptyComponent={<Text>Không còn đơn thuê nào</Text>}
+        ListEmptyComponent={<Text>Không còn yêu cầu thuê nào</Text>}
       />
     </>
   );
