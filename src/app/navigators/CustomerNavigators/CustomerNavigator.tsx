@@ -33,6 +33,8 @@ import UserNotification from "../../screens/Customer/NotificationScreens/UserNot
 import ExtendContract from "../../screens/Customer/ContractScreens/ExtendContract";
 import ContractDetail from "../../screens/Customer/ContractScreens/ContractDetail";
 import { CheckRequestData } from "../../models/machineCheckRequest_models";
+import InvoiceResult from "../../screens/Customer/ResultScreens/InvoiceResult";
+import BillResult from "../../screens/Customer/ResultScreens/BillResult";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -91,6 +93,10 @@ export type CustomerStackParamList = {
 
   // Thông báo
   UserNotification: undefined;
+
+  // Kết quả thanh toán
+  InvoiceResult: undefined;
+  BillResult: { invoiceId: string };
 };
 
 // Tabs
@@ -217,6 +223,16 @@ export type SystemTermsScreenProps = NativeStackScreenProps<
 export type UserNotificationScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserNotification"
+>;
+
+// Kết quả thanh toán
+export type InvoiceResultScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "InvoiceResult"
+>;
+export type BillResultScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "BillResult"
 >;
 
 const CustomerNavigator = () => {
@@ -372,6 +388,18 @@ const CustomerNavigator = () => {
         name="UserNotification"
         component={UserNotification}
         options={{ headerTitle: "Thông báo" }}
+      />
+
+      {/* Kết quả thanh toán */}
+      <Stack.Screen
+        name="InvoiceResult"
+        component={InvoiceResult}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="BillResult"
+        component={BillResult}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./global.css";
 import "./gesture-handler";
 import { registerRootComponent } from "expo";
-import { NavigationContainer } from "@react-navigation/native";
+import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
 import { PaperProvider } from "react-native-paper";
 import AppNavigator from "./app/navigators/AppNavigator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -14,7 +14,6 @@ import { getToken } from "./app/config/firebaseConfig";
 import CustomToast from "./app/components/toast/CustomToast";
 
 const NAVIGATION_IDS = ["CustomerTabs"];
-type RouteNames = "CustomerTabs";
 
 function buildDeepLinkFromNotificationData(data: any) {
   const navigationId = data?.navigationId;
@@ -27,12 +26,23 @@ function buildDeepLinkFromNotificationData(data: any) {
   return null;
 }
 
-const linking = {
+const linking: LinkingOptions<{
+  CustomerNavigator: undefined;
+  CustomerTabs: undefined;
+  UserInvoice: undefined;
+  InvoiceResult: undefined;
+}> = {
   prefixes: ["mmrms-client://"],
   config: {
-    initialRouteName: "CustomerTabs" as RouteNames,
     screens: {
-      CustomerTabs: "CustomerTabs",
+      CustomerNavigator: {
+        path: "customer-navigator",
+        screens: {
+          CustomerTabs: "CustomerTabs",
+          UserInvoice: "user-invoice",
+          InvoiceResult: "invoice-result",
+        },
+      },
     },
   },
   async getInitialURL() {

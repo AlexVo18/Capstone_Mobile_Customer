@@ -1,4 +1,10 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Linking,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useCallback, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { InvoiceDetailScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
@@ -19,9 +25,13 @@ import {
 } from "~/src/app/constants/toastMessage";
 import CancelModal from "~/src/app/components/modal/CancelModal";
 import axios from "axios";
+import useInvoice from "~/src/app/hooks/useInvoice";
+import * as WebBrowser from 'expo-web-browser';
 
 const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
   const { invoiceId } = route.params;
+  const { addInvoice } = useInvoice();
+
   const [detail, setDetail] = useState<InvoiceDetailData>();
   const [ticketDetail, setTicketDetail] =
     useState<ComponentReplacementTicketData>();
@@ -88,19 +98,19 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
 
   const handleCreatePayment = async () => {
     setIsCreateLoading(true);
+    const url = "mmrms-client://customer-navigator/invoice-result";
     try {
-      const url = `${window.location.origin}/user/result`;
-      // if (id) {
-      //   addInvoice(id);
-      //   const response = await Invoice.payInvoice({
-      //     invoiceId: id,
-      //     urlCancel: url,
-      //     urlReturn: url,
-      //   });
-      //   if (response) {
-      //     window.location.href = response;
-      //   }
-      // }
+      if (invoiceId) {
+        addInvoice(invoiceId);
+        const response = await Invoice.payInvoice({
+          invoiceId: invoiceId,
+          urlCancel: url,
+          urlReturn: url,
+        });
+        if (response) {
+          WebBrowser.openBrowserAsync(response)
+        }
+      }
     } catch (error) {
       Toast.show({
         type: "error",
