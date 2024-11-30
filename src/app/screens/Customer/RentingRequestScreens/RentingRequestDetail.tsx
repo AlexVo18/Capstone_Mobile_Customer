@@ -429,7 +429,8 @@ const RentingRequestDetail = ({
               </Text>
             </View>
           </View>
-          {detail?.status.toLowerCase() === "renting" ? (
+          {detail?.status.toLowerCase() === "renting" ||
+          detail.status.toLowerCase() === "unpaid" ? (
             <View className="w-full p-2">
               {isCancelLoading ? (
                 <TouchableOpacity

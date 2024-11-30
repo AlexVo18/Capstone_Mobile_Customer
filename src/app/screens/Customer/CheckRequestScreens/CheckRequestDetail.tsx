@@ -289,8 +289,7 @@ const CheckRequestDetail = ({
               )}
             </View>
           </View>
-          {detail?.machineCheckRequest.status.toLowerCase() === "new" ||
-          detail?.machineCheckRequest.status.toLowerCase() === "assigned" ? (
+          {detail?.machineCheckRequest.status.toLowerCase() === "new" ? (
             <View className="w-full p-2">
               {isCancelLoading ? (
                 <TouchableOpacity
