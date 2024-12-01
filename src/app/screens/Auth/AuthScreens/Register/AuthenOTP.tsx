@@ -1,11 +1,10 @@
-import { BackHandler, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { mainBlue } from "~/src/app/constants/cssConstants";
 import { Mail } from "lucide-react-native";
 import { OtpInput, OtpInputRef } from "react-native-otp-entry";
 import { AuthenOTPScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 import useCountdown from "~/src/app/hooks/useCountdown";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import Auth from "~/src/app/api/auth/Auth";
 import { TokenData, UserData } from "~/src/app/models/auth_models";
@@ -21,7 +20,6 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [otpValue, setOtpValue] = useState("");
   const otpInputRef = useRef<OtpInputRef>(null);
-  const [isDisabled, setIsDisabled] = useState(false);
   const [isVerified, setIsverified] = useState(false);
 
   useEffect(() => {
@@ -77,8 +75,6 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
 
   const checkedOTP = async (otp: string) => {
     setIsLoading(true);
-    console.log(otp);
-    console.log(route.params);
     try {
       if (otp.length === 6 && otp) {
         let response;
@@ -105,6 +101,7 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
               firebaseMessageToken: loginParams.firebaseMessageToken,
             });
             if (loginResponse) {
+              setIsverified(true);
               const userData: UserData = {
                 accountId: loginResponse.accountId,
                 address: loginResponse.address,
@@ -115,6 +112,7 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
                 roleId: loginResponse.roleId,
                 status: loginResponse.status,
                 username: loginResponse.username,
+                avatarImg: loginResponse.avatarImg,
               };
               const token: TokenData = {
                 refreshToken: loginResponse.refreshToken,
@@ -210,14 +208,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 16,
     lineHeight: 24,
-  },
-  outlineButton: {
-    borderColor: mainBlue,
-  },
-  buttonStyle: {
-    width: "100%",
-    borderRadius: 10,
-    paddingVertical: 4,
   },
   eyeIcon: {
     position: "absolute",

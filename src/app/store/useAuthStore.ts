@@ -8,6 +8,7 @@ interface AuthState {
   userLoading: boolean;
   login: (userData: UserData, token: TokenData) => void;
   logout: () => void;
+  getLocalData: () => void
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -29,6 +30,15 @@ const useAuthStore = create<AuthState>((set) => ({
     await SecureStore.deleteItemAsync("token");
 
     set({ userInfo: undefined, token: undefined });
+  },
+  getLocalData: async () => {
+    const userData = await SecureStore.getItemAsync("user");
+    const tokenData = await SecureStore.getItemAsync("token");
+
+    set({
+      userInfo: userData && JSON.parse(userData),
+      token: tokenData && JSON.parse(tokenData),
+    });
   },
 }));
 

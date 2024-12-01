@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 
 const useAuth = () => {
-  const { userInfo, token, userLoading, login, logout } = useAuthStore();
+  const { userInfo, token, userLoading, login, logout, getLocalData } =
+    useAuthStore();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -33,6 +34,7 @@ const useAuth = () => {
     userLoading,
     login,
     logout,
+    getLocalData,
   };
 };
 

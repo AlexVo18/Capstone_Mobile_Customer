@@ -1,5 +1,5 @@
 import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,16 +8,10 @@ import {
   Pressable,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
-import {
-  RegisterAccountParams,
-  RegisterParams,
-} from "~/src/app/models/auth_models";
-import {
-  LoginScreenProps,
-  RegisterEmailScreenProps,
-} from "~/src/app/navigators/AuthNavigators/AuthNavigator";
+import { RegisterAccountParams } from "~/src/app/models/auth_models";
+import { RegisterEmailScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { cn } from "~/src/app/utils/cn";
@@ -65,10 +59,6 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
       }
     },
   });
-
-  useEffect(() => {
-    console.log(formik.values);
-  }, [formik.values]);
 
   const isFormEmpty = () => {
     return (
@@ -143,7 +133,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
         <View className="relative flex flex-row justify-end items-center">
           <TextInput
             value={formik.values.password}
-            secureTextEntry={viewPwd ? false : true}
+            secureTextEntry={!viewPwd}
             onChangeText={formik.handleChange("password")}
             placeholder="Nhập mật khẩu"
             className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
@@ -159,7 +149,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
             }}
             style={styles.eyeIcon}
           >
-            {viewPwd ? (
+            {!viewPwd ? (
               <EyeOff color={`hsl(${mutedForground})`} />
             ) : (
               <Eye color={`hsl(${mutedForground})`} />
@@ -203,7 +193,7 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
             }}
             style={styles.eyeIcon}
           >
-            {viewRePwd ? (
+            {!viewRePwd ? (
               <EyeOff color={`hsl(${mutedForground})`} />
             ) : (
               <Eye color={`hsl(${mutedForground})`} />
@@ -219,23 +209,36 @@ const RegisterEmail = ({ navigation }: RegisterEmailScreenProps) => {
         ) : null}
       </View>
       <View className="w-full">
-        <Button
-          mode="contained"
-          className=""
-          buttonColor={mainBlue}
-          textColor="white"
-          style={[styles.buttonStyle]}
-          disabled={
-            isLoading || isFormEmpty() || !!Object.keys(formik.errors).length
-          }
-          onPress={() => formik.handleSubmit()}
-        >
-          {isLoading ? (
-            <Text className="text-lg">Đang tải</Text>
-          ) : (
-            <Text className="text-lg">Tiếp theo</Text>
-          )}
-        </Button>
+      {isLoading || isFormEmpty() || !!Object.keys(formik.errors).length ? (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.disableButtonColor]}
+            disabled
+          >
+            {isLoading ? (
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
+            ) : (
+              <Text className="text-lg text-center text-gray-500 font-semibold">
+                Tiếp theo
+              </Text>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.buttonStyle, styles.buttonColor]}
+            disabled={
+              isLoading || isFormEmpty() || !!Object.keys(formik.errors).length
+            }
+            onPress={() => formik.handleSubmit()}
+          >
+            {isLoading ? (
+              <ActivityIndicator color={"#6b7280"} size={"small"} />
+            ) : (
+              <Text className="text-lg text-center text-white font-semibold">
+                Tiếp theo
+              </Text>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
         <Text style={{ fontSize: 16 }}>Đã có tài khoản? </Text>
@@ -263,7 +266,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: "100%",
     borderRadius: 10,
-    paddingVertical: 4,
+    paddingVertical: 14,
+  },
+  buttonColor: {
+    backgroundColor: mainBlue,
+  },
+  disableButtonColor: {
+    backgroundColor: "#d1d5db",
   },
   eyeIcon: {
     position: "absolute",

@@ -3,10 +3,9 @@ import React from "react";
 import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { Rotate3D } from "lucide-react-native";
-import { useNavigation } from "@react-navigation/native";
 import { AuthMenuScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
 
-const AuthMenu = ({ route, navigation }: AuthMenuScreenProps) => {
+const AuthMenu = ({ navigation }: AuthMenuScreenProps) => {
   return (
     <View className="flex justify-center items-center h-full text-base w-full p-10 bg-white">
       <View className="mb-5">

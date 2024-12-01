@@ -1,6 +1,12 @@
 import { Eye, EyeOff, Rotate3D } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import useAuth from "~/src/app/hooks/useAuth";
@@ -14,7 +20,6 @@ import { LoginParams, TokenData, UserData } from "~/src/app/models/auth_models";
 import axios from "axios";
 import { getToken } from "~/src/app/config/firebaseConfig";
 import Auth from "~/src/app/api/auth/Auth";
-import { ActivityIndicator, Button } from "react-native-paper";
 
 const Login = ({ navigation }: LoginScreenProps) => {
   const { login } = useAuth();
@@ -55,13 +60,13 @@ const Login = ({ navigation }: LoginScreenProps) => {
               roleId: response.roleId,
               status: response.status,
               username: response.username,
+              avatarImg: response.avatarImg,
             };
             const token: TokenData = {
               refreshToken: response.refreshToken,
               refreshTokenExpiryTime: response.refreshTokenExpiryTime,
               token: response.token,
             };
-            console.log(response);
             login(userData, token);
             Toast.show({
               type: "success",
@@ -107,7 +112,6 @@ const Login = ({ navigation }: LoginScreenProps) => {
 
   const getMsgToken = async () => {
     const token = await getToken();
-    console.log(token);
     formik.setFieldValue("firebaseMessageToken", token);
   };
 
@@ -169,7 +173,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
         <View className="relative flex flex-row justify-end items-center">
           <TextInput
             value={formik.values.password}
-            secureTextEntry={viewPwd ? false : true}
+            secureTextEntry={!viewPwd}
             onChangeText={(value) => {
               formik.setFieldValue("password", value);
             }}
@@ -183,7 +187,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
             onPress={() => setViewPwd(!viewPwd)}
             style={styles.eyeIcon}
           >
-            {viewPwd ? (
+            {!viewPwd ? (
               <EyeOff color={`hsl(${mutedForground})`} />
             ) : (
               <Eye color={`hsl(${mutedForground})`} />
@@ -193,7 +197,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
       </View>
       <View className="w-full mt-2 mb-6 items-end">
         <TouchableOpacity
-          onPress={() => navigation.navigate("Forgot")}
+          onPress={() => navigation.navigate("ForgotPassword")}
           className="flex items-center justify-center"
         >
           <Text className="" style={{ color: `hsl(${mutedForground})` }}>
@@ -203,21 +207,34 @@ const Login = ({ navigation }: LoginScreenProps) => {
       </View>
       <View className="w-full">
         <View className="w-full">
-          <Button
-            mode="contained"
-            className=""
-            buttonColor={mainBlue}
-            textColor="white"
-            style={[styles.buttonStyle]}
-            disabled={isLoading}
-            onPress={() => formik.handleSubmit()}
-          >
-            {isLoading ? (
-              <ActivityIndicator size="small" color="#ffffff" />
-            ) : (
-              <Text className="text-lg">Đăng nhập</Text>
-            )}
-          </Button>
+          {isLoading ? (
+            <TouchableOpacity
+              style={[styles.buttonStyle, styles.disableButtonColor]}
+              disabled
+            >
+              {isLoading ? (
+                <ActivityIndicator color={"#6b7280"} size={"small"} />
+              ) : (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Đăng nhập
+                </Text>
+              )}
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.buttonStyle, styles.buttonColor]}
+              disabled={isLoading}
+              onPress={() => formik.handleSubmit()}
+            >
+              {isLoading ? (
+                <ActivityIndicator color={"#6b7280"} size={"small"} />
+              ) : (
+                <Text className="text-lg text-center text-white font-semibold">
+                  Đăng nhập
+                </Text>
+              )}
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <View className="flex flex-row items-center justify-center w-full mt-1">
@@ -246,11 +263,17 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: "100%",
     borderRadius: 10,
-    paddingVertical: 4,
+    paddingVertical: 14,
   },
   eyeIcon: {
     position: "absolute",
     right: 10,
+  },
+  buttonColor: {
+    backgroundColor: mainBlue,
+  },
+  disableButtonColor: {
+    backgroundColor: "#d1d5db",
   },
   centerContent: {
     justifyContent: "center",

@@ -4,13 +4,11 @@ import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { formatVND } from "~/src/app/utils/formatVND";
 import { HomeScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
-import {
-  MachineryData,
-  MachineryImageData,
-} from "~/src/app/models/machinery_models";
+import { MachineryData } from "~/src/app/models/machinery_models";
 import Toast from "react-native-toast-message";
 import Machinery from "~/src/app/api/machinery/Machinery";
 import { ActivityIndicator } from "react-native-paper";
+import axios from "axios";
 
 interface Props extends HomeScreenProps {
   ListHeaderComponent: React.ReactElement;
@@ -31,6 +29,9 @@ const LatestMachineries = ({ ListHeaderComponent, navigation }: Props) => {
         setMachineries(response);
       }
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+      }
       Toast.show({
         type: "error",
         text1: "Lấy dữ liệu thất bại",
@@ -49,19 +50,16 @@ const LatestMachineries = ({ ListHeaderComponent, navigation }: Props) => {
       ) : (
         <FlatList
           data={machineries}
-          keyExtractor={(item) => item.productId.toString()}
+          keyExtractor={(item) => item.machineId.toString()}
           ListHeaderComponent={ListHeaderComponent}
           renderItem={({ item }) => {
-            const thumbnail = item.productImageList.find(
-              (image: MachineryImageData) => image.isThumbnail === true
-            );
             return (
               <TouchableOpacity
                 style={{ marginHorizontal: 15 }}
                 onPress={() =>
                   navigation
                     .getParent()
-                    ?.navigate("ProductDetail", { productId: item.productId })
+                    ?.navigate("MachineDetail", { machineId: item.machineId })
                 }
               >
                 <View
@@ -71,7 +69,7 @@ const LatestMachineries = ({ ListHeaderComponent, navigation }: Props) => {
                   <View className="items-center justify-center relative">
                     <Image
                       src={
-                        thumbnail?.productImageUrl ||
+                        item.thumbnail ||
                         "https://www.schaeffler.vn/remotemedien/media/_shared_media_rwd/04_sectors_1/industry_1/construction_machinery/00085545_16_9-schaeffler-industry-solutions-construction-machinery-crawler-excavator_rwd_600.jpg"
                       }
                       alt=""
@@ -92,7 +90,11 @@ const LatestMachineries = ({ ListHeaderComponent, navigation }: Props) => {
                   <View style={{ flex: 1 }} className="flex justify-between">
                     <View>
                       <Text className="line-clamp-2 font-semibold text-xl">
-                        {item.productName}
+                        {item.machineName}
+                      </Text>
+                      <Text style={styles.description} className="line-clamp-1">
+                        <Text className="font-semibold ">Chi tiết:</Text>{" "}
+                        {item.description}
                       </Text>
                       <Text style={styles.description}>
                         <Text className="font-semibold">Model:</Text>{" "}
@@ -102,18 +104,13 @@ const LatestMachineries = ({ ListHeaderComponent, navigation }: Props) => {
                         <Text className="font-semibold">Xuất xứ:</Text>{" "}
                         {item.origin}
                       </Text>
-                      <Text style={styles.description}>
-                        <Text className="font-semibold">Số lượng:</Text>{" "}
-                        {item.quantity || 0} máy
-                      </Text>
                     </View>
                     <View className="flex justify-end flex-row items-center">
                       <Text
                         style={[{ color: mainBlue }]}
                         className="text-lg font-bold"
                       >
-                        {formatVND(item.rentPrice)} ~{" "}
-                        {formatVND(item.rentPrice)}
+                        {formatVND(item.rentPrice)}/ngày
                       </Text>
                     </View>
                   </View>
@@ -153,7 +150,7 @@ const styles = StyleSheet.create({
     shadowColor: mutedForground,
   },
   tagPosition: {
-    bottom: -5,
+    bottom: 0,
     right: -20,
     position: "absolute",
   },

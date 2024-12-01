@@ -3,8 +3,13 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button } from "react-native-paper";
 import { mainBlue } from "~/src/app/constants/cssConstants";
+import { CustomerTabParamList } from "~/src/app/navigators/CustomerNavigators/CustomerTabs";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+interface Props {
+  navigation: BottomTabNavigationProp<CustomerTabParamList, "Home", undefined>;
+}
 
-const Banner = () => {
+const Banner = ({ navigation }: Props) => {
   return (
     <View className="mb-5 rounded-lg w-full h-52 px-5 pt-5">
       <ImageBackground
@@ -31,13 +36,16 @@ const Banner = () => {
           <View className="mt-[5px]">
             <Text style={{ color: "white" }}>Nhiều máy móc mới đã cập </Text>
             <Text style={{ color: "white" }}>
-              bến tại <Text style={{ color: mainBlue }} className="font-semibold">MMRMS</Text>
+              bến tại{" "}
+              <Text style={{ color: mainBlue }} className="font-semibold">
+                MMRMS
+              </Text>
             </Text>
           </View>
           <View className="mt-[10px] items-start flex">
             <Button
               mode="contained"
-              // onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.getParent()?.navigate("Collection")}
               className=""
               buttonColor="white"
               textColor={mainBlue}

@@ -21,12 +21,15 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { formatDate } from "~/src/app/utils/dateformat";
 import RNPickerSelect from "react-native-picker-select";
+import { useDebounce } from "~/src/app/hooks/useDebounce";
+import Invoice from "~/src/app/api/invoice/Invoice";
+import { TaxCodeResponseData } from "~/src/app/models/invoice_models";
 
 const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
   const { RegisterAccountParams } = route.params;
   const [focusInput, setFocusInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [taxLoading, setTaxLoading] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
@@ -129,6 +132,34 @@ const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
       }
     },
   });
+
+  const useDebounceTaxNumber = useDebounce(formik.values.taxNumber);
+
+  useEffect(() => {
+    getCompany();
+  }, [useDebounceTaxNumber]);
+
+  const getCompany = async () => {
+    setTaxLoading(true);
+    try {
+      const response = (await Invoice.getTaxCodeInfo(
+        useDebounceTaxNumber
+      )) as TaxCodeResponseData;
+      if (response) {
+        formik.setFieldValue("company", response.data.name);
+        formik.setFieldValue("address", response.data.address);
+      } else {
+        formik.setFieldValue("company", "");
+        formik.setFieldValue("address", "");
+      }
+    } catch (error) {
+      formik.setFieldValue("company", "");
+      formik.setFieldValue("address", "");
+      return;
+    } finally {
+      setTaxLoading(false);
+    }
+  };
 
   const changeData = (event: DateTimePickerEvent, selectedDate?: Date) => {
     if (event.type === "set" && selectedDate) {
@@ -289,85 +320,26 @@ const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
             </View>
           ) : null}
         </View>
-        <View className="w-full mb-4">
-          <Text
-            className={cn(
-              "text-lg font-semibold mb-2",
-              focusInput === "phone" ? "text-blue-700" : ""
-            )}
-          >
-            Số điện thoại
-            <Text className="text-red-600"> *</Text>
-          </Text>
-          <TextInput
-            value={formik.values.phone}
-            onChangeText={formik.handleChange("phone")}
-            placeholder="Số điện thoại"
-            className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
-            onFocus={() => setFocusInput("phone")}
-            onBlur={() => {
-              setFocusInput("");
-              formik.setFieldTouched("phone");
-            }}
-            keyboardType="phone-pad"
-          />
-          {formik.touched.phone && formik.errors.phone ? (
-            <View className="w-2/4">
-              <Text className="text-red-600 text-sm">
-                {formik.errors.phone}
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        <View className="w-full mb-4">
-          <Text
-            className={cn(
-              "text-lg font-semibold mb-2",
-              focusInput === "company" ? "text-blue-700" : ""
-            )}
-          >
-            Tên công ty
-            <Text className="text-red-600"> *</Text>
-          </Text>
-          <TextInput
-            value={formik.values.company}
-            onChangeText={formik.handleChange("company")}
-            placeholder="Tên công ty"
-            className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
-            onFocus={() => setFocusInput("company")}
-            onBlur={() => {
-              setFocusInput("");
-              formik.setFieldTouched("company");
-            }}
-          />
-          {formik.touched.company && formik.errors.company ? (
-            <View>
-              <Text className="text-red-600 text-sm">
-                {formik.errors.company}
-              </Text>
-            </View>
-          ) : null}
-        </View>
         <View className="flex flex-row w-full gap-2">
-          <View className="w-2/4 ">
+          <View className="w-2/4 mb-4">
             <Text
               className={cn(
                 "text-lg font-semibold mb-2",
-                focusInput === "taxNumber" ? "text-blue-700" : ""
+                focusInput === "phone" ? "text-blue-700" : ""
               )}
             >
-              Mã số thuế
+              Số điện thoại
               <Text className="text-red-600"> *</Text>
             </Text>
             <TextInput
-              value={formik.values.taxNumber}
-              onChangeText={formik.handleChange("taxNumber")}
-              placeholder="Mã số thuế"
+              value={formik.values.phone}
+              onChangeText={formik.handleChange("phone")}
+              placeholder="Số điện thoại"
               className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
-              onFocus={() => setFocusInput("taxNumber")}
+              onFocus={() => setFocusInput("phone")}
               onBlur={() => {
                 setFocusInput("");
-                formik.setFieldTouched("taxNumber");
+                formik.setFieldTouched("phone");
               }}
               keyboardType="phone-pad"
             />
@@ -395,10 +367,17 @@ const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
           </View>
         </View>
         <View className="flex flex-row w-full gap-2 mb-4">
-          {formik.touched.taxNumber && formik.errors.taxNumber ? (
+          {/* {formik.touched.taxNumber && formik.errors.taxNumber ? (
             <View className="w-2/4">
               <Text className="text-red-600 text-sm">
                 {formik.errors.taxNumber}
+              </Text>
+            </View>
+          ) : null} */}
+          {formik.touched.phone && formik.errors.phone ? (
+            <View className="w-2/4">
+              <Text className="text-red-600 text-sm">
+                {formik.errors.phone}
               </Text>
             </View>
           ) : null}
@@ -410,51 +389,98 @@ const RegisterProfile = ({ route, navigation }: RegisterProfileScreenProps) => {
             </View>
           ) : null}
         </View>
-        <View className="w-full mb-4">
+        <View className="w-full">
           <Text
             className={cn(
               "text-lg font-semibold mb-2",
-              focusInput === "address" ? "text-blue-700" : ""
+              focusInput === "taxNumber" ? "text-blue-700" : ""
             )}
           >
-            Địa chỉ công ty
+            Mã số thuế
             <Text className="text-red-600"> *</Text>
           </Text>
           <TextInput
-            value={formik.values.address}
-            onChangeText={formik.handleChange("address")}
-            placeholder="Địa chỉ công ty"
+            value={formik.values.taxNumber}
+            onChangeText={formik.handleChange("taxNumber")}
+            placeholder="Mã số thuế"
             className={`h-14 w-full bg-slate-100/50 border-slate-200 border-[1px] text-lg p-4 rounded-lg focus:border-blue-700 focus:border-2 border-${mutedForground}`}
-            onFocus={() => setFocusInput("address")}
+            onFocus={() => setFocusInput("taxNumber")}
             onBlur={() => {
               setFocusInput("");
-              formik.setFieldTouched("address");
+              formik.setFieldTouched("taxNumber");
             }}
+            keyboardType="phone-pad"
           />
-          {formik.touched.address && formik.errors.address ? (
-            <View>
+        </View>
+        <View className="flex flex-row w-full gap-2 mb-4">
+          {formik.touched.taxNumber && formik.errors.taxNumber ? (
+            <View className="w-2/4">
               <Text className="text-red-600 text-sm">
-                {formik.errors.address}
+                {formik.errors.taxNumber}
               </Text>
+            </View>
+          ) : formik.touched.taxNumber ? (
+            <View className="mt-2">
+              <View>
+                <Text>
+                  <Text className="font-semibold">Công ty:</Text>{" "}
+                  {formik.values.company ? (
+                    <Text>{formik.values.company}</Text>
+                  ) : (
+                    <Text>
+                      {taxLoading ? "Đang tìm kiếm..." : "Không tìm thấy"}
+                    </Text>
+                  )}
+                </Text>
+              </View>
+              <View>
+                <Text>
+                  <Text className="font-semibold">Địa chỉ:</Text>{" "}
+                  {formik.values.address ? (
+                    <Text>{formik.values.address}</Text>
+                  ) : (
+                    <Text>
+                      {taxLoading ? "Đang tìm kiếm..." : "Không tìm thấy"}
+                    </Text>
+                  )}
+                </Text>
+              </View>
             </View>
           ) : null}
         </View>
         <View className="w-full">
-          <Button
-            mode="contained"
-            className=""
-            buttonColor={mainBlue}
-            textColor="white"
-            style={[styles.buttonStyle]}
-            disabled={isLoading || isFormEmpty()}
-            onPress={() => formik.handleSubmit()}
-          >
-            {isLoading ? (
-              <ActivityIndicator size="small" color="#ffffff" />
-            ) : (
-              <Text className="text-lg">Tạo tài khoản</Text>
-            )}
-          </Button>
+          {isLoading || isFormEmpty() || !!Object.keys(formik.errors).length ? (
+            <TouchableOpacity
+              style={[styles.buttonStyle, styles.disableButtonColor]}
+              disabled
+            >
+              {isLoading ? (
+                <ActivityIndicator color={"#6b7280"} size={"small"} />
+              ) : (
+                <Text className="text-lg text-center text-gray-500 font-semibold">
+                  Tạo tài khoản
+                </Text>
+              )}
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.buttonStyle, styles.buttonColor]}
+              disabled={
+                isLoading ||
+                isFormEmpty() ||
+                !!Object.keys(formik.errors).length
+              }
+              onPress={() => formik.handleSubmit()}
+            >
+              {isLoading ? (
+                <ActivityIndicator color={"#6b7280"} size={"small"} />
+              ) : (
+                <Text className="text-lg text-center text-white font-semibold">
+                  Tạo tài khoản
+                </Text>
+              )}
+            </TouchableOpacity>
+          )}
         </View>
         <View className="flex flex-row items-center justify-center w-full mt-1">
           <Text style={{ fontSize: 16 }}>Đã có tài khoản? </Text>
@@ -483,7 +509,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: "100%",
     borderRadius: 10,
-    paddingVertical: 4,
+    paddingVertical: 14,
+  },
+  buttonColor: {
+    backgroundColor: mainBlue,
+  },
+  disableButtonColor: {
+    backgroundColor: "#d1d5db",
   },
   eyeIcon: {
     position: "absolute",

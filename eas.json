@@ -4,18 +4,22 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease",
+        "withoutCredentials": true
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "channel": "development"
     },
-    "preview": {
-      "distribution": "internal",
-      "channel": "preview"
-    },
     "production": {
-      "autoIncrement": true,
-      "channel": "production"
+      "android": {
+        "buildType": "app-bundle"
+      }
     }
   },
   "submit": {

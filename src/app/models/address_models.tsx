@@ -1,9 +1,38 @@
 export interface AddressData {
   addressId: number;
-  accountId: number;
+  accountId?: number;
   addressBody: string;
   district: string;
   city: string;
+  coordinates: string;
+}
+export interface AddressParams {
+  addressBody: string;
+  district: string;
+  city: string;
+  coordinates: string;
+}
+
+export interface UpdateAddressParams {
+  addressId: number;
+  address: AddressParams;
+}
+
+export interface DistanceParams {
+  origins: string;
+  destination: string;
+}
+
+export interface DistanceData {
+  duration: {
+    text: string;
+    value: number;
+  };
+  distance: {
+    text: string;
+    value: number;
+  };
+  status: string;
 }
 
 export interface ViewPort {
@@ -82,19 +111,4 @@ export interface ChosenAddressData {
   plus_code: PlusCodeData;
   reference: string;
   types: string[];
-}
-
-export interface AddressParam {
-  addressBody: string;
-  district: string;
-  city: string;
-}
-
-export interface AddressData {
-  addressId: number;
-  accountId: number;
-  addressBody: string;
-  district: string;
-  city: string;
-  isDelete: boolean;
 }

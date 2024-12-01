@@ -9,11 +9,9 @@ import AuthMenu from "../../screens/Auth/AuthScreens/AuthMenu";
 import RegisterProfile from "../../screens/Auth/AuthScreens/Register/RegisterProfile";
 import AuthenOTP from "../../screens/Auth/AuthScreens/Register/AuthenOTP";
 import RegisterEmail from "../../screens/Auth/AuthScreens/Register/RegisterEmail";
-import CustomBack from "../../components/header/CustomBack";
 import {
   LoginParams,
   RegisterAccountParams,
-  RegisterParams,
 } from "../../models/auth_models";
 
 export type AuthStackParamList = {
@@ -22,7 +20,7 @@ export type AuthStackParamList = {
   RegisterEmail: undefined;
   RegisterProfile: { RegisterAccountParams: RegisterAccountParams };
   AuthenOTP: { email?: string; loginParams?: LoginParams; send: boolean };
-  Forgot: undefined;
+  ForgotPassword: undefined;
 };
 
 export type AuthMenuScreenProps = NativeStackScreenProps<
@@ -44,6 +42,10 @@ export type RegisterProfileScreenProps = NativeStackScreenProps<
 export type AuthenOTPScreenProps = NativeStackScreenProps<
   AuthStackParamList,
   "AuthenOTP"
+>;
+export type ForgotPasswordScreenProps = NativeStackScreenProps<
+  AuthStackParamList,
+  "ForgotPassword"
 >;
 
 const AuthNavigator = () => {
@@ -86,7 +88,16 @@ const AuthNavigator = () => {
           },
         }}
       />
-      <Stack.Screen name="Forgot" component={ForgotPassword} />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{
+          headerTitle: "Quên mật khẩu",
+          headerStyle: {
+            backgroundColor: "white",
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
