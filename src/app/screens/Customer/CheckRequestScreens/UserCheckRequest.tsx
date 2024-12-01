@@ -89,6 +89,12 @@ const UserCheckRequest = ({
           request.serialNumber
             .toLowerCase()
             .includes(debounceKeyword.toLowerCase()) ||
+          request.machineName
+            .toLowerCase()
+            .includes(debounceKeyword.toLowerCase()) ||
+          request.contractId
+            .toLowerCase()
+            .includes(debounceKeyword.toLowerCase()) ||
           formatDate(request.dateCreate)
             .toLowerCase()
             .includes(debounceKeyword.toLowerCase())

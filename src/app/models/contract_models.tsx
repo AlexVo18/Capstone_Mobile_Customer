@@ -1,5 +1,6 @@
 import { ContractPaymentData } from "./invoice_models";
 import { AccountBusinessData, AccountOrderData } from "./rentingRequest_models";
+import { ComponentReplacementTicketData } from "./replacementTicket_models";
 
 export interface TermsData {
   content: string;
@@ -36,6 +37,7 @@ export interface ContractDetailData {
   bankAccountRefund: ContractBankInfoData;
   thumbnail: string;
   isExtended: boolean;
+  componentReplacementTickets: ComponentReplacementTicketData[];
 }
 
 export interface ContractData {

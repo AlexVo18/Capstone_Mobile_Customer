@@ -101,7 +101,8 @@ const UserContract = ({ navigation, route }: UserContractScreenProps) => {
             .includes(debounceKeyword.toLowerCase()) ||
           contract.contractId
             .toLowerCase()
-            .includes(debounceKeyword.toLowerCase())
+            .includes(debounceKeyword.toLowerCase()) ||
+          contract.rentPrice.toString().includes(debounceKeyword.toLowerCase())
       );
     }
 

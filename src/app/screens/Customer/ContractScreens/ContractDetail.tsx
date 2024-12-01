@@ -26,7 +26,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { cn } from "~/src/app/utils/cn";
 import { formatDate } from "~/src/app/utils/dateformat";
 import { formatVND } from "~/src/app/utils/formatVND";
-import { Receipt } from "lucide-react-native";
+import { Receipt, Ticket } from "lucide-react-native";
 
 const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
   const { contractId } = route.params;
@@ -37,6 +37,7 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
   const [isCancelLoading, setIsCancelLoading] = useState(false);
   const [chosen, setChosen] = useState<string | undefined>(undefined);
   const [settings, setSettings] = useState<SettingData[]>();
+  const [chosenType, setChosenType] = useState("payment");
 
   useFocusEffect(
     useCallback(() => {
@@ -152,6 +153,19 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
         return "border-yellow-400 text-yellow-400";
       default:
         return "border-lime-600 text-lime-600";
+    }
+  };
+
+  const getTicketStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "unpaid":
+        return "bg-yellow-400";
+      case "paid":
+        return "bg-blue-700";
+      case "completed":
+        return "bg-lime-600";
+      default:
+        return "bg-red-600";
     }
   };
 
@@ -348,102 +362,204 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
           </View>
 
           <View className="mb-2 mx-2 p-4 bg-white rounded-lg">
-            <Text className="text-lg font-semibold">Thay thế bộ phận</Text>
+            <View className="flex flex-row items-center justify-between">
+              <Text className="text-lg font-semibold">
+                Lịch sử {chosenType === "payment" ? "thanh toán" : "sửa chữa"}
+              </Text>
+              {chosenType === "payment" ? (
+                <TouchableOpacity onPress={() => setChosenType("ticket")}>
+                  <Text className="text-blue-700">Sửa chữa</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => setChosenType("payment")}>
+                  <Text className="text-blue-700">Thanh toán</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
             <View className="h-[0.5px] bg-muted-foreground my-2"></View>
-            <View className="flex flex-col gap-3">
-              {detail.contractPayments.length !== 0 ? (
-                detail.contractPayments.map((payment, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.containerStyle}
-                    onPress={() =>
-                      navigation.navigate("InvoiceDetail", {
-                        invoiceId: payment.invoiceId,
-                      })
-                    }
-                  >
-                    <View className="flex flex-row justify-between items-center">
-                      <Text>Mã thanh toán </Text>
-                      <Text className="text-blue-700 text-lg font-semibold">
-                        {payment.invoiceId}
-                      </Text>
-                    </View>
-                    <View className="flex flex-row justify-between items-center">
-                      <Text>Loại thanh toán </Text>
-                      <View
-                        className={cn(
-                          `rounded-2xl px-4 py-1 w-fit border`,
-                          getInvoiceTypeColor(payment.type)
-                        )}
-                      >
-                        <Text
+            {chosenType === "payment" ? (
+              <View className="flex flex-col gap-3">
+                {detail.contractPayments.length !== 0 ? (
+                  detail.contractPayments.map((payment, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.containerStyle}
+                      onPress={() =>
+                        navigation.navigate("InvoiceDetail", {
+                          invoiceId: payment.invoiceId,
+                        })
+                      }
+                    >
+                      {payment.invoiceId ? (
+                        <View className="flex flex-row justify-between items-center">
+                          <Text>Mã thanh toán </Text>
+                          <Text className="text-blue-700 text-lg font-semibold">
+                            {payment.invoiceId}
+                          </Text>
+                        </View>
+                      ) : null}
+
+                      <View className="flex flex-row justify-between items-center">
+                        <Text>Loại thanh toán </Text>
+                        <View
                           className={cn(
-                            `text-center text-sm`,
+                            `rounded-2xl px-4 py-1 w-fit border`,
                             getInvoiceTypeColor(payment.type)
                           )}
                         >
-                          {payment.type.toLowerCase() === "rental"
-                            ? "Tiền thuê"
-                            : payment.type.toLowerCase() === "componentticket"
-                              ? "Tiền sửa chữa"
-                              : "Tiền cọc"}
-                        </Text>
+                          <Text
+                            className={cn(
+                              `text-center text-sm`,
+                              getInvoiceTypeColor(payment.type)
+                            )}
+                          >
+                            {payment.type.toLowerCase() === "rental"
+                              ? "Tiền thuê"
+                              : payment.type.toLowerCase() === "componentticket"
+                                ? "Tiền sửa chữa"
+                                : payment.type.toLowerCase() === "fine"
+                                  ? "Tiền phạt"
+                                  : "Tiền cọc"}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View className="flex flex-row justify-between">
-                      <Text>Trạng thái</Text>
-                      <View
-                        className={cn(
-                          `rounded-2xl px-4 py-1 w-fit `,
-                          getInvoiceStatusColor(payment.status)
-                        )}
-                      >
-                        <Text className="text-center text-sm text-white ">
-                          {payment.status.toLowerCase() === "pending"
-                            ? "Chưa thanh toán"
-                            : payment.status.toLowerCase() === "paid"
-                              ? "Hoàn tất"
-                              : "Đã hủy"}
-                        </Text>
+                      <View className="flex flex-row justify-between">
+                        <Text>Trạng thái</Text>
+                        <View
+                          className={cn(
+                            `rounded-2xl px-4 py-1 w-fit `,
+                            getInvoiceStatusColor(payment.status)
+                          )}
+                        >
+                          <Text className="text-center text-sm text-white ">
+                            {payment.status.toLowerCase() === "pending"
+                              ? "Chưa thanh toán"
+                              : payment.status.toLowerCase() === "paid"
+                                ? "Hoàn tất"
+                                : "Đã hủy"}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View className="flex flex-row justify-between">
-                      <Text>
-                        Thời gian áp dụng{" "}
+                      <View className="flex flex-row justify-between">
+                        <Text>
+                          Thời gian áp dụng{" "}
+                          <Text className="text-muted-foreground">
+                            ({payment.period && payment.period} ngày)
+                          </Text>
+                        </Text>
                         <Text className="text-muted-foreground">
-                          ({payment.period && payment.period} ngày)
+                          Từ {formatDate(payment.dateFrom)}
                         </Text>
-                      </Text>
-                      <Text className="text-muted-foreground">
-                        Từ {formatDate(payment.dateFrom)}
-                      </Text>
-                    </View>
-                    <View className="flex flex-row justify-between">
-                      <Text></Text>
-                      <Text className="text-muted-foreground">
-                        đến {formatDate(payment.dateTo)}
-                      </Text>
-                    </View>
-                    <View className="flex flex-row justify-between">
-                      <Text>Tổng số tiền</Text>
-                      <Text className="text-blue-700 font-semibold">
-                        {formatVND(payment?.amount)}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))
-              ) : (
-                <View className=" flex justify-center items-center flex-col my-4">
-                  <Receipt color={`hsl(${mutedForground})`} size={36} />
-                  <Text
-                    style={{ color: `hsl(${mutedForground})` }}
-                    className="text-lg"
-                  >
-                    Không có thanh toán nào cả
-                  </Text>
-                </View>
-              )}
-            </View>
+                      </View>
+                      <View className="flex flex-row justify-between">
+                        <Text></Text>
+                        <Text className="text-muted-foreground">
+                          đến {formatDate(payment.dateTo)}
+                        </Text>
+                      </View>
+                      <View className="flex flex-row justify-between">
+                        <Text>Tổng số tiền</Text>
+                        <Text className="text-blue-700 font-semibold">
+                          {formatVND(payment?.amount)}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                ) : (
+                  <View className=" flex justify-center items-center flex-col my-4">
+                    <Receipt color={`hsl(${mutedForground})`} size={36} />
+                    <Text
+                      style={{ color: `hsl(${mutedForground})` }}
+                      className="text-lg"
+                    >
+                      Không có thanh toán nào cả
+                    </Text>
+                  </View>
+                )}
+              </View>
+            ) : (
+              <View className="flex flex-col gap-3">
+                {detail.componentReplacementTickets.length !== 0 ? (
+                  detail.componentReplacementTickets.map((ticket, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.containerStyle}
+                      onPress={() =>
+                        navigation.navigate("InvoiceDetail", {
+                          invoiceId: ticket.invoiceId,
+                        })
+                      }
+                    >
+                      <View className="flex flex-row justify-between items-center">
+                        <Text>Mã ticket</Text>
+                        <Text className="text-blue-700 text-lg font-semibold">
+                          {ticket.componentReplacementTicketId}
+                        </Text>
+                      </View>
+                      <View className="flex flex-row justify-between items-center">
+                        <Text>Trạng thái </Text>
+                        <View
+                          className={cn(
+                            `rounded-2xl px-4 py-1 w-fit `,
+                            getTicketStatusColor(ticket.status)
+                          )}
+                        >
+                          <Text
+                            className={cn(
+                              `text-center text-sm text-white `,
+                              getTicketStatusColor(ticket.status)
+                            )}
+                          >
+                            {ticket.status.toLowerCase() === "unpaid"
+                              ? "Chưa thanh toán"
+                              : ticket.status.toLowerCase() === "paid"
+                                ? "Đã thanh toán"
+                                : ticket.status.toLowerCase() === "completed"
+                                  ? "Đã sửa xong"
+                                  : "Đã hủy"}
+                          </Text>
+                        </View>
+                      </View>
+                      <View className="flex flex-row justify-between items-center">
+                        <Text>Bộ phận thay thế</Text>
+                        <Text className="text-muted-foreground">
+                          {ticket.componentName} x{ticket.quantity}
+                        </Text>
+                      </View>
+                      <View className="flex flex-row justify-between">
+                        <Text>Ngày tạo</Text>
+                        <Text className="text-muted-foreground">
+                          {formatDate(ticket.dateCreate)}
+                        </Text>
+                      </View>
+                      <View className="flex flex-row justify-between">
+                        <Text>Ngày sửa chữa</Text>
+                        <Text className="text-muted-foreground">
+                          {formatDate(ticket.dateRepair)}
+                        </Text>
+                      </View>
+                      <View className="flex flex-row justify-between">
+                        <Text>Tổng số tiền</Text>
+                        <Text className="text-blue-700 font-semibold">
+                          {formatVND(ticket.totalAmount)}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                ) : (
+                  <View className=" flex justify-center items-center flex-col my-4">
+                    <Ticket color={`hsl(${mutedForground})`} size={36} />
+                    <Text
+                      style={{ color: `hsl(${mutedForground})` }}
+                      className="text-lg"
+                    >
+                      Không có sửa chữa nào cả
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )}
           </View>
           {detail?.status.toLowerCase() === "renting" ? (
             <View className="w-full p-2">
