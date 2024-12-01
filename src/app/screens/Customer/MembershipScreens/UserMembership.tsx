@@ -7,7 +7,6 @@ import {
   MembershipLog,
 } from "~/src/app/models/membership_models";
 import Membership from "~/src/app/api/membership/Membership";
-import { cn } from "~/src/app/utils/cn";
 import { formatVND } from "~/src/app/utils/formatVND";
 
 const UserMembership = ({ route, navigation }: UserMembershipProps) => {

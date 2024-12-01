@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { ForgetPasswordParams } from "~/src/app/models/auth_models";
 import { ForgotPasswordScreenProps } from "~/src/app/navigators/AuthNavigators/AuthNavigator";
@@ -228,26 +227,6 @@ const ForgotPassword = ({ navigation }: ForgotPasswordScreenProps) => {
               )}
             </TouchableOpacity>
           )}
-          {/* <Button
-            mode="contained"
-            className=""
-            buttonColor={mainBlue}
-            textColor="white"
-            style={[styles.sendOtpButton]}
-            disabled={
-              otpLoading ||
-              secondsLeft > 0 ||
-              (formik.errors.email && formik.errors.email.length !== 0) ||
-              !formik.values.email
-            }
-            onPress={sendOTP}
-          >
-            {otpLoading
-              ? "Đang gửi"
-              : secondsLeft
-                ? `Gửi lại (${secondsLeft}s)`
-                : "Gửi OTP"}
-          </Button> */}
         </View>
 
         {formik.touched.email && formik.errors.email ? (

@@ -113,7 +113,6 @@ const Profile = () => {
           if (selectedImage) {
             imagePath = await uploadImage(selectedImage);
           }
-          console.log(values);
           const response = await Auth.updateUserDetail({
             name: values.name,
             email: values.email,
@@ -151,7 +150,6 @@ const Profile = () => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
-            // console.log(error.response.data);
             if (error.response.data) {
               Toast.show({
                 type: "error",
