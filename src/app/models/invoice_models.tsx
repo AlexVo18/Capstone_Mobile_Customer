@@ -67,26 +67,6 @@ export interface PaymentUrlParams {
   orderCode: string;
 }
 
-export interface BankResponseData {
-  code: string;
-  desc: string;
-  data: BankData[];
-}
-export interface BankData {
-  bin: string;
-  code: string;
-  id: number;
-  isTransfer: number;
-  logo: string;
-  lookupSupported: number;
-  name: string;
-  shortName: string;
-  short_name: string;
-  support: number;
-  swift_code: string;
-  transferSupported: number;
-}
-
 export interface TaxCodeResponseData {
   code: string;
   desc: string;

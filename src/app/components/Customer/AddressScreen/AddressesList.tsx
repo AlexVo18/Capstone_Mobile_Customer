@@ -20,7 +20,7 @@ const AddressesList = ({
   newsScreenProps,
   handleLoadMore,
   isLoadingMore,
-  ListHeaderComponent
+  ListHeaderComponent,
 }: Props) => {
   return (
     <FlatList

@@ -65,44 +65,9 @@ export interface MachineryDetailData {
   machineTermList: MachineryTerm[];
 }
 
-export interface LocalOrderData {
-  machineId: number;
-}
-
-export interface MachineryCartData {
-  machineId: number;
-  machineName: string;
-  rentPrice: number;
-  machinePrice: number;
-  quantity: number;
-  shipPricePerKm: number;
-  categoryName: string;
-  thumbnailUrl: string;
-  rentPrices: number[];
-  machineTerms: MachineryTerm[];
-  machineSerialNumbers: MachineSerialData[];
-}
-
-interface MachineSerialData {
-  machineId: number;
-  actualRentPrice: number;
-  dateCreate: string;
-  rentDaysCounter: number;
-  serialNumber: string;
-  status: string;
-}
-
 export interface MachineryTerm {
   productTermId: number;
   machineId: number;
   title: string;
   content: string;
-}
-
-export interface ReviewCartData {
-  machineId: number;
-  machineName: string;
-  quantity: number;
-  thumbnailUrl: string;
-  rentPrices: number[];
 }

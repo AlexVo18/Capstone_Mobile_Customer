@@ -35,14 +35,6 @@ export interface DistanceData {
   status: string;
 }
 
-export interface ViewPort {
-  width: number | string;
-  height: number | string;
-  latitude: number;
-  longitude: number;
-  zoom: number;
-}
-
 export interface CompoundData {
   district: string;
   commune: string;

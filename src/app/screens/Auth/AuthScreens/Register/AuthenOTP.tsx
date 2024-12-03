@@ -54,25 +54,6 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
     }
   };
 
-  // Xóa data màn email khi quay về
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{ name: "RegisterEmail" }],
-  //     });
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     "hardwareBackPress",
-  //     backAction
-  //   );
-
-  //   // Xóa handler sau khi navigate
-  //   return () => backHandler.remove();
-  // }, [navigation]);
-
   const checkedOTP = async (otp: string) => {
     setIsLoading(true);
     try {

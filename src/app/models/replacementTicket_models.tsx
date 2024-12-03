@@ -19,11 +19,3 @@ export interface ComponentReplacementTicketData {
   note: string;
   status: string;
 }
-export interface ComponentReplacementTicketLogData {
-  componentReplacementTicketLogId: number;
-  componentReplacementTicketId: string;
-  accountTriggerId: number;
-  accountTriggerName: string;
-  action: string;
-  dateCreate: string;
-}

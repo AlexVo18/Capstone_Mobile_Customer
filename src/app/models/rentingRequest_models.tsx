@@ -93,14 +93,3 @@ export interface AccountBusinessData {
   position: string;
   taxNumber: string;
 }
-
-export interface ReviewRequestData {
-  numOfMonth: number;
-  rentingRequestReviewSerialNumbers: RentingRequestReviewSerialNumberData[];
-}
-export interface RentingRequestReviewSerialNumberData {
-  serialNumber: string;
-  rentPricePerDays: number;
-  dateStart: string;
-  dateEnd: string;
-}

@@ -9,9 +9,6 @@ import Profile from "../../screens/Customer/ProfileScreens/Profile";
 import UserInvoice from "../../screens/Customer/InvoiceScreens/UserInvoice";
 import NewAddress from "../../screens/Customer/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
-import { mainBlue } from "../../constants/cssConstants";
-import MachineImagesSlide from "../../screens/Customer/MachineScreens/MachineImagesSlide";
-import { MachineryImageData } from "../../models/machinery_models";
 import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
 import Collection from "../../screens/Customer/MachineScreens/Collection";
 import UserAddress from "../../screens/Customer/AddressScreens/UserAddress";
@@ -30,7 +27,6 @@ import CreateCheckRequest from "../../screens/Customer/CheckRequestScreens/Creat
 import UserRentingRequest from "../../screens/Customer/RentingRequestScreens/UserRentingRequest";
 import RentingRequestDetail from "../../screens/Customer/RentingRequestScreens/RentingRequestDetail";
 import UserNotification from "../../screens/Customer/NotificationScreens/UserNotification";
-import ExtendContract from "../../screens/Customer/ContractScreens/ExtendContract";
 import ContractDetail from "../../screens/Customer/ContractScreens/ContractDetail";
 import { CheckRequestData } from "../../models/machineCheckRequest_models";
 import InvoiceResult from "../../screens/Customer/ResultScreens/InvoiceResult";
@@ -52,7 +48,6 @@ export type CustomerStackParamList = {
     headerTintColor?: string;
     headerBackgroundColor?: string;
   };
-  MachineImagesSlide: { imagesList: MachineryImageData[]; chosenIndex: number };
 
   // Profile
   Profile: undefined;
@@ -78,7 +73,6 @@ export type CustomerStackParamList = {
 
   // Hợp đồng
   UserContract: undefined;
-  ExtendContract: { contractId: string };
   ContractDetail: { contractId: string };
 
   // Giao hàng
@@ -119,10 +113,6 @@ export type MachineDetailScreenProps = NativeStackScreenProps<
 export type CollectionScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "Collection"
->;
-export type MachineImagesSlideScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "MachineImagesSlide"
 >;
 
 // Địa chỉ
@@ -192,10 +182,6 @@ export type ContractDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "ContractDetail"
 >;
-export type ExtendContractScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "ExtendContract"
->;
 
 // Giao hàng
 export type UserDeliveryScreenProps = NativeStackScreenProps<
@@ -262,18 +248,6 @@ const CustomerNavigator = () => {
             <DetailOpts color={route.params?.headerTintColor || "white"} />
           ),
         })}
-      />
-      <Stack.Screen
-        name="MachineImagesSlide"
-        component={MachineImagesSlide}
-        options={{
-          headerTitle: "",
-          headerTransparent: true,
-          headerTintColor: mainBlue,
-          headerStyle: {
-            backgroundColor: "rgba(128, 128, 128, 0.3)",
-          },
-        }}
       />
 
       {/* Tin tức */}
@@ -361,11 +335,6 @@ const CustomerNavigator = () => {
         name="ContractDetail"
         component={ContractDetail}
         options={{ headerTitle: "Thông tin hợp đồng" }}
-      />
-      <Stack.Screen
-        name="ExtendContract"
-        component={ExtendContract}
-        options={{ headerTitle: "Gia hạn hợp đồng" }}
       />
 
       {/* Giao hàng */}

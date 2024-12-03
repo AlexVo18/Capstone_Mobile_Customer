@@ -1,4 +1,4 @@
-import { ExtendContractParams } from "@/app/models/contract_models";
+import { ExtendContractParams } from "../../models/contract_models";
 import requests from "../request";
 
 const Contract = {
