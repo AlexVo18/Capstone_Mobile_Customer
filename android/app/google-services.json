@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "926751407066",
+    "project_id": "mmrms-43519",
+    "storage_bucket": "mmrms-43519.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926751407066:android:034e27a46f8604f01cdee3",
+        "android_client_info": {
+          "package_name": "com.trivo18.customermobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJjDWoyxIyMQwzweyCcN26tRoV7ygfEyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
