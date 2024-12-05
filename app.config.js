@@ -1,6 +1,6 @@
 export default {
   expo: {
-    name: "capstone-mobile-customer",
+    name: "MMRMS",
     slug: "capstone-mobile-customer",
     version: "1.0.0",
     entryPoint: "./src/App.tsx",
