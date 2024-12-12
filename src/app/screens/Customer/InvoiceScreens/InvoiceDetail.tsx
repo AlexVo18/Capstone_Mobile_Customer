@@ -26,9 +26,9 @@ import {
 import CancelModal from "~/src/app/components/modal/CancelModal";
 import axios from "axios";
 import useInvoice from "~/src/app/hooks/useInvoice";
-import * as WebBrowser from 'expo-web-browser';
+import * as WebBrowser from "expo-web-browser";
 
-const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
+const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
   const { invoiceId } = route.params;
   const { addInvoice } = useInvoice();
 
@@ -108,7 +108,7 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
           urlReturn: url,
         });
         if (response) {
-          WebBrowser.openBrowserAsync(response)
+          WebBrowser.openBrowserAsync(response);
         }
       }
     } catch (error) {
@@ -138,8 +138,10 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
         return "border-blue-700 text-blue-700";
       case "componentticket":
         return "border-yellow-400 text-yellow-400";
-      default:
+      case "refund":
         return "border-lime-600 text-lime-600";
+      default:
+        return "border-red-600 text-red-600";
     }
   };
 
@@ -223,7 +225,9 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                     ? "Tiền thuê"
                     : detail.type.toLowerCase() === "componentticket"
                       ? "Tiền sửa chữa"
-                      : "Tiền cọc"}
+                      : detail.type.toLowerCase() === "refund"
+                        ? "Tiền hoàn trả"
+                        : "Tiền thuê"}
                 </Text>
               </View>
             </View>
@@ -259,68 +263,17 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                 </View>
               </>
             )}
-
-            {ticketDetail && ticketDetail?.additionalFee ? (
+            {detail.type.toLowerCase() !== "refund" && (
               <View className="flex flex-row justify-between">
-                <Text>Tiền dịch vụ sửa chữa</Text>
-                <Text>
-                  {ticketDetail?.additionalFee &&
-                    formatVND(ticketDetail?.additionalFee)}
-                </Text>
+                <Text>Mã giao dịch</Text>
+                {detail?.digitalTransactionId ? (
+                  <Text>{detail?.digitalTransactionId}</Text>
+                ) : (
+                  <Text className="text-muted-foreground">Chưa thanh toán</Text>
+                )}
               </View>
-            ) : null}
+            )}
 
-            {detail?.contractPayments &&
-              detail?.contractPayments[0].firstRentalPayment && (
-                <>
-                  <View className="flex flex-row justify-between">
-                    <Text>Tiền dịch vụ</Text>
-                    <Text>
-                      {formatVND(
-                        detail?.contractPayments[0].firstRentalPayment
-                          .totalServicePrice
-                      )}
-                    </Text>
-                  </View>
-                  <View className="flex flex-row justify-between">
-                    <Text>Tiền giao hàng</Text>
-                    <Text>
-                      {formatVND(
-                        detail?.contractPayments[0].firstRentalPayment
-                          .shippingPrice
-                      )}
-                    </Text>
-                  </View>
-                  {detail?.contractPayments[0].firstRentalPayment
-                    .discountPrice ? (
-                    <View className="flex flex-row justify-between ">
-                      <Text className="text-red-600">Tiền giảm giá</Text>
-                      <Text className="text-red-600">
-                        -{" "}
-                        {formatVND(
-                          detail?.contractPayments[0].firstRentalPayment
-                            .discountPrice
-                        )}
-                      </Text>
-                    </View>
-                  ) : null}
-                </>
-              )}
-
-            <View className="flex flex-row justify-between">
-              <Text>Tổng số tiền</Text>
-              <Text className="text-blue-700 font-semibold text-base">
-                {detail?.amount && formatVND(detail?.amount)}
-              </Text>
-            </View>
-            <View className="flex flex-row justify-between">
-              <Text>Mã giao dịch</Text>
-              {detail?.digitalTransactionId ? (
-                <Text>{detail?.digitalTransactionId}</Text>
-              ) : (
-                <Text className="text-muted-foreground">Chưa thanh toán</Text>
-              )}
-            </View>
             <View className="flex flex-row justify-between">
               <Text>Loại giao dịch</Text>
               {detail?.paymentMethod ? (
@@ -337,36 +290,73 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                 <Text className="text-muted-foreground">Chưa thanh toán</Text>
               )}
             </View>
+            {detail.type.toLowerCase() === "refund" && (
+              <View className="flex flex-row justify-between">
+                <Text></Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("InvoiceImage", {
+                      paymentConfirmationUrl: detail.paymentConfirmationUrl,
+                    })
+                  }
+                >
+                  <Text className="underline text-blue-600">
+                    Xem ảnh giao dịch
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
           <View className="mb-2 mx-2 p-4 bg-white rounded-lg">
             <Text className="text-lg font-semibold">Nội dung</Text>
             <View className="h-[0.5px] bg-muted-foreground my-2"></View>
-            {ticketDetail && (
-              <>
-                <View className="flex flex-row justify-between">
-                  <Text>Mã ticket</Text>
-                  <Text>{ticketDetail.componentReplacementTicketId}</Text>
-                </View>
-                <View className="flex flex-row justify-between">
-                  <Text>Loại máy</Text>
-                  <Text>{ticketDetail.serialNumber}</Text>
-                </View>
-                <View className="flex flex-row justify-between">
-                  <Text>Tên bộ phận</Text>
-                  <Text>{ticketDetail.componentName}</Text>
-                </View>
-                <View className="flex flex-row justify-between">
-                  <Text>Số lượng</Text>
-                  <Text>x {ticketDetail.quantity}</Text>
-                </View>
-                <View className="flex flex-row justify-between">
-                  <Text>Giá bộ phận</Text>
-                  <Text>{formatVND(ticketDetail.componentPrice)}</Text>
-                </View>
-              </>
-            )}
+
+            {/* Phần invoice của ticket */}
+            {ticketDetail &&
+              detail.type.toLowerCase() === "componentticket" && (
+                <>
+                  <View className="flex flex-row justify-between">
+                    <Text>Mã ticket</Text>
+                    <Text>{ticketDetail.componentReplacementTicketId}</Text>
+                  </View>
+                  <View className="flex flex-row justify-between">
+                    <Text>Loại máy</Text>
+                    <Text>{ticketDetail.serialNumber}</Text>
+                  </View>
+                  <View className="flex flex-row justify-between">
+                    <Text>Bộ phận thay thế</Text>
+                    <Text>{ticketDetail.componentName}</Text>
+                  </View>
+                  <View className="flex flex-row justify-between">
+                    <Text>Số lượng</Text>
+                    <Text>x {ticketDetail.quantity}</Text>
+                  </View>
+                  <View className="flex flex-row justify-between">
+                    <Text>Giá bộ phận</Text>
+                    <Text>{formatVND(ticketDetail.componentPrice)}</Text>
+                  </View>
+                  <View className="h-[0.5px] bg-muted-foreground my-2"></View>
+                  <View className="flex flex-row justify-between">
+                    <Text>Tiền dịch vụ sửa chữa</Text>
+                    <Text>
+                      {ticketDetail?.additionalFee &&
+                        formatVND(ticketDetail?.additionalFee)}
+                    </Text>
+                  </View>
+                  <View className="flex flex-row justify-between">
+                    <Text className="text-muted-foreground font-semibold text-lg">
+                      Tổng cộng
+                    </Text>
+                    <Text className="text-blue-700 font-semibold text-lg">
+                      {formatVND(detail?.amount)}
+                    </Text>
+                  </View>
+                </>
+              )}
+            {/* Phần invoice của cho thuê và cọc */}
             {detail?.contractPayments &&
-              detail?.contractPayments.length !== 0 && (
+              detail?.contractPayments.length !== 0 &&
+              detail.type.toLowerCase() === "rental" && (
                 <>
                   <View className="flex flex-row justify-between">
                     <Text>Mã hợp đồng</Text>
@@ -376,7 +366,16 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                   {detail.contractPayments.map((contract, index) => (
                     <View key={index}>
                       <View className="flex flex-row justify-between">
-                        <Text>{contract.contractId}</Text>
+                        <Text>
+                          {contract.contractId}{" "}
+                          <Text className="text-muted-foreground">
+                            (
+                            {contract.type.toLowerCase() === "rental"
+                              ? "Tiền thuê"
+                              : "Tiền cọc"}
+                            )
+                          </Text>
+                        </Text>
                         <Text>{formatVND(contract.amount)}</Text>
                       </View>
                     </View>
@@ -384,8 +383,9 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                   <View className="h-[0.5px] bg-muted-foreground my-1"></View>
                   <View>
                     <View className="flex flex-row justify-between">
-                      <Text>Tổng cộng</Text>
-                      <Text className="text-blue-700 font-semibold">
+                      <Text>Thành tiền</Text>
+                      <Text>
+                        {" "}
                         {detail?.contractPayments &&
                           formatVND(
                             detail?.contractPayments.reduce(
@@ -396,9 +396,123 @@ const InvoiceDetail = ({ route }: InvoiceDetailScreenProps) => {
                       </Text>
                     </View>
                   </View>
+
+                  {detail?.firstRentalPayment ? (
+                    <>
+                      <View>
+                        <View className="flex flex-row justify-between">
+                          <Text>Tiền dịch vụ</Text>
+                          <Text>
+                            {formatVND(
+                              detail?.firstRentalPayment.totalServicePrice
+                            )}
+                          </Text>
+                        </View>
+                      </View>
+                      <View>
+                        <View className="flex flex-row justify-between">
+                          <Text>Tiền giao hàng</Text>
+                          <Text>
+                            {formatVND(
+                              detail?.firstRentalPayment.shippingPrice
+                            )}
+                          </Text>
+                        </View>
+                      </View>
+                      {detail?.firstRentalPayment.discountPrice ? (
+                        <View>
+                          <View className="flex flex-row justify-between">
+                            <Text className="text-red-600">Tiền giảm giá</Text>
+                            <Text className="text-red-600">
+                              -{" "}
+                              {detail?.amount &&
+                                formatVND(
+                                  detail.firstRentalPayment.discountPrice
+                                )}
+                            </Text>
+                          </View>
+                        </View>
+                      ) : null}
+                    </>
+                  ) : null}
+
+                  <View>
+                    <View className="flex flex-row justify-between">
+                      <Text className="text-lg font-semibold text-muted-foreground">
+                        Tổng cộng
+                      </Text>
+                      <Text className="text-blue-700 font-semibold text-lg">
+                        {formatVND(detail?.amount)}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              )}
+            {/* Phần invoice của hoàn tiền */}
+            {detail &&
+              detail.contractPayments &&
+              detail.type.toLowerCase() === "refund" && (
+                <>
+                  <View className="flex flex-row justify-between">
+                    <Text>Loại tiền</Text>
+                    <Text>Số tiền</Text>
+                  </View>
+                  <View className="h-[0.5px] bg-muted-foreground my-1"></View>
+                  {detail.contractPayments.map((contract, index) => (
+                    <View key={index}>
+                      <View className="flex flex-row justify-between">
+                        <Text>
+                          {contract.contractId}{" "}
+                          <Text className="text-muted-foreground">
+                            {contract.type.toLowerCase() === "refund" &&
+                              "(Cọc gốc)"}
+                          </Text>
+                        </Text>
+                        <Text>{formatVND(contract.amount)}</Text>
+                      </View>
+                    </View>
+                  ))}
+                  {detail.componentReplacementTickets.length > 0 ? (
+                    detail.componentReplacementTickets.map((ticket, index) => (
+                      <View key={index}>
+                        <View className="flex flex-row justify-between">
+                          <View>
+                            <Text>{ticket.componentReplacementTicketId} </Text>
+                            <Text className="text-muted-foreground">
+                              (Phí sửa chữa hư hỏng)
+                            </Text>
+                          </View>
+                          <Text className="text-red-600">
+                            - {formatVND(ticket.totalAmount)}
+                          </Text>
+                        </View>
+                      </View>
+                    ))
+                  ) : detail.refundShippingPrice ? (
+                    <View>
+                      <View className="flex flex-row justify-between">
+                        <Text>Hoàn tiền ship</Text>
+                        <Text className="text-lime-600">
+                          + {formatVND(detail.refundShippingPrice)}
+                        </Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  <View className="h-[0.5px] bg-muted-foreground my-1"></View>
+                  <View>
+                    <View className="flex flex-row justify-between">
+                      <Text className="text-lg text-muted-foreground font-semibold">
+                        Tổng cộng
+                      </Text>
+                      <Text className="text-blue-700 font-semibold text-lg">
+                        {formatVND(detail?.amount)}
+                      </Text>
+                    </View>
+                  </View>
                 </>
               )}
           </View>
+
           {detail?.status.toLowerCase() === "pending" ? (
             <View className="w-full p-2">
               {isCreateLoading ? (

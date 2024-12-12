@@ -1,3 +1,5 @@
+import { ComponentReplacementTicketData } from "./replacementTicket_models";
+
 export interface InvoiceData {
   invoiceId: string;
   accountPaidId: number;
@@ -26,7 +28,11 @@ export interface InvoiceDetailData {
   type: string;
   note: string;
   contractPayments: ContractPaymentData[];
+  componentReplacementTickets: ComponentReplacementTicketData[];
   componentReplacementTicketId: string;
+  firstRentalPayment: FirstPayment;
+  paymentConfirmationUrl: string;
+  refundShippingPrice: number;
 }
 
 export interface ContractPaymentData {

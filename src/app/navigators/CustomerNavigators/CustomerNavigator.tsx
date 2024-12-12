@@ -30,11 +30,11 @@ import CreateCheckRequest from "../../screens/Customer/CheckRequestScreens/Creat
 import UserRentingRequest from "../../screens/Customer/RentingRequestScreens/UserRentingRequest";
 import RentingRequestDetail from "../../screens/Customer/RentingRequestScreens/RentingRequestDetail";
 import UserNotification from "../../screens/Customer/NotificationScreens/UserNotification";
-import ExtendContract from "../../screens/Customer/ContractScreens/ExtendContract";
 import ContractDetail from "../../screens/Customer/ContractScreens/ContractDetail";
 import { CheckRequestData } from "../../models/machineCheckRequest_models";
 import InvoiceResult from "../../screens/Customer/ResultScreens/InvoiceResult";
 import BillResult from "../../screens/Customer/ResultScreens/BillResult";
+import InvoiceImage from "../../screens/Customer/InvoiceScreens/InvoiceImage";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -52,7 +52,6 @@ export type CustomerStackParamList = {
     headerTintColor?: string;
     headerBackgroundColor?: string;
   };
-  MachineImagesSlide: { imagesList: MachineryImageData[]; chosenIndex: number };
 
   // Profile
   Profile: undefined;
@@ -66,6 +65,7 @@ export type CustomerStackParamList = {
   // Thanh toán
   UserInvoice: undefined;
   InvoiceDetail: { invoiceId: string };
+  InvoiceImage: { paymentConfirmationUrl: string };
 
   // Yêu cầu thuê
   UserRentingRequest: undefined;
@@ -78,7 +78,6 @@ export type CustomerStackParamList = {
 
   // Hợp đồng
   UserContract: undefined;
-  ExtendContract: { contractId: string };
   ContractDetail: { contractId: string };
 
   // Giao hàng
@@ -120,10 +119,6 @@ export type CollectionScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "Collection"
 >;
-export type MachineImagesSlideScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "MachineImagesSlide"
->;
 
 // Địa chỉ
 export type UserAddressScreenProps = NativeStackScreenProps<
@@ -158,6 +153,10 @@ export type InvoiceDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "InvoiceDetail"
 >;
+export type InvoiceImageScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "InvoiceImage"
+>;
 
 // Yêu cầu thuê
 export type UserRentingRequestScreenProps = NativeStackScreenProps<
@@ -191,10 +190,6 @@ export type UserContractScreenProps = NativeStackScreenProps<
 export type ContractDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "ContractDetail"
->;
-export type ExtendContractScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "ExtendContract"
 >;
 
 // Giao hàng
@@ -263,18 +258,6 @@ const CustomerNavigator = () => {
           ),
         })}
       />
-      <Stack.Screen
-        name="MachineImagesSlide"
-        component={MachineImagesSlide}
-        options={{
-          headerTitle: "",
-          headerTransparent: true,
-          headerTintColor: mainBlue,
-          headerStyle: {
-            backgroundColor: "rgba(128, 128, 128, 0.3)",
-          },
-        }}
-      />
 
       {/* Tin tức */}
       <Stack.Screen
@@ -333,6 +316,18 @@ const CustomerNavigator = () => {
         component={InvoiceDetail}
         options={{ headerTitle: "Thông tin đơn thanh toán" }}
       />
+      <Stack.Screen
+        name="InvoiceImage"
+        component={InvoiceImage}
+        options={() => ({
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "rgba(128, 128, 128, 0.3)",
+          },
+        })}
+      />
 
       {/* Yêu cầu thuê */}
       <Stack.Screen name="UserRentingRequest" component={UserRentingRequest} />
@@ -361,11 +356,6 @@ const CustomerNavigator = () => {
         name="ContractDetail"
         component={ContractDetail}
         options={{ headerTitle: "Thông tin hợp đồng" }}
-      />
-      <Stack.Screen
-        name="ExtendContract"
-        component={ExtendContract}
-        options={{ headerTitle: "Gia hạn hợp đồng" }}
       />
 
       {/* Giao hàng */}
