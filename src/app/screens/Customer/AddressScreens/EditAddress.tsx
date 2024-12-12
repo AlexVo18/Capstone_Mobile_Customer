@@ -15,9 +15,9 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import MapLibreGL, { Logger } from "@maplibre/maplibre-react-native";
-import { MapPin, Trash2 } from "lucide-react-native";
+import { Map, MapPin, Trash2 } from "lucide-react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
-import { mainBlue } from "~/src/app/constants/cssConstants";
+import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 
 const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
   const mapStyleURL =
@@ -41,6 +41,7 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
   const [suggestions, setSuggestions] = useState<PredictionData[]>([]);
   const [keyword, setKeyword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuggestLoading, setIsSuggestLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const debouncedKeyword = useDebounce(keyword);
 
@@ -53,16 +54,20 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
   useEffect(() => {
     const handleSuggestions = async () => {
       if (debouncedKeyword.length > 2) {
-        setIsLoading(true);
+        setIsSuggestLoading(true);
         try {
           const response = await Address.suggestAddresses(debouncedKeyword);
           if (response) {
-            setSuggestions(response.predictions);
+            if (response.predictions) {
+              setSuggestions(response.predictions);
+            } else {
+              setSuggestions([]);
+            }
           }
         } catch (error) {
           console.log(error);
         } finally {
-          setIsLoading(false);
+          setIsSuggestLoading(false);
         }
       } else {
         setSuggestions([]);
@@ -191,7 +196,11 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
           placeholder="Tìm kiếm địa chỉ"
           style={styles.textInput}
         />
-        {suggestions.length > 0 && (
+        {isSuggestLoading ? (
+          <View className="p-4 w-full flex justify-center items-center">
+            <ActivityIndicator color={mainBlue} size={"large"} />
+          </View>
+        ) : suggestions.length > 0 ? (
           <View style={styles.suggestionsContainer}>
             {suggestions.slice(0, 5).map((suggestion, index) => (
               <TouchableOpacity
@@ -204,6 +213,11 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
                 </Text>
               </TouchableOpacity>
             ))}
+          </View>
+        ) : (
+          <View className="flex flex-col justify-center items-center p-6">
+            <Map color={`hsl(${mutedForground})`} size={36} />
+            <Text className="text-muted-foreground">Không có địa chỉ nào</Text>
           </View>
         )}
       </View>

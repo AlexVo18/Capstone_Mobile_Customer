@@ -1,5 +1,11 @@
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { InvoiceData } from "~/src/app/models/invoice_models";
 import { useDebounce } from "~/src/app/hooks/useDebounce";
 import { UserInvoiceScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
@@ -162,9 +168,9 @@ const UserInvoice = ({ navigation, route }: UserInvoiceScreenProps) => {
               }}
               items={[
                 { label: "Tất cả", value: "allType" },
-                { label: "Tiền cọc", value: "deposit" },
                 { label: "Tiền thuê", value: "rental" },
                 { label: "Tiền sửa chữa", value: "componentticket" },
+                { label: "Tiền hoàn trả", value: "refund" },
               ]}
               style={pickerSelectStyles}
             />

@@ -54,25 +54,6 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
     }
   };
 
-  // Xóa data màn email khi quay về
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{ name: "RegisterEmail" }],
-  //     });
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     "hardwareBackPress",
-  //     backAction
-  //   );
-
-  //   // Xóa handler sau khi navigate
-  //   return () => backHandler.remove();
-  // }, [navigation]);
-
   const checkedOTP = async (otp: string) => {
     setIsLoading(true);
     try {
@@ -92,38 +73,10 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
         if (response && response.status === 204) {
           Toast.show({
             type: "success",
-            text1: "Tài khoản của bạn đã được kích hoạt thành công!",
+            text1:
+              "Tài khoản của bạn đã được kích hoạt thành công, bạn hãy vui lòng đợi để tài khoản được duyệt!",
           });
-          if (loginParams) {
-            const loginResponse = await Auth.login({
-              email: loginParams.email,
-              password: loginParams.password,
-              firebaseMessageToken: loginParams.firebaseMessageToken,
-            });
-            if (loginResponse) {
-              setIsverified(true);
-              const userData: UserData = {
-                accountId: loginResponse.accountId,
-                address: loginResponse.address,
-                dateCreate: loginResponse.dateCreate,
-                email: loginResponse.email,
-                name: loginResponse.name,
-                phone: loginResponse.phone,
-                roleId: loginResponse.roleId,
-                status: loginResponse.status,
-                username: loginResponse.username,
-                avatarImg: loginResponse.avatarImg,
-              };
-              const token: TokenData = {
-                refreshToken: loginResponse.refreshToken,
-                refreshTokenExpiryTime: loginResponse.refreshTokenExpiryTime,
-                token: loginResponse.token,
-              };
-              login(userData, token);
-            }
-          } else if (email) {
-            navigation.navigate("Login");
-          }
+          navigation.navigate("Login");
         }
       }
     } catch (error) {

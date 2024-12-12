@@ -101,26 +101,20 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
             data={machinery?.machineImageList || []}
             scrollAnimationDuration={1000}
             renderItem={({ item }) => (
-              <TouchableOpacity
+              <View
                 style={{
                   justifyContent: "center",
                   width: "100%",
                   height: 350,
                   borderBottomEndRadius: 10,
                 }}
-                // onPress={() =>
-                //   navigation.navigate("MachineImagesSlide", {
-                //     imagesList: machinery?.machineImageList || [],
-                //     chosenIndex: 1,
-                //   })
-                // }
               >
                 <Image
                   src={item?.machineImageUrl}
                   alt="Hình máy"
                   className="w-full h-full rounded-b-lg object-cover"
                 />
-              </TouchableOpacity>
+              </View>
             )}
           />
         </View>
@@ -128,13 +122,6 @@ const MachineDetail = ({ navigation, route }: MachineDetailScreenProps) => {
           <Text className="text-2xl font-semibold">
             {machinery?.machineName}
           </Text>
-          {/* <View className="items-start mt-2">
-            <View className="bg-blue-700 p-1 rounded-2xl px-2 py-1">
-              <Text style={{ color: "white" }} className="text-center text-sm">
-                {machinery?.categoryName}
-              </Text>
-            </View>
-          </View> */}
           <View className="flex items-center flex-row mt-2">
             <Text
               style={{ color: mainBlue }}

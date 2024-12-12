@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { InvoiceData } from "~/src/app/models/invoice_models";
 import { UserInvoiceScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
@@ -29,7 +29,6 @@ const InvoiceList = ({
   handleLoadMore,
   isLoadingMore,
 }: Props) => {
-
   return (
     <FlatList
       data={displayList}
@@ -63,8 +62,10 @@ const InvoiceList = ({
                         <Text className="text-blue-700">Tiền thuê</Text>
                       ) : item.type.toLowerCase() === "componentticket" ? (
                         <Text className="text-yellow-600">Tiền sữa chửa</Text>
+                      ) : item.type.toLowerCase() === "refund" ? (
+                        <Text className="text-lime-600">Tiền hoàn trả</Text>
                       ) : (
-                        <Text className="text-lime-600">Tiền cọc</Text>
+                        <Text className="text-red-600">Tiền phạt</Text>
                       )}
                     </Text>
                   </View>
