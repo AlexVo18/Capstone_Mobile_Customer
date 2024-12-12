@@ -14,9 +14,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native-gesture-handler";
-import { MapPin, Trash2 } from "lucide-react-native";
-import { ActivityIndicator, Button } from "react-native-paper";
-import { mainBlue } from "~/src/app/constants/cssConstants";
+import { Map, MapPin, Trash2 } from "lucide-react-native";
+import { ActivityIndicator } from "react-native-paper";
+import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";
 import { NewAddressScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 
 MapLibreGL.setAccessToken(null);
@@ -42,6 +42,7 @@ const NewAddress = ({ navigation }: NewAddressScreenProps) => {
   const [suggestions, setSuggestions] = useState<PredictionData[]>([]);
   const [keyword, setKeyword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuggestLoading, setIsSuggestLoading] = useState(false);
   const debouncedKeyword = useDebounce(keyword);
 
   const validate = ErrorMessageAddNewAddress;
@@ -49,16 +50,20 @@ const NewAddress = ({ navigation }: NewAddressScreenProps) => {
   useEffect(() => {
     const handleSuggestions = async () => {
       if (debouncedKeyword.length > 2) {
-        setIsLoading(true);
+        setIsSuggestLoading(true);
         try {
           const response = await Address.suggestAddresses(debouncedKeyword);
           if (response) {
-            setSuggestions(response.predictions);
+            if (response.predictions) {
+              setSuggestions(response.predictions);
+            } else {
+              setSuggestions([]);
+            }
           }
         } catch (error) {
           console.log(error);
         } finally {
-          setIsLoading(false);
+          setIsSuggestLoading(false);
         }
       } else {
         setSuggestions([]);
@@ -151,7 +156,11 @@ const NewAddress = ({ navigation }: NewAddressScreenProps) => {
           placeholder="Tìm kiếm địa chỉ"
           style={styles.textInput}
         />
-        {suggestions.length > 0 && (
+        {isSuggestLoading ? (
+          <View className="p-4 w-full flex justify-center items-center">
+            <ActivityIndicator color={mainBlue} size={"large"} />
+          </View>
+        ) : suggestions.length > 0 ? (
           <View style={styles.suggestionsContainer}>
             {suggestions.slice(0, 5).map((suggestion, index) => (
               <TouchableOpacity
@@ -164,6 +173,11 @@ const NewAddress = ({ navigation }: NewAddressScreenProps) => {
                 </Text>
               </TouchableOpacity>
             ))}
+          </View>
+        ) : (
+          <View className="flex flex-col justify-center items-center p-6">
+            <Map color={`hsl(${mutedForground})`} size={36} />
+            <Text className="text-muted-foreground">Không có địa chỉ nào</Text>
           </View>
         )}
       </View>
@@ -252,7 +266,6 @@ export default NewAddress;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#F5FCFF",
     backgroundColor: "white",
   },
   mapContainer: {

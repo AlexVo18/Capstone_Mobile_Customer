@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { InvoiceData } from "~/src/app/models/invoice_models";
 import { UserInvoiceScreenProps } from "~/src/app/navigators/CustomerNavigators/CustomerNavigator";
 import { mainBlue, mutedForground } from "~/src/app/constants/cssConstants";

@@ -54,25 +54,6 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
     }
   };
 
-  // Xóa data màn email khi quay về
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{ name: "RegisterEmail" }],
-  //     });
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     "hardwareBackPress",
-  //     backAction
-  //   );
-
-  //   // Xóa handler sau khi navigate
-  //   return () => backHandler.remove();
-  // }, [navigation]);
-
   const checkedOTP = async (otp: string) => {
     setIsLoading(true);
     try {
@@ -92,7 +73,8 @@ const AuthenOTP = ({ route, navigation }: AuthenOTPScreenProps) => {
         if (response && response.status === 204) {
           Toast.show({
             type: "success",
-            text1: "Tài khoản của bạn đã được kích hoạt thành công!",
+            text1:
+              "Tài khoản của bạn đã được kích hoạt thành công. Vui lòng đợi tài khoản được duyệt!",
           });
           if (loginParams) {
             const loginResponse = await Auth.login({

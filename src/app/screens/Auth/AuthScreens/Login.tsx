@@ -77,12 +77,11 @@ const Login = ({ navigation }: LoginScreenProps) => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
-            if (error.response.data === "Tài khoản chưa kích hoạt") {
-              Toast.show({
-                type: "info",
-                text1: "Tài khoản chưa xác thực",
-                text2: "Vui lòng nhập mã OTP gửi qua mail để xác thực",
-              });
+            let msg = "";
+            if (error.response.data === "Sai mật khẩu") {
+              msg = "Đăng nhập thất bại. Mật khẩu hoặc tài khoản không đúng";
+            } else if (error.response.data === "Tài khoản chưa kích hoạt") {
+              msg = error.response.data;
               navigation.navigate("AuthenOTP", {
                 loginParams: {
                   email: formik.values.email,
@@ -92,12 +91,13 @@ const Login = ({ navigation }: LoginScreenProps) => {
                 send: true,
               });
             } else {
-              Toast.show({
-                type: "error",
-                text1: "Đăng nhập thất bại",
-                text2: "Tài khoản hoặc mật khẩu không đúng",
-              });
+              msg = error.response.data;
             }
+            return Toast.show({
+              type: "error",
+              text1: "Đăng nhập thất bại",
+              text2: msg,
+            });
           }
         }
       } finally {
