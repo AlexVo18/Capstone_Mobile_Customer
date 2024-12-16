@@ -227,7 +227,7 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
                       ? "Tiền sửa chữa"
                       : detail.type.toLowerCase() === "refund"
                         ? "Tiền hoàn trả"
-                        : "Tiền thuê"}
+                        : "Tiền bồi thường"}
                 </Text>
               </View>
             </View>
@@ -509,6 +509,38 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
                       </Text>
                     </View>
                   </View>
+                </>
+              )}
+
+            {/* Phần invoice của tiền phạt */}
+            {detail &&
+              detail.contractPayments &&
+              detail.type.toLowerCase() === "damagepenalty" && (
+                <>
+                  <View className="flex flex-row justify-between">
+                    <Text>Loại tiền</Text>
+                    <Text>Số tiền</Text>
+                  </View>
+                  <View className="h-[0.5px] bg-muted-foreground my-1"></View>
+                  {detail.contractPayments
+                    .filter(
+                      (contract) =>
+                        contract.type.toLowerCase() === "damagepenalty"
+                    )
+                    .map((contract, index) => (
+                      <View key={index}>
+                        <View className="flex flex-row justify-between">
+                          <Text>
+                            {contract.contractId}{" "}
+                            <Text className="text-muted-foreground">
+                              {contract.type.toLowerCase() ===
+                                "damagepenalty" && "(Bồi thường)"}
+                            </Text>
+                          </Text>
+                          <Text>{formatVND(contract.amount)}</Text>
+                        </View>
+                      </View>
+                    ))}
                 </>
               )}
           </View>

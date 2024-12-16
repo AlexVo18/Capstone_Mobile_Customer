@@ -65,7 +65,7 @@ const InvoiceList = ({
                       ) : item.type.toLowerCase() === "refund" ? (
                         <Text className="text-lime-600">Tiền hoàn trả</Text>
                       ) : (
-                        <Text className="text-red-600">Tiền phạt</Text>
+                        <Text className="text-red-600">Tiền bồi thường</Text>
                       )}
                     </Text>
                   </View>

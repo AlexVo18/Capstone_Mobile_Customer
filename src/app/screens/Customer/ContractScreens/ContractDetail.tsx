@@ -27,6 +27,7 @@ import { cn } from "~/src/app/utils/cn";
 import { formatDate } from "~/src/app/utils/dateformat";
 import { formatVND } from "~/src/app/utils/formatVND";
 import { Receipt, Ticket } from "lucide-react-native";
+import { differenceInDays } from "date-fns";
 
 const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
   const { contractId } = route.params;
@@ -578,38 +579,45 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
               </>
             )}
           </View>
-          {detail?.status.toLowerCase() === "renting" ? (
-            <View className="w-full p-2">
-              {isCancelLoading ? (
-                <TouchableOpacity
-                  style={[styles.buttonStyle, styles.disableButtonColor]}
-                  disabled
-                >
-                  {isLoading ? (
-                    <ActivityIndicator color={"#6b7280"} size={"small"} />
-                  ) : (
-                    <Text className="text-lg text-center text-gray-500 font-semibold">
-                      Hủy hợp đồng
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={[styles.buttonStyle, styles.redButtonColor]}
-                  disabled={isCancelLoading}
-                  onPress={() => setChosen(detail.contractId)}
-                >
-                  {isLoading ? (
-                    <ActivityIndicator color={"#6b7280"} size={"small"} />
-                  ) : (
-                    <Text className="text-lg text-center text-white font-semibold">
-                      Hủy hợp đồng
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              )}
-            </View>
-          ) : null}
+          {
+            // Hủy hợp đồng sau khi bắt đầu thuê
+            (detail?.status.toLowerCase() === "renting" &&
+              differenceInDays(Date.now(), detail.dateStart) > 0) ||
+            // Hủy hợp đồng gia hạn khi chưa ký
+            (detail?.status.toLowerCase() === "notsigned" &&
+              detail.baseContractId) ? (
+              <View className="w-full p-2">
+                {isCancelLoading ? (
+                  <TouchableOpacity
+                    style={[styles.buttonStyle, styles.disableButtonColor]}
+                    disabled
+                  >
+                    {isLoading ? (
+                      <ActivityIndicator color={"#6b7280"} size={"small"} />
+                    ) : (
+                      <Text className="text-lg text-center text-gray-500 font-semibold">
+                        Hủy hợp đồng
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={[styles.buttonStyle, styles.redButtonColor]}
+                    disabled={isCancelLoading}
+                    onPress={() => setChosen(detail.contractId)}
+                  >
+                    {isLoading ? (
+                      <ActivityIndicator color={"#6b7280"} size={"small"} />
+                    ) : (
+                      <Text className="text-lg text-center text-white font-semibold">
+                        Hủy hợp đồng
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                )}
+              </View>
+            ) : null
+          }
         </ScrollView>
       </>
     )

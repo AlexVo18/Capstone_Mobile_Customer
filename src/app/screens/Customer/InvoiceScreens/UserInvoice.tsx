@@ -171,6 +171,7 @@ const UserInvoice = ({ navigation, route }: UserInvoiceScreenProps) => {
                 { label: "Tiền thuê", value: "rental" },
                 { label: "Tiền sửa chữa", value: "componentticket" },
                 { label: "Tiền hoàn trả", value: "refund" },
+                { label: "Tiền bồi thường", value: "damagepenalty" },
               ]}
               style={pickerSelectStyles}
             />
