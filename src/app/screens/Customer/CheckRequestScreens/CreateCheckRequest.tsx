@@ -299,7 +299,7 @@ const CreateCheckRequest = ({
               >
                 <View className=" w-full">
                   <Image
-                    src={item.thumbnail || ""}
+                    src={item.thumbnail}
                     alt=""
                     className="h-52 w-full rounded-lg"
                   />
@@ -332,7 +332,7 @@ const CreateCheckRequest = ({
           <View className="flex flex-row gap-2 items-center">
             <View className="w-28">
               <Image
-                src={chosenContract.thumbnail || ""}
+                src={chosenContract.thumbnail}
                 alt=""
                 className="h-28 w-full rounded-lg"
               />

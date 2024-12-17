@@ -184,16 +184,20 @@ const DeliveryDetail = ({ navigation, route }: DeliveryDetailScreenProps) => {
                   }
                 >
                   {contract.pictureUrl ? (
-                    <View className="h-36 w-36">
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("FullImage", {
+                          imageUrl: contract.pictureUrl,
+                        })
+                      }
+                      className="h-36 w-36"
+                    >
                       <Image
-                        src={
-                          contract.pictureUrl ||
-                          "https://www.schaeffler.vn/remotemedien/media/_shared_media_rwd/04_sectors_1/industry_1/construction_machinery/00085545_16_9-schaeffler-industry-solutions-construction-machinery-crawler-excavator_rwd_600.jpg"
-                        }
+                        src={contract.pictureUrl}
                         alt=""
                         className="h-36 w-36 rounded-lg"
                       />
-                    </View>
+                    </TouchableOpacity>
                   ) : (
                     <View className="h-36 w-36 flex justify-center items-center border border-gray-300 rounded-lg">
                       <Text className="text-muted-foreground text-lg">
@@ -288,12 +292,12 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     borderWidth: 1,
-    borderColor: "#d1d5db", 
-    padding: 8, 
-    borderRadius: 8, 
+    borderColor: "#d1d5db",
+    padding: 8,
+    borderRadius: 8,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 8, 
+    gap: 8,
   },
 });

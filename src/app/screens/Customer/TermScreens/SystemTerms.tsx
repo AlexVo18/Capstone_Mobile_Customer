@@ -61,15 +61,17 @@ const SystemTerms = () => {
       <ActivityIndicator color={mainBlue} size={"large"} />
     </View>
   ) : (
-    <ScrollView className="w-full h-full bg-white p-4">
-      {data.map((term, index) => (
-        <View key={index}>
-          <Text className="text-lg font-semibold">
-            {index + 1}. {term.title}
-          </Text>
-          <Text>{removeHtmlTags(term.content)}</Text>
-        </View>
-      ))}
+    <ScrollView className="w-full h-full bg-white p-4 ">
+      <View className="pb-10">
+        {data.map((term, index) => (
+          <View key={index}>
+            <Text className="text-lg font-semibold">
+              {index + 1}. {term.title}
+            </Text>
+            <Text>{removeHtmlTags(term.content)}</Text>
+          </View>
+        ))}
+      </View>
     </ScrollView>
   );
 };

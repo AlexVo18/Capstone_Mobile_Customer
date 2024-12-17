@@ -9,9 +9,6 @@ import Profile from "../../screens/Customer/ProfileScreens/Profile";
 import UserInvoice from "../../screens/Customer/InvoiceScreens/UserInvoice";
 import NewAddress from "../../screens/Customer/AddressScreens/NewAddress";
 import NewsDetail from "../../screens/Customer/NewsScreens/NewsDetail";
-import { mainBlue } from "../../constants/cssConstants";
-import MachineImagesSlide from "../../screens/Customer/MachineScreens/MachineImagesSlide";
-import { MachineryImageData } from "../../models/machinery_models";
 import DetailOpts from "../../components/Customer/DetailScreen/DetailOpts";
 import Collection from "../../screens/Customer/MachineScreens/Collection";
 import UserAddress from "../../screens/Customer/AddressScreens/UserAddress";
@@ -34,7 +31,7 @@ import ContractDetail from "../../screens/Customer/ContractScreens/ContractDetai
 import { CheckRequestData } from "../../models/machineCheckRequest_models";
 import InvoiceResult from "../../screens/Customer/ResultScreens/InvoiceResult";
 import BillResult from "../../screens/Customer/ResultScreens/BillResult";
-import InvoiceImage from "../../screens/Customer/InvoiceScreens/InvoiceImage";
+import FullImage from "../../screens/Customer/ImageScreen/FullImage";
 
 export type CustomerStackParamList = {
   // Tabs
@@ -65,7 +62,6 @@ export type CustomerStackParamList = {
   // Thanh toán
   UserInvoice: undefined;
   InvoiceDetail: { invoiceId: string };
-  InvoiceImage: { paymentConfirmationUrl: string };
 
   // Yêu cầu thuê
   UserRentingRequest: undefined;
@@ -92,6 +88,9 @@ export type CustomerStackParamList = {
 
   // Thông báo
   UserNotification: undefined;
+
+  // Hình ảnh
+  FullImage: { imageUrl: string };
 
   // Kết quả thanh toán
   InvoiceResult: undefined;
@@ -152,10 +151,6 @@ export type UserInvoiceScreenProps = NativeStackScreenProps<
 export type InvoiceDetailScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "InvoiceDetail"
->;
-export type InvoiceImageScreenProps = NativeStackScreenProps<
-  CustomerStackParamList,
-  "InvoiceImage"
 >;
 
 // Yêu cầu thuê
@@ -218,6 +213,12 @@ export type SystemTermsScreenProps = NativeStackScreenProps<
 export type UserNotificationScreenProps = NativeStackScreenProps<
   CustomerStackParamList,
   "UserNotification"
+>;
+
+// Hình ảnh
+export type FullImageScreenProps = NativeStackScreenProps<
+  CustomerStackParamList,
+  "FullImage"
 >;
 
 // Kết quả thanh toán
@@ -316,18 +317,6 @@ const CustomerNavigator = () => {
         component={InvoiceDetail}
         options={{ headerTitle: "Thông tin đơn thanh toán" }}
       />
-      <Stack.Screen
-        name="InvoiceImage"
-        component={InvoiceImage}
-        options={() => ({
-          headerTitle: "",
-          headerTransparent: true,
-          headerTintColor: "white",
-          headerStyle: {
-            backgroundColor: "rgba(128, 128, 128, 0.3)",
-          },
-        })}
-      />
 
       {/* Yêu cầu thuê */}
       <Stack.Screen name="UserRentingRequest" component={UserRentingRequest} />
@@ -378,6 +367,20 @@ const CustomerNavigator = () => {
         name="UserNotification"
         component={UserNotification}
         options={{ headerTitle: "Thông báo" }}
+      />
+
+      {/* Hình ảnh */}
+      <Stack.Screen
+        name="FullImage"
+        component={FullImage}
+        options={() => ({
+          headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "rgba(128, 128, 128, 0.3)",
+          },
+        })}
       />
 
       {/* Kết quả thanh toán */}

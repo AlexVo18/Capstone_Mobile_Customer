@@ -385,6 +385,7 @@ const Profile = () => {
             setFocusInput("");
             formik.setFieldTouched("email");
           }}
+          editable={false}
         />
         {formik.touched.email && formik.errors.email ? (
           <View>

@@ -259,22 +259,6 @@ const EditAddress = ({ navigation, route }: EditAddressScreenProps) => {
         ) : null}
       </View>
       <View style={styles.searchContainer}>
-        <Button
-          mode="outlined"
-          className=""
-          textColor={mainBlue}
-          style={[styles.outlineButton, styles.deleteButtonStyle]}
-          disabled={isLoading || isDeleting}
-          onPress={handleDeleteAddress}
-        >
-          {isDeleting ? (
-            <ActivityIndicator size="small" color="white" />
-          ) : (
-            <Text className="text-base">Xóa địa chỉ</Text>
-          )}
-        </Button>
-      </View>
-      <View style={styles.searchContainer}>
         {!chosenLocation ||
         chosenLocation.compound.province !== "Hồ Chí Minh" ||
         chosenLocation.formatted_address ===

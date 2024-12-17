@@ -295,8 +295,8 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
                 <Text></Text>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate("InvoiceImage", {
-                      paymentConfirmationUrl: detail.paymentConfirmationUrl,
+                    navigation.navigate("FullImage", {
+                      imageUrl: detail.paymentConfirmationUrl,
                     })
                   }
                 >

@@ -40,10 +40,7 @@ const MachineList = ({
             >
               <View className="items-center justify-center relative">
                 <Image
-                  src={
-                    item.thumbnail ||
-                    "https://www.schaeffler.vn/remotemedien/media/_shared_media_rwd/04_sectors_1/industry_1/construction_machinery/00085545_16_9-schaeffler-industry-solutions-construction-machinery-crawler-excavator_rwd_600.jpg"
-                  }
+                  src={item.thumbnail}
                   alt=""
                   className="h-40 w-40 rounded-lg"
                 />

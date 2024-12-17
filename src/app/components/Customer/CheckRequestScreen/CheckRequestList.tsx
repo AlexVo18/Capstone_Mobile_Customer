@@ -44,12 +44,8 @@ const CheckRequestList = ({
             <View style={[styles.card, styles.elevation]} className="p-[10px] ">
               <View className="flex flex-row gap-2">
                 <View className="items-center justify-center relative p-2">
-                  {/* <Wrench size={80} color={"#000"} /> */}
                   <Image
-                    src={
-                      item.thumbnail ||
-                      "https://www.schaeffler.vn/remotemedien/media/_shared_media_rwd/04_sectors_1/industry_1/construction_machinery/00085545_16_9-schaeffler-industry-solutions-construction-machinery-crawler-excavator_rwd_600.jpg"
-                    }
+                    src={item.thumbnail}
                     alt=""
                     className="h-36 w-36 rounded-lg"
                   />

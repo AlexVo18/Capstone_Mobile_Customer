@@ -328,16 +328,20 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
             <Text className="text-lg font-semibold">Máy móc</Text>
             <View className="h-[0.5px] bg-muted-foreground my-2"></View>
             <View style={styles.machineStyle}>
-              <View className="h-36 w-36">
+              <TouchableOpacity
+                className="h-36 w-36"
+                onPress={() =>
+                  navigation.navigate("FullImage", {
+                    imageUrl: detail.thumbnail,
+                  })
+                }
+              >
                 <Image
-                  src={
-                    detail.thumbnail ||
-                    "https://www.schaeffler.vn/remotemedien/media/_shared_media_rwd/04_sectors_1/industry_1/construction_machinery/00085545_16_9-schaeffler-industry-solutions-construction-machinery-crawler-excavator_rwd_600.jpg"
-                  }
+                  src={detail.thumbnail}
                   alt=""
                   className="h-36 w-36 rounded-lg"
                 />
-              </View>
+              </TouchableOpacity>
 
               <View className="flex flex-col justify-evenly h-36">
                 <View>
