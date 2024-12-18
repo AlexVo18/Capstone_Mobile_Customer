@@ -1,4 +1,4 @@
-import { ExtendContractParams } from "@/app/models/contract_models";
+import { ExtendContractParams } from "../../models/contract_models";
 import requests from "../request";
 
 const Contract = {
@@ -14,5 +14,7 @@ const Contract = {
     requests.codeJwtApiPost(`/contracts/${input.contractId}/extend-contract`, {
       dateEnd: input.dateEnd,
     }),
+  endExtendContract: (input: string) =>
+    requests.codeJwtApiPost(`/contracts/${input}/cancel-extend-contract`, {}),
 };
 export default Contract;

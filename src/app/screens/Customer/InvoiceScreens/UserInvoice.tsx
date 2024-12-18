@@ -172,6 +172,7 @@ const UserInvoice = ({ navigation, route }: UserInvoiceScreenProps) => {
                 { label: "Tiền sửa chữa", value: "componentticket" },
                 { label: "Tiền hoàn trả", value: "refund" },
                 { label: "Tiền bồi thường", value: "damagepenalty" },
+                { label: "Tiền gia hạn", value: "extend" },
               ]}
               style={pickerSelectStyles}
             />

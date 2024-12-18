@@ -93,7 +93,17 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
     setIsCancelLoading(true);
     try {
       if (contractId) {
-        const response = await Contract.endContract(contractId);
+        let response;
+        if (
+          detail?.baseContractId &&
+          detail.status.toLowerCase() === "notsigned"
+        ) {
+          // Hủy hợp đồng gia hạn
+          response = await Contract.endExtendContract(contractId);
+        } else {
+          // Hủy hợp đồng thường
+          response = await Contract.endContract(contractId);
+        }
         if (response.status === 200) {
           Toast.show({
             type: "success",
@@ -156,6 +166,8 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
         return "border-lime-400 text-lime-400";
       case "fine":
         return "border-red-400 text-red-400";
+      case "extend":
+        return "border-sky-600 text-extend-600";
       default:
         return "border-blue-600 text-blue-600";
     }
@@ -436,7 +448,9 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
                                     ? "Tiền phạt"
                                     : payment.type.toLowerCase() === "refund"
                                       ? "Tiền hoàn trả"
-                                      : "Tiền cọc"}
+                                      : payment.type.toLowerCase() === "extend"
+                                        ? "Tiền gia hạn"
+                                        : "Tiền cọc"}
                             </Text>
                           </View>
                         </View>

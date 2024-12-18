@@ -121,6 +121,25 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
     }
   };
 
+  const checkPaymentSuccess = async () => {
+    setIsCreateLoading(true);
+    try {
+      if (invoiceId) {
+        const response = await Invoice.checkPayment(invoiceId);
+        if (response) {
+          Toast.show({
+            type: "success",
+            text1: "Hóa đơn này đã được thanh toán trước đó",
+          });
+        }
+      }
+      setIsLoading(true);
+      getInvoiceDetail();
+    } catch (error) {
+      handleCreatePayment();
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "pending":
@@ -140,6 +159,8 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
         return "border-yellow-400 text-yellow-400";
       case "refund":
         return "border-lime-600 text-lime-600";
+      case "extend":
+        return "border-sky-600 text-sky-600";
       default:
         return "border-red-600 text-red-600";
     }
@@ -227,7 +248,9 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
                       ? "Tiền sửa chữa"
                       : detail.type.toLowerCase() === "refund"
                         ? "Tiền hoàn trả"
-                        : "Tiền bồi thường"}
+                        : detail.type.toLowerCase() === "extend"
+                          ? "Tiền gia hạn"
+                          : "Tiền bồi thường"}
                 </Text>
               </View>
             </View>
@@ -543,6 +566,20 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
                     ))}
                 </>
               )}
+
+            {/* Phần invoice của tiền gia hạn */}
+            {detail && detail.type.toLowerCase() === "extend" && (
+              <>
+                <View className="flex flex-row justify-between">
+                  <Text>Loại tiền</Text>
+                  <Text>Số tiền</Text>
+                </View>
+                <View className="flex flex-row justify-between">
+                  <Text>Tiền gia hạn hợp đồng</Text>
+                  <Text>{formatVND(detail.amount)}</Text>
+                </View>
+              </>
+            )}
           </View>
 
           {detail?.status.toLowerCase() === "pending" ? (
@@ -564,7 +601,7 @@ const InvoiceDetail = ({ navigation, route }: InvoiceDetailScreenProps) => {
                 <TouchableOpacity
                   style={[styles.buttonStyle, styles.buttonColor]}
                   disabled={isCreateLoading}
-                  onPress={handleCreatePayment}
+                  onPress={checkPaymentSuccess}
                 >
                   {isLoading ? (
                     <ActivityIndicator color={"#6b7280"} size={"small"} />

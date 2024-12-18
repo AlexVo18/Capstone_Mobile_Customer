@@ -138,7 +138,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
           className="text-lg text-center"
           style={{ color: `hsl(${mutedForground})` }}
         >
-          Hãy đăng nhập để bắt đàu sử dụng ứng dụng
+          Hãy đăng nhập để bắt đầu sử dụng ứng dụng
         </Text>
       </View>
       <View className="w-full">
