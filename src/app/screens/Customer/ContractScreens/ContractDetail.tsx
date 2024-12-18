@@ -28,6 +28,7 @@ import { formatDate } from "~/src/app/utils/dateformat";
 import { formatVND } from "~/src/app/utils/formatVND";
 import { Receipt, Ticket } from "lucide-react-native";
 import { differenceInDays } from "date-fns";
+import axios from "axios";
 
 const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
   const { contractId } = route.params;
@@ -113,10 +114,14 @@ const ContractDetail = ({ navigation, route }: ContractDetailScreenProps) => {
         }
       }
     } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: cancelErrorMsg,
-      });
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          Toast.show({
+            type: "error",
+            text1: error.response.data,
+          });
+        }
+      }
     } finally {
       setIsCancelLoading(false);
     }
